@@ -64,6 +64,7 @@ const t = getContent(lang);
 
 	.inner {
 		max-width: 68rem;
+		min-height: var(--header-h);
 		margin: 0 auto;
 		padding: 1rem 1.5rem;
 		display: flex;
@@ -197,9 +198,20 @@ const t = getContent(lang);
 
 <script>
 	function initHeaderMenu() {
-		const toggle = document.getElementById("menu-toggle");
-		const nav = document.getElementById("mobile-nav");
-		if (!toggle || !nav) return;
+		const toggleEl = document.getElementById("menu-toggle");
+		const navEl = document.getElementById("mobile-nav");
+		if (!toggleEl || !navEl) return;
+		const toggle = toggleEl as HTMLElement;
+		const nav = navEl as HTMLElement;
+
+		function closeMenuInstantly() {
+			// No transition: the layout must already be settled before any
+			// anchor-scroll runs, or the menu's own collapse animation shifts
+			// content underneath it and the scroll lands in the wrong place.
+			toggle.setAttribute("aria-expanded", "false");
+			nav.classList.remove("is-open");
+			nav.hidden = true;
+		}
 
 		toggle.addEventListener("click", () => {
 			const open = !nav.classList.contains("is-open");
@@ -211,11 +223,28 @@ const t = getContent(lang);
 			}
 		});
 
-		nav.querySelectorAll("a").forEach((el) => {
-			el.addEventListener("click", () => {
-				nav.classList.remove("is-open");
-				toggle.setAttribute("aria-expanded", "false");
-				nav.addEventListener("transitionend", () => { nav.hidden = true; }, { once: true });
+		// Unified in-page anchor navigation for every #hash link on the page
+		// (header, mobile menu, hero CTAs, footer, ecosystem hub…). Native
+		// fragment navigation — and scrollIntoView() relying on the target's
+		// scroll-margin-top — both landed short of the sticky header's real
+		// height in testing, so the offset is measured and applied by hand.
+		document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((link) => {
+			link.addEventListener("click", (event) => {
+				const href = link.getAttribute("href");
+				if (!href || href === "#") return;
+				const target = document.querySelector(href);
+				if (!target) return;
+
+				event.preventDefault();
+				if (nav.classList.contains("is-open")) closeMenuInstantly();
+
+				requestAnimationFrame(() => {
+					const header = document.querySelector(".site-header");
+					const offset = (header?.getBoundingClientRect().height ?? 0) + 16;
+					const top = target.getBoundingClientRect().top + window.scrollY - offset;
+					window.scrollTo({ top, behavior: "smooth" });
+					history.pushState(null, "", href);
+				});
 			});
 		});
 	}

@@ -20,6 +20,8 @@
 	--shadow-soft: 0 2px 8px rgba(17, 17, 17, 0.06);
 	--shadow-lifted: 0 24px 48px -16px rgba(17, 17, 17, 0.22), 0 8px 16px -8px rgba(17, 17, 17, 0.1);
 
+	--header-h: 4.5rem;
+
 	color-scheme: light;
 }
 
