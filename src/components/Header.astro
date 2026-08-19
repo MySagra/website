@@ -13,16 +13,16 @@ const t = getContent(lang);
 
 <header class="site-header">
 	<div class="inner">
-		<a href="#top" class="brand">
+		<a href="#top" class="brand" title={lang === "en" ? "MySagra – back to homepage" : "MySagra – torna alla home"}>
 			<Logo width={30} height={30} decorative />
 			<span>MySagra</span>
 		</a>
 
 		<nav class="nav-desktop" aria-label={t.header.sectionsAria}>
-			<a href="#benefits" data-umami-event="nav-click" data-umami-event-section="benefits" data-umami-event-location="header">{t.header.nav.vantaggi}</a>
-			<a href="#solutions" data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="header">{t.header.nav.soluzioni}</a>
-			<a href="#ecosystem" data-umami-event="nav-click" data-umami-event-section="ecosystem" data-umami-event-location="header">{t.header.nav.ecosistema}</a>
-			<a href="https://docs.mysagra.com" target="_blank" rel="noopener" data-umami-event="docs-click" data-umami-event-location="header">{t.header.nav.docs}</a>
+			<a href="#benefits" title={lang === "en" ? "Jump to the Benefits section" : "Vai alla sezione Vantaggi"} data-umami-event="nav-click" data-umami-event-section="benefits" data-umami-event-location="header">{t.header.nav.vantaggi}</a>
+			<a href="#solutions" title={lang === "en" ? "Jump to the Plans section" : "Vai alla sezione Soluzioni"} data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="header">{t.header.nav.soluzioni}</a>
+			<a href="#ecosystem" title={lang === "en" ? "Jump to the Ecosystem section" : "Vai alla sezione Ecosistema"} data-umami-event="nav-click" data-umami-event-section="ecosystem" data-umami-event-location="header">{t.header.nav.ecosistema}</a>
+			<a href="https://docs.mysagra.com" target="_blank" rel="noopener" title={lang === "en" ? "Open MySagra documentation (new tab)" : "Apri la documentazione MySagra (nuova scheda)"} data-umami-event="docs-click" data-umami-event-location="header">{t.header.nav.docs}</a>
 		</nav>
 
 		<div class="actions">
@@ -46,10 +46,10 @@ const t = getContent(lang);
 	</div>
 
 	<nav id="mobile-nav" class="nav-mobile" aria-label={t.header.sectionsAria} hidden>
-		<a href="#benefits" data-umami-event="nav-click" data-umami-event-section="benefits" data-umami-event-location="header-mobile"><span>{t.header.nav.vantaggi}</span></a>
-		<a href="#solutions" data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="header-mobile"><span>{t.header.nav.soluzioni}</span></a>
-		<a href="#ecosystem" data-umami-event="nav-click" data-umami-event-section="ecosystem" data-umami-event-location="header-mobile"><span>{t.header.nav.ecosistema}</span></a>
-		<a href="https://docs.mysagra.com" target="_blank" rel="noopener" data-umami-event="docs-click" data-umami-event-location="header-mobile"><span>{t.header.nav.docs}</span></a>
+		<a href="#benefits" title={lang === "en" ? "Jump to the Benefits section" : "Vai alla sezione Vantaggi"} data-umami-event="nav-click" data-umami-event-section="benefits" data-umami-event-location="header-mobile"><span>{t.header.nav.vantaggi}</span></a>
+		<a href="#solutions" title={lang === "en" ? "Jump to the Plans section" : "Vai alla sezione Soluzioni"} data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="header-mobile"><span>{t.header.nav.soluzioni}</span></a>
+		<a href="#ecosystem" title={lang === "en" ? "Jump to the Ecosystem section" : "Vai alla sezione Ecosistema"} data-umami-event="nav-click" data-umami-event-section="ecosystem" data-umami-event-location="header-mobile"><span>{t.header.nav.ecosistema}</span></a>
+		<a href="https://docs.mysagra.com" target="_blank" rel="noopener" title={lang === "en" ? "Open MySagra documentation (new tab)" : "Apri la documentazione MySagra (nuova scheda)"} data-umami-event="docs-click" data-umami-event-location="header-mobile"><span>{t.header.nav.docs}</span></a>
 	</nav>
 </header>
 

@@ -1,0 +1,183 @@
+---
+import "@fontsource/inter/700.css";
+import "@fontsource/work-sans/400.css";
+import "@fontsource/work-sans/600.css";
+import "../styles/global.css";
+import Analytics from "./Analytics.astro";
+import { getContent } from "../i18n/content";
+import type { Lang } from "../i18n/ui";
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getContent(lang);
+const nf = t.notFound;
+
+const homeHref = lang === "en" ? "/en/" : "/";
+---
+
+<html lang={lang}>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content="#FECC01" />
+		<title>{nf.metaTitle}</title>
+		<meta name="description" content={nf.metaDescription} />
+		<meta name="robots" content="noindex, follow" />
+		<Analytics lang={lang} />
+	</head>
+	<body>
+		<main class="notfound-main">
+			<div class="mark-wrap">
+				<div class="mark-glow" aria-hidden="true"></div>
+				<p class="mark" role="img" aria-label={nf.markAria}>
+					<span>4</span>
+					<span class="mark-zero" aria-hidden="true">
+						<svg viewBox="0 0 24 24" fill="none">
+							<path
+								d="M12 21c4-3.6 7-7.06 7-10.5A7 7 0 0 0 5 10.5C5 13.94 8 17.4 12 21Z"
+								stroke="#111111"
+								stroke-width="1.8"
+								stroke-linejoin="round"
+							/>
+							<circle cx="12" cy="10.4" r="2.3" stroke="#111111" stroke-width="1.8" />
+						</svg>
+					</span>
+					<span>4</span>
+				</p>
+			</div>
+
+			<div class="notfound-content">
+				<h1>{nf.h1}</h1>
+				<p class="body-text">{nf.body}</p>
+
+				<div class="notfound-actions">
+					<a href={homeHref} class="btn-primary" title={lang === "en" ? "Back to MySagra homepage" : "Torna alla home di MySagra"} data-umami-event="notfound-home-click">{nf.ctaPrimary}</a>
+				</div>
+			</div>
+		</main>
+
+		<p class="copyright">© {new Date().getFullYear()} MySagra</p>
+
+		<style>
+			body {
+				position: relative;
+				min-height: 100dvh;
+			}
+			.notfound-main {
+				min-height: 100dvh;
+				max-width: 40rem;
+				margin: 0 auto;
+				padding: 3rem 1.5rem 4.5rem;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				text-align: center;
+				gap: 2rem;
+			}
+
+			.mark-wrap {
+				position: relative;
+				display: flex;
+				justify-content: center;
+			}
+			.mark-glow {
+				position: absolute;
+				inset: -18%;
+				background: radial-gradient(ellipse 60% 55% at 50% 45%, rgba(254, 204, 1, 0.4), transparent 70%);
+				filter: blur(2px);
+				z-index: 0;
+			}
+			.mark {
+				position: relative;
+				z-index: 1;
+				margin: 0;
+				display: inline-flex;
+				align-items: center;
+				gap: 0.03em;
+				font-family: var(--font-display);
+				font-weight: 700;
+				font-size: clamp(6rem, 13vw, 9.5rem);
+				line-height: 1;
+				letter-spacing: -0.02em;
+				color: var(--color-ink);
+				font-variant-numeric: tabular-nums;
+			}
+			.mark-zero {
+				width: 0.66em;
+				height: 0.66em;
+				border-radius: 50%;
+				background: var(--color-yellow);
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				flex-shrink: 0;
+				animation: mark-zero-settle 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
+			}
+			.mark-zero svg {
+				width: 52%;
+				height: 52%;
+			}
+			@keyframes mark-zero-settle {
+				from {
+					transform: scale(0.55) rotate(-16deg);
+				}
+				to {
+					transform: scale(1) rotate(0deg);
+				}
+			}
+
+			.notfound-content h1 {
+				font-size: clamp(1.8rem, 3.4vw, 2.5rem);
+				text-wrap: balance;
+			}
+			.body-text {
+				color: var(--color-neutral-500);
+				margin-top: 1.15rem;
+				line-height: 1.6;
+				max-width: 34rem;
+				margin-inline: auto;
+			}
+			.notfound-actions {
+				display: flex;
+				flex-wrap: wrap;
+				justify-content: center;
+				gap: 0.85rem;
+				margin-top: 2.25rem;
+			}
+			.btn-primary {
+				background: var(--color-yellow);
+				color: var(--color-ink);
+				border: none;
+				border-radius: var(--radius-pill);
+				padding: 0.9rem 1.8rem;
+				font-family: var(--font-display);
+				font-weight: 700;
+				font-size: 1rem;
+				text-decoration: none;
+				transition:
+					transform 0.15s ease,
+					box-shadow 0.15s ease;
+			}
+			.btn-primary:hover {
+				transform: translateY(-1px);
+				box-shadow: var(--shadow-soft);
+			}
+			.copyright {
+				position: absolute;
+				left: 0;
+				right: 0;
+				bottom: 1.5rem;
+				text-align: center;
+				color: var(--color-neutral-500);
+				font-size: 0.85rem;
+			}
+		</style>
+	</body>
+</html>

@@ -42,7 +42,7 @@ const privacyPolicyHref = lang === "en" ? "/en/privacy-policy" : "/privacy-polic
 	</head>
 	<body>
 		<header class="legal-bar">
-			<a href={homeHref} class="back-link">
+			<a href={homeHref} class="back-link" title={lang === "en" ? "Back to MySagra site" : "Torna al sito MySagra"}>
 				<span aria-hidden="true">←</span>
 				{c.backLabel}
 			</a>
@@ -99,12 +99,12 @@ const privacyPolicyHref = lang === "en" ? "/en/privacy-policy" : "/privacy-polic
 
 				<div>
 					<h2>{c.contactH2}</h2>
-					<p>{c.contactPrefix}<a href="mailto:info@mysagra.com">info@mysagra.com</a></p>
+					<p>{c.contactPrefix}<a href="mailto:info@mysagra.com" title={lang === "en" ? "Email info@mysagra.com" : "Invia un'email a info@mysagra.com"}>info@mysagra.com</a></p>
 				</div>
 
 				<div>
 					<p>
-						{c.privacyNotePrefix}<a href={privacyPolicyHref}>{c.privacyNoteLinkLabel}</a>.
+						{c.privacyNotePrefix}<a href={privacyPolicyHref} title={lang === "en" ? "Read the Privacy Policy" : "Leggi la Privacy Policy"}>{c.privacyNoteLinkLabel}</a>.
 					</p>
 				</div>
 			</section>
@@ -112,7 +112,7 @@ const privacyPolicyHref = lang === "en" ? "/en/privacy-policy" : "/privacy-polic
 
 		<footer class="legal-footer">
 			<p>
-				© {new Date().getFullYear()} MySagra · <a href={privacyPolicyHref}>{c.privacyNoteLinkLabel}</a>
+				© {new Date().getFullYear()} MySagra · <a href={privacyPolicyHref} title={lang === "en" ? "Read the Privacy Policy" : "Leggi la Privacy Policy"}>{c.privacyNoteLinkLabel}</a>
 			</p>
 		</footer>
 

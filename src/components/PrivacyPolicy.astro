@@ -42,7 +42,7 @@ const cookiePolicyHref = lang === "en" ? "/en/cookie-policy" : "/cookie-policy";
 	</head>
 	<body>
 		<header class="legal-bar">
-			<a href={homeHref} class="back-link">
+			<a href={homeHref} class="back-link" title={lang === "en" ? "Back to MySagra site" : "Torna al sito MySagra"}>
 				<span aria-hidden="true">←</span>
 				{p.backLabel}
 			</a>
@@ -57,7 +57,7 @@ const cookiePolicyHref = lang === "en" ? "/en/cookie-policy" : "/cookie-policy";
 				<div>
 					<h2>{p.controllerH2}</h2>
 					<p>{p.controllerBody}</p>
-					<p>{p.contactLabel}<a href="mailto:info@mysagra.com">info@mysagra.com</a></p>
+					<p>{p.contactLabel}<a href="mailto:info@mysagra.com" title={lang === "en" ? "Email info@mysagra.com" : "Invia un'email a info@mysagra.com"}>info@mysagra.com</a></p>
 				</div>
 
 				<div>
@@ -93,14 +93,14 @@ const cookiePolicyHref = lang === "en" ? "/en/cookie-policy" : "/cookie-policy";
 						{p.rightsList.map((item) => <li>{item}</li>)}
 					</ul>
 					<p>
-						{p.rightsOutroPrefix}<a href="mailto:info@mysagra.com">info@mysagra.com</a>{p.rightsOutroSuffix}
+						{p.rightsOutroPrefix}<a href="mailto:info@mysagra.com" title={lang === "en" ? "Email info@mysagra.com" : "Invia un'email a info@mysagra.com"}>info@mysagra.com</a>{p.rightsOutroSuffix}
 					</p>
 				</div>
 
 				<div>
 					<h2>{p.cookieNoteH2}</h2>
 					<p>
-						{p.cookieNotePrefix}<a href={cookiePolicyHref}>{p.cookieNoteLinkLabel}</a>.
+						{p.cookieNotePrefix}<a href={cookiePolicyHref} title={lang === "en" ? "Read the Cookie Policy" : "Leggi la Cookie Policy"}>{p.cookieNoteLinkLabel}</a>.
 					</p>
 				</div>
 			</section>
@@ -108,7 +108,7 @@ const cookiePolicyHref = lang === "en" ? "/en/cookie-policy" : "/cookie-policy";
 
 		<footer class="legal-footer">
 			<p>
-				© {new Date().getFullYear()} MySagra · <a href={cookiePolicyHref}>{p.cookieNoteLinkLabel}</a>
+				© {new Date().getFullYear()} MySagra · <a href={cookiePolicyHref} title={lang === "en" ? "Read the Cookie Policy" : "Leggi la Cookie Policy"}>{p.cookieNoteLinkLabel}</a>
 			</p>
 		</footer>
 

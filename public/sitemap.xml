@@ -17,4 +17,36 @@
 		<changefreq>weekly</changefreq>
 		<priority>1.0</priority>
 	</url>
+	<url>
+		<loc>https://mysagra.com/privacy-policy</loc>
+		<xhtml:link rel="alternate" hreflang="it" href="https://mysagra.com/privacy-policy" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://mysagra.com/en/privacy-policy" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://mysagra.com/privacy-policy" />
+		<changefreq>yearly</changefreq>
+		<priority>0.3</priority>
+	</url>
+	<url>
+		<loc>https://mysagra.com/en/privacy-policy</loc>
+		<xhtml:link rel="alternate" hreflang="it" href="https://mysagra.com/privacy-policy" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://mysagra.com/en/privacy-policy" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://mysagra.com/privacy-policy" />
+		<changefreq>yearly</changefreq>
+		<priority>0.3</priority>
+	</url>
+	<url>
+		<loc>https://mysagra.com/cookie-policy</loc>
+		<xhtml:link rel="alternate" hreflang="it" href="https://mysagra.com/cookie-policy" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://mysagra.com/en/cookie-policy" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://mysagra.com/cookie-policy" />
+		<changefreq>yearly</changefreq>
+		<priority>0.3</priority>
+	</url>
+	<url>
+		<loc>https://mysagra.com/en/cookie-policy</loc>
+		<xhtml:link rel="alternate" hreflang="it" href="https://mysagra.com/cookie-policy" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://mysagra.com/en/cookie-policy" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://mysagra.com/cookie-policy" />
+		<changefreq>yearly</changefreq>
+		<priority>0.3</priority>
+	</url>
 </urlset>

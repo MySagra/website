@@ -184,11 +184,11 @@ const icons: Record<string, string> = {
 				</div>
 
 				<div class="hero-copy">
-					<h1>{t.hero.h1Line1}<br />{t.hero.h1Line2}</h1>
+					<h1>{t.hero.h1Line1} <br />{t.hero.h1Line2}</h1>
 					<p class="dek">{t.hero.dek}</p>
 					<div class="hero-actions">
 						<button type="button" class="btn-primary" data-open-contact="informazioni" data-umami-event="contact-open" data-umami-event-location="hero-primary">{t.hero.ctaPrimary}</button>
-						<a href="#solutions" class="btn-secondary" data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="hero-secondary">{t.hero.ctaSecondary}</a>
+						<a href="#solutions" class="btn-secondary" title={lang === "en" ? "Jump to the Plans section" : "Vai alla sezione Soluzioni"} data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="hero-secondary">{t.hero.ctaSecondary}</a>
 					</div>
 				</div>
 
@@ -474,7 +474,7 @@ const icons: Record<string, string> = {
 				</div>
 
 				<p class="eco-custom-note">
-					{t.ecosistema.customNotePrefix} <a href="#solutions" data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="ecosystem-custom-note">{t.ecosistema.customNoteLink}</a>
+					{t.ecosistema.customNotePrefix} <a href="#solutions" title={lang === "en" ? "Jump to the Plans section" : "Vai alla sezione Soluzioni"} data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="ecosystem-custom-note">{t.ecosistema.customNoteLink}</a>
 				</p>
 			</section>
 
@@ -487,9 +487,9 @@ const icons: Record<string, string> = {
 					<button type="button" class="btn-primary" data-open-contact="informazioni" data-umami-event="contact-open" data-umami-event-location="closing">{t.closing.cta}</button>
 					<p class="closing-note">
 						{t.closing.noteOpenSource}{" "}
-						<a href="https://github.com/mysagra" target="_blank" rel="noopener" data-umami-event="github-click" data-umami-event-location="closing">{t.closing.noteGithub}</a>.{" "}
+						<a href="https://github.com/mysagra" target="_blank" rel="noopener" title={lang === "en" ? "Open MySagra repository on GitHub" : "Apri il repository MySagra su GitHub"} data-umami-event="github-click" data-umami-event-location="closing">{t.closing.noteGithub}</a>.{" "}
 						{t.closing.noteAnd}{" "}
-						<a href="https://docs.mysagra.com" target="_blank" rel="noopener" data-umami-event="docs-click" data-umami-event-location="closing">{t.closing.noteDocs}</a>.
+						<a href="https://docs.mysagra.com" target="_blank" rel="noopener" title={lang === "en" ? "Open MySagra documentation" : "Apri la documentazione MySagra"} data-umami-event="docs-click" data-umami-event-location="closing">{t.closing.noteDocs}</a>.
 					</p>
 				</div>
 			</section>
@@ -543,12 +543,12 @@ const icons: Record<string, string> = {
 			<div class="footer-inner">
 				<div class="footer-top">
 					<div class="footer-brand">
-						<a href="#top" class="footer-brand-link" data-umami-event="nav-click" data-umami-event-section="top" data-umami-event-location="footer">
+						<a href="#top" class="footer-brand-link" title={lang === "en" ? "Back to top" : "Torna in cima alla pagina"} data-umami-event="nav-click" data-umami-event-section="top" data-umami-event-location="footer">
 							<Logo width={28} height={28} decorative />
 							<span>MySagra</span>
 						</a>
 						<p class="footer-tagline">{t.footer.tagline}</p>
-						<a class="gh-star" href="https://github.com/mysagra" target="_blank" rel="noopener" data-umami-event="github-click" data-umami-event-location="footer">
+						<a class="gh-star" href="https://github.com/mysagra" target="_blank" rel="noopener" title={lang === "en" ? "Star MySagra on GitHub" : "Metti una stella a MySagra su GitHub"} data-umami-event="github-click" data-umami-event-location="footer">
 							<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
 								<path d="M8 .3 10 5l5.3.4-4 3.6 1.2 5.2L8 11.5l-4.5 2.7L4.7 9l-4-3.6L6 5 8 .3Z" />
 							</svg>
@@ -558,23 +558,23 @@ const icons: Record<string, string> = {
 
 					<div class="footer-col">
 						<p class="footer-col-title">{t.footer.prodotto.title}</p>
-						<a href="#benefits" data-umami-event="nav-click" data-umami-event-section="benefits" data-umami-event-location="footer">{t.footer.prodotto.vantaggi}</a>
-						<a href="#solutions" data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="footer">{t.footer.prodotto.soluzioni}</a>
-						<a href="#ecosystem" data-umami-event="nav-click" data-umami-event-section="ecosystem" data-umami-event-location="footer">{t.footer.prodotto.ecosistema}</a>
+						<a href="#benefits" title={lang === "en" ? "Jump to the Benefits section" : "Vai alla sezione Vantaggi"} data-umami-event="nav-click" data-umami-event-section="benefits" data-umami-event-location="footer">{t.footer.prodotto.vantaggi}</a>
+						<a href="#solutions" title={lang === "en" ? "Jump to the Plans section" : "Vai alla sezione Soluzioni"} data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="footer">{t.footer.prodotto.soluzioni}</a>
+						<a href="#ecosystem" title={lang === "en" ? "Jump to the Ecosystem section" : "Vai alla sezione Ecosistema"} data-umami-event="nav-click" data-umami-event-section="ecosystem" data-umami-event-location="footer">{t.footer.prodotto.ecosistema}</a>
 					</div>
 
 					<div class="footer-col">
 						<p class="footer-col-title">{t.footer.risorse.title}</p>
-						<a href="https://docs.mysagra.com" target="_blank" rel="noopener" data-umami-event="docs-click" data-umami-event-location="footer">{t.footer.risorse.docs}</a>
-						<a href={`mailto:${t.footer.risorse.support}`} data-umami-event="support-email-click" data-umami-event-location="footer">{t.footer.risorse.support}</a>
+						<a href="https://docs.mysagra.com" target="_blank" rel="noopener" title={lang === "en" ? "Open MySagra documentation" : "Apri la documentazione MySagra"} data-umami-event="docs-click" data-umami-event-location="footer">{t.footer.risorse.docs}</a>
+						<a href={`mailto:${t.footer.risorse.support}`} title={lang === "en" ? `Email ${t.footer.risorse.support}` : `Invia un'email a ${t.footer.risorse.support}`} data-umami-event="support-email-click" data-umami-event-location="footer">{t.footer.risorse.support}</a>
 					</div>
 				</div>
 
 				<div class="footer-bottom">
 					<p class="copy">© {new Date().getFullYear()} {t.footer.copyright}</p>
 					<div class="footer-legal">
-						<a href={lang === "en" ? "/en/privacy-policy" : "/privacy-policy"} data-umami-event="legal-click" data-umami-event-page="privacy">{t.privacyPolicy.h1}</a>
-						<a href={lang === "en" ? "/en/cookie-policy" : "/cookie-policy"} data-umami-event="legal-click" data-umami-event-page="cookie">{t.cookiePolicy.h1}</a>
+						<a href={lang === "en" ? "/en/privacy-policy" : "/privacy-policy"} title={lang === "en" ? "Read the Privacy Policy" : "Leggi la Privacy Policy"} data-umami-event="legal-click" data-umami-event-page="privacy">{t.privacyPolicy.h1}</a>
+						<a href={lang === "en" ? "/en/cookie-policy" : "/cookie-policy"} title={lang === "en" ? "Read the Cookie Policy" : "Leggi la Cookie Policy"} data-umami-event="legal-click" data-umami-event-page="cookie">{t.cookiePolicy.h1}</a>
 					</div>
 				</div>
 			</div>

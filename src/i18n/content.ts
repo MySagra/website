@@ -147,6 +147,14 @@ export interface SiteContent {
 		success: string;
 		errorFallback: string;
 	};
+	notFound: {
+		metaTitle: string;
+		metaDescription: string;
+		markAria: string;
+		h1: string;
+		body: string;
+		ctaPrimary: string;
+	};
 }
 
 const it: SiteContent = {
@@ -472,6 +480,14 @@ const it: SiteContent = {
 		success: "Richiesta inviata! Controlla la tua email per la conferma.",
 		errorFallback: "Invio non riuscito. Riprova.",
 	},
+	notFound: {
+		metaTitle: "Pagina non trovata | MySagra",
+		metaDescription: "La pagina che cerchi non esiste o è stata spostata.",
+		markAria: "Errore 404",
+		h1: "Questa pagina non c'è, come le comande perse senza MySagra",
+		body: "Il link potrebbe essere sbagliato o la pagina è stata spostata. Torna alla home o scrivici se pensi sia un errore.",
+		ctaPrimary: "Torna alla home",
+	},
 };
 
 const en: SiteContent = {
@@ -794,6 +810,14 @@ const en: SiteContent = {
 		submitting: "Sending…",
 		success: "Request sent! Check your email for confirmation.",
 		errorFallback: "Sending failed. Try again.",
+	},
+	notFound: {
+		metaTitle: "Page Not Found | MySagra",
+		metaDescription: "The page you're looking for doesn't exist or has moved.",
+		markAria: "404 Error",
+		h1: "This page went missing, like orders lost without MySagra",
+		body: "The link might be wrong or the page has moved. Head back home or get in touch if you think this is a mistake.",
+		ctaPrimary: "Back to home",
 	},
 };
 
