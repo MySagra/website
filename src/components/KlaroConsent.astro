@@ -1,0 +1,135 @@
+---
+import { getContent } from "../i18n/content";
+import type { Lang } from "../i18n/ui";
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const b = getContent(lang).cookieBanner;
+const privacyPolicyPath = lang === "en" ? "/en/privacy-policy" : "/privacy-policy";
+
+const klaroConfig = {
+	version: 1,
+	storageMethod: "localStorage",
+	cookieName: "klaro-consent",
+	cookieExpiresAfterDays: 365,
+	privacyPolicy: privacyPolicyPath,
+	mustConsent: false,
+	acceptAll: true,
+	hideDeclineAll: true,
+	lang,
+	translations: {
+		[lang]: {
+			consentNotice: { description: b.description, learnMore: b.learnMore },
+			ok: b.acceptAll,
+			privacyPolicy: { name: b.privacyPolicyName },
+		},
+	},
+	services: [
+		{
+			name: "umami",
+			title: "Umami Analytics",
+			purposes: ["analytics"],
+			required: true,
+		},
+	],
+};
+---
+
+<div id="klaro-config" data-config={JSON.stringify(klaroConfig)} hidden></div>
+<script>
+	const el = document.getElementById("klaro-config");
+	const config = JSON.parse(el?.dataset.config || "{}");
+
+	import("klaro").then((Klaro) => {
+		Klaro.setup(config);
+	});
+</script>
+
+<style is:global>
+	.cookie-notice {
+		font-family: var(--font-body);
+		max-width: 22rem;
+		background: var(--color-surface) !important;
+		color: var(--color-ink) !important;
+		border-radius: var(--radius-lg) !important;
+		border: 1px solid var(--color-neutral-200);
+		box-shadow: var(--shadow-lifted) !important;
+		padding: 1.25rem !important;
+		bottom: 1.1rem !important;
+		left: 1.1rem !important;
+		right: auto !important;
+	}
+	.cookie-notice .cn-body {
+		font-size: 0.9rem !important;
+		line-height: 1.5;
+		color: var(--color-ink) !important;
+	}
+	.cookie-notice p,
+	.cookie-notice h1,
+	.cookie-notice h2,
+	.cookie-notice ul,
+	.cookie-notice li,
+	.cookie-notice strong {
+		color: var(--color-ink) !important;
+	}
+	.cookie-notice .cn-body p {
+		margin: 0 0 0.9rem;
+	}
+	.cookie-notice .cn-ok {
+		display: flex !important;
+		gap: 0.6rem;
+	}
+	.cookie-notice a.cn-decline,
+	.cookie-notice a.cn-learn-more,
+	.cookie-notice .cm-link {
+		color: var(--color-neutral-500) !important;
+		font-size: 0.82rem !important;
+		text-decoration: underline;
+	}
+	.cookie-notice a.cn-learn-more:hover {
+		color: var(--color-ink) !important;
+	}
+	.cookie-notice button.cm-btn {
+		font-family: var(--font-display) !important;
+		font-weight: 700 !important;
+		font-size: 0.85rem !important;
+		border-radius: var(--radius-pill) !important;
+		padding: 0.6rem 1.25rem !important;
+		border: none !important;
+		cursor: pointer;
+		transition: opacity 0.15s ease;
+	}
+	.cookie-notice button.cm-btn:hover {
+		opacity: 0.85;
+	}
+	.cookie-notice button.cm-btn-success {
+		background: var(--color-yellow) !important;
+		color: var(--color-ink) !important;
+	}
+
+	@media (max-width: 30rem) {
+		.cookie-notice {
+			left: 0.6rem !important;
+			right: 0.6rem !important;
+			bottom: 0.6rem !important;
+			max-width: none;
+		}
+	}
+
+	.cm-klaro .cm-modal {
+		font-family: var(--font-body);
+		border-radius: var(--radius-lg) !important;
+	}
+	.cm-klaro .cm-header h1,
+	.cm-klaro .cm-header h2 {
+		font-family: var(--font-display) !important;
+	}
+	.cm-klaro .cm-btn-success {
+		background: var(--color-yellow) !important;
+		color: var(--color-ink) !important;
+		border-radius: var(--radius-pill) !important;
+	}
+</style>

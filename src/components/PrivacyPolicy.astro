@@ -1,0 +1,208 @@
+---
+import "@fontsource/inter/700.css";
+import "@fontsource/work-sans/400.css";
+import "@fontsource/work-sans/600.css";
+import "../styles/global.css";
+import Logo from "./Logo.astro";
+import Analytics from "./Analytics.astro";
+import { getContent } from "../i18n/content";
+import type { Lang } from "../i18n/ui";
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getContent(lang);
+const p = t.privacyPolicy;
+
+const SITE_URL = "https://mysagra.com";
+const path = lang === "en" ? "/en/privacy-policy" : "/privacy-policy";
+const canonicalUrl = `${SITE_URL}${path}`;
+const homeHref = lang === "en" ? "/en/" : "/";
+const cookiePolicyHref = lang === "en" ? "/en/cookie-policy" : "/cookie-policy";
+---
+
+<html lang={lang}>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content="#FECC01" />
+		<title>{p.metaTitle}</title>
+		<meta name="description" content={p.metaDescription} />
+		<link rel="canonical" href={canonicalUrl} />
+		<link rel="alternate" hreflang="it" href={`${SITE_URL}/privacy-policy`} />
+		<link rel="alternate" hreflang="en" href={`${SITE_URL}/en/privacy-policy`} />
+		<link rel="alternate" hreflang="x-default" href={`${SITE_URL}/privacy-policy`} />
+		<meta name="robots" content="index, follow" />
+		<Analytics lang={lang} />
+	</head>
+	<body>
+		<header class="legal-bar">
+			<a href={homeHref} class="back-link">
+				<span aria-hidden="true">←</span>
+				{p.backLabel}
+			</a>
+		</header>
+
+		<main class="legal-main">
+			<Logo width={40} height={40} markColor="#FECC01" groundColor="#111111" />
+			<h1>{p.h1}</h1>
+			<p class="last-updated">{p.lastUpdated}</p>
+
+			<section class="legal-sections">
+				<div>
+					<h2>{p.controllerH2}</h2>
+					<p>{p.controllerBody}</p>
+					<p>{p.contactLabel}<a href="mailto:info@mysagra.com">info@mysagra.com</a></p>
+				</div>
+
+				<div>
+					<h2>{p.dataH2}</h2>
+					<p>{p.dataBody}</p>
+				</div>
+
+				<div>
+					<h2>{p.purposesH2}</h2>
+					<ul>
+						{p.purposes.map((item) => <li>{item}</li>)}
+					</ul>
+				</div>
+
+				<div>
+					<h2>{p.thirdPartyH2}</h2>
+					<div class="service-list">
+						{
+							p.services.map((service) => (
+								<div class="service-card">
+									<h3>{service.name}</h3>
+									<p>{service.desc}</p>
+								</div>
+							))
+						}
+					</div>
+				</div>
+
+				<div>
+					<h2>{p.rightsH2}</h2>
+					<p>{p.rightsIntro}</p>
+					<ul>
+						{p.rightsList.map((item) => <li>{item}</li>)}
+					</ul>
+					<p>
+						{p.rightsOutroPrefix}<a href="mailto:info@mysagra.com">info@mysagra.com</a>{p.rightsOutroSuffix}
+					</p>
+				</div>
+
+				<div>
+					<h2>{p.cookieNoteH2}</h2>
+					<p>
+						{p.cookieNotePrefix}<a href={cookiePolicyHref}>{p.cookieNoteLinkLabel}</a>.
+					</p>
+				</div>
+			</section>
+		</main>
+
+		<footer class="legal-footer">
+			<p>
+				© {new Date().getFullYear()} MySagra · <a href={cookiePolicyHref}>{p.cookieNoteLinkLabel}</a>
+			</p>
+		</footer>
+
+		<style>
+			.legal-bar {
+				background: var(--color-ink);
+				padding: 1.1rem 1.5rem;
+			}
+			.back-link {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+				color: var(--color-yellow);
+				font-family: var(--font-display);
+				font-weight: 700;
+				font-size: 0.95rem;
+				text-decoration: none;
+			}
+			.back-link:hover {
+				color: #fc9003;
+			}
+			.legal-main {
+				max-width: 44rem;
+				margin: 0 auto;
+				padding: 3.5rem 1.5rem 4rem;
+			}
+			.legal-main h1 {
+				font-size: clamp(1.8rem, 3.4vw, 2.4rem);
+				margin-top: 1.25rem;
+			}
+			.last-updated {
+				color: var(--color-neutral-500);
+				font-size: 0.9rem;
+				margin: 0.5rem 0 2.5rem;
+			}
+			.legal-sections {
+				display: flex;
+				flex-direction: column;
+				gap: 2rem;
+			}
+			.legal-sections h2 {
+				font-size: 1.2rem;
+				margin-bottom: 0.75rem;
+			}
+			.legal-sections h3 {
+				font-family: var(--font-display);
+				font-weight: 700;
+				font-size: 1rem;
+				margin: 0 0 0.35rem;
+			}
+			.legal-sections p,
+			.legal-sections li {
+				color: #334155;
+				line-height: 1.6;
+			}
+			.legal-sections a {
+				color: #fc9003;
+				text-decoration: underline;
+			}
+			.legal-sections ul {
+				margin: 0;
+				padding-left: 1.25rem;
+				display: flex;
+				flex-direction: column;
+				gap: 0.5rem;
+			}
+			.service-list {
+				display: flex;
+				flex-direction: column;
+				gap: 0.85rem;
+			}
+			.service-card {
+				background: var(--color-surface);
+				border: 1px solid var(--color-neutral-200);
+				border-radius: var(--radius);
+				padding: 1rem 1.15rem;
+			}
+			.service-card p {
+				margin: 0;
+				font-size: 0.92rem;
+			}
+			.legal-footer {
+				background: var(--color-ink);
+				color: var(--color-neutral-500);
+				font-size: 0.85rem;
+				text-align: center;
+				padding: 1.5rem;
+			}
+			.legal-footer a {
+				color: var(--color-neutral-500);
+			}
+			.legal-footer a:hover {
+				color: var(--color-yellow);
+			}
+		</style>
+	</body>
+</html>

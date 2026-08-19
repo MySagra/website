@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-07-31T00:00:00.000Z",
+  "title": "Design System: MySagra",
+  "extensions": {
+    "colorMeta": {
+      "yellow": { "role": "primary", "displayName": "MySagra Yellow", "canonical": "#FECC01" },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#111111" },
+      "surface-warm": { "role": "neutral", "displayName": "Warm Off-White", "canonical": "#FAFAF7" }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Inter Bold", "purpose": "Every heading (h1-h3), client-pinned and the real modern-SaaS default." }
+    },
+    "shadows": [
+      { "name": "soft", "value": "0 2px 8px rgba(17,17,17,.06)", "purpose": "Resting cards, hovered buttons." },
+      { "name": "lifted", "value": "0 24px 48px -16px rgba(17,17,17,.22), 0 8px 16px -8px rgba(17,17,17,.1)", "purpose": "Hero screenshot, featured pricing card, contact dialog." }
+    ],
+    "motion": [
+      { "name": "rise", "value": "transform 0.6s cubic-bezier(0.16,1,0.3,1)", "purpose": "Cards rise into place on scroll. Transform-only — opacity is never the gating property, so content never goes invisible if the observer misses." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "34rem" },
+      { "name": "md", "value": "56rem" },
+      { "name": "lg", "value": "68rem" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The one yellow pill CTA, repeated across header/hero/sections.",
+      "html": "<button class=\"ds-btn-primary\">Contattaci</button>",
+      "css": ".ds-btn-primary { background: #FECC01; color: #111111; border: none; border-radius: 999px; padding: 0.9rem 1.8rem; font-weight: 700; font-size: 1rem; cursor: pointer; transition: transform 0.15s ease, box-shadow 0.15s ease; } .ds-btn-primary:hover { transform: translateY(-1px); box-shadow: 0 2px 8px rgba(17,17,17,.06); } .ds-btn-primary:focus-visible { outline: 3px solid #111111; outline-offset: 3px; }"
+    },
+    {
+      "name": "Feature Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Icon-badge + heading + text, the recurring feature-grid unit.",
+      "html": "<div class=\"ds-feature-card\"><span class=\"ds-icon-badge\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 20 20\"></svg></span><h3>Niente più ordini persi</h3><p>Ogni comanda arriva stampata alla stazione giusta.</p></div>",
+      "css": ".ds-feature-card { background: #FFFFFF; } .ds-icon-badge { display: inline-flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border-radius: 8px; background: rgba(254,204,1,.16); color: #111111; margin-bottom: 1rem; } .ds-feature-card h3 { font-size: 1.05rem; margin-bottom: 0.5rem; } .ds-feature-card p { color: #6B7280; font-size: 0.94rem; }"
+    },
+    {
+      "name": "Pricing Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Rounded pricing tier, featured variant gets a yellow border and lifted shadow.",
+      "html": "<div class=\"ds-tier ds-tier--featured\"><span class=\"ds-tier-tag\">Consigliato</span><h3>Cloud gestito</h3><p class=\"ds-tier-price\">Prezzo su richiesta</p><button class=\"ds-tier-cta\">Richiedi un preventivo</button></div>",
+      "css": ".ds-tier { background: #FFFFFF; border: 1px solid #E5E7EB; border-radius: 20px; padding: 2rem; box-shadow: 0 2px 8px rgba(17,17,17,.06); } .ds-tier--featured { border-color: #FECC01; border-width: 2px; box-shadow: 0 24px 48px -16px rgba(17,17,17,.22); } .ds-tier-tag { background: #111111; color: #FFFFFF; font-size: 0.72rem; font-weight: 700; padding: 0.3rem 0.7rem; border-radius: 999px; } .ds-tier-cta { width: 100%; background: #111111; color: #FFFFFF; border: none; border-radius: 12px; padding: 0.8rem; font-weight: 600; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Category Standard, Played Straight",
+    "overview": "This is not a rolled distinctive direction — the client explicitly asked for modern SaaS and named the craft bar directly: Toast POS, Square, Lightspeed. The job is executing that canon at full fidelity: rounded product-screenshot cards with soft lifted shadows, generous corner radii, icon-badge feature grids, warm real photography, bold pill CTAs, a logo trust bar under the hero. Two other worlds were built and explicitly rejected earlier — a cork-noticeboard 'Bacheca' and an editorial 'Il Menu del Giorno' — both are now anti-reference only.",
+    "keyCharacteristics": [
+      "White/off-white ground, yellow as the one confident accent (never a background fill).",
+      "Rounded system: 8px small controls, 12px cards/inputs, 20px large frames, full pill CTAs.",
+      "Icon-badge feature grids and a real product screenshot in the hero — earned by the named canon.",
+      "One motion grammar: transform-only rise on scroll, opacity never gates content."
+    ],
+    "rules": [
+      { "name": "The One Accent Rule", "body": "Yellow never covers a section background; it fills small specific shapes only.", "section": "colors" },
+      { "name": "The No-Kicker Rule", "body": "Nothing sits directly above a heading as an eyebrow; role/category tags go inline beside it.", "section": "typography" },
+      { "name": "The Floating Screenshot Rule", "body": "Anything presented as 'the product' gets the Lifted shadow.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do keep reveal motion transform-only, never opacity-gated.",
+      "Do reuse the icon-badge motif across every card type.",
+      "Do use real photography wherever the layout can carry it.",
+      "Do keep pricing honest — 'Prezzo su richiesta' until real figures exist."
+    ],
+    "donts": [
+      "Don't place a role/category label directly above a heading.",
+      "Don't let yellow cover a section background.",
+      "Don't invent usage stats or customer counts.",
+      "Don't revert to Bacheca or Il Menu del Giorno without a new explicit client direction."
+    ]
+  }
+}

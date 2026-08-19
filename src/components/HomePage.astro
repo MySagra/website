@@ -1,0 +1,1917 @@
+---
+import "@fontsource/inter/600.css";
+import "@fontsource/inter/700.css";
+import "@fontsource/inter/800.css";
+import "@fontsource/work-sans/400.css";
+import "@fontsource/work-sans/500.css";
+import "@fontsource/work-sans/600.css";
+import "@fontsource/work-sans/700.css";
+import "../styles/global.css";
+import Header from "./Header.astro";
+import ContactModal from "./ContactModal.astro";
+import Logo from "./Logo.astro";
+import Analytics from "./Analytics.astro";
+import { getContent } from "../i18n/content";
+import type { Lang } from "../i18n/ui";
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getContent(lang);
+const outcomes = t.outcomes;
+const ecosystem = t.ecosistema.items;
+const tiers = t.soluzioni.tiers;
+const faqItems = t.faq.items;
+
+const SITE_URL = "https://mysagra.com";
+const path = lang === "en" ? "/en/" : "/";
+const canonicalUrl = `${SITE_URL}${path}`;
+const ogImageUrl = `${SITE_URL}/images/mycassa-terminal.webp`;
+const ogLocale = lang === "en" ? "en_US" : "it_IT";
+const ogLocaleAlternate = lang === "en" ? "it_IT" : "en_US";
+
+const organizationSchema = {
+	"@context": "https://schema.org",
+	"@type": "Organization",
+	name: "MySagra",
+	url: SITE_URL,
+	logo: `${SITE_URL}/favicon.svg`,
+	description: t.meta.description,
+	sameAs: ["https://github.com/mysagra"],
+};
+
+const softwareSchema = {
+	"@context": "https://schema.org",
+	"@type": "SoftwareApplication",
+	name: "MySagra",
+	applicationCategory: "BusinessApplication",
+	operatingSystem: "Web",
+	url: canonicalUrl,
+	description: t.meta.description,
+	inLanguage: lang,
+	keywords: t.meta.keywords,
+};
+
+const faqSchema = {
+	"@context": "https://schema.org",
+	"@type": "FAQPage",
+	mainEntity: faqItems.map((item) => ({
+		"@type": "Question",
+		name: item.q,
+		acceptedAnswer: { "@type": "Answer", text: item.a },
+	})),
+};
+
+const partnerLogos = ["FOLLOW THE SUN", "INSIEME IN FESTA", "NOI CON VOI NOI PER VOI", "SANROCK"];
+
+const icons: Record<string, string> = {
+	receipt:
+		'<path d="M5 3h10v14l-2-1-2 1-2-1-2 1-2-1V3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M7.5 7.5h5M7.5 10.5h5M7.5 13.5h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+	wifi: '<path d="M4 7.8a9 9 0 0 1 12 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M6.5 10.8a5.4 5.4 0 0 1 7 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><circle cx="10" cy="14" r="1.1" fill="currentColor"/>',
+	chart:
+		'<path d="M3.5 13.5 8 9l3 3 5.5-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/><path d="M12.5 6h4v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
+	shield:
+		'<path d="M2.5 10.5h3l1.4-3.6 2.6 7 1.4-3.4h6.6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>',
+	history:
+		'<ellipse cx="10" cy="5.3" rx="5.8" ry="2.1" stroke="currentColor" stroke-width="1.5"/><path d="M4.2 5.3v9.4c0 1.16 2.6 2.1 5.8 2.1s5.8-.94 5.8-2.1V5.3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M4.2 10c0 1.16 2.6 2.1 5.8 2.1s5.8-.94 5.8-2.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+	plug: '<path d="M6 7.8V4.3h8v3.5" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><rect x="3.5" y="7.8" width="13" height="5.6" rx="1.3" stroke="currentColor" stroke-width="1.5"/><path d="M6 13.4h8v2.9H6v-2.9Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="13.7" cy="10.5" r="0.55" fill="currentColor"/>',
+	core: '<rect x="3.5" y="3.5" width="13" height="13" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M7 10h6M10 7v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+	cassa:
+		'<rect x="3.5" y="6" width="13" height="10" rx="1.8" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 9.5h13" stroke="currentColor" stroke-width="1.5"/><path d="M7 4h6l1 2H6l1-2Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>',
+	stampa:
+		'<path d="M6 8V4h8v4" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><rect x="3.5" y="8" width="13" height="6" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M6 13h8v4H6v-4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>',
+	numeri:
+		'<rect x="3.5" y="4.5" width="13" height="9" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M7.5 17h5M10 13.5V17" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M7 9.2h1.4M11.6 9.2H13" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>',
+	clienti:
+		'<rect x="4.5" y="2.5" width="11" height="15" rx="2" stroke="currentColor" stroke-width="1.5"/><path d="M8 15.2h4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+	cloud:
+		'<path d="M6.5 15.5a3.5 3.5 0 0 1 .6-6.95A5 5 0 0 1 17 10a3.5 3.5 0 0 1-.9 6.9" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
+	onsite:
+		'<path d="M3.5 9.5 10 4l6.5 5.5M5 8.5v7.5h10V8.5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
+	custom:
+		'<path d="M13.2 3.8a2.4 2.4 0 0 1 3.4 3.4l-8 8-4 1 1-4 7.6-8.4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>',
+	cpu: '<rect x="6" y="6" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M8 6V3M12 6V3M8 17v-3M12 17v-3M6 8H3M6 12H3M17 8h-3M17 12h-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+	palette:
+		'<path d="M10 2.5a7.5 7.5 0 1 0 0 15c.9 0 1.6-.72 1.6-1.6 0-.42-.16-.8-.43-1.08-.27-.28-.42-.63-.42-1.02 0-.88.71-1.6 1.6-1.6h1.85A3.6 3.6 0 0 0 18 8.6C18 5.06 14.42 2.5 10 2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="6.4" cy="9.2" r="1" fill="currentColor"/><circle cx="8.6" cy="6.1" r="1" fill="currentColor"/><circle cx="12.2" cy="6.2" r="1" fill="currentColor"/><circle cx="14.2" cy="9.4" r="1" fill="currentColor"/>',
+	calendar:
+		'<rect x="3.5" y="4.5" width="13" height="12" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M3.5 8h13" stroke="currentColor" stroke-width="1.5"/><path d="M7 3v3M13 3v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+	star: '<path d="M10 2.8 12 6.7l4.3.6-3.1 3 .73 4.3L10 12.6l-3.85 2.02.73-4.3-3.1-3.02 4.3-.6L10 2.8Z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/>',
+	layout:
+		'<rect x="3" y="3" width="6" height="6" rx="1.3" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="3" width="6" height="6" rx="1.3" stroke="currentColor" stroke-width="1.5"/><rect x="3" y="11" width="6" height="6" rx="1.3" stroke="currentColor" stroke-width="1.5"/><rect x="11" y="11" width="6" height="6" rx="1.3" stroke="currentColor" stroke-width="1.5"/>',
+	image:
+		'<rect x="3.5" y="4" width="13" height="12" rx="1.5" stroke="currentColor" stroke-width="1.5"/><circle cx="7.2" cy="8" r="1.3" stroke="currentColor" stroke-width="1.5"/><path d="M4 13.5 8 10l2.5 2 3-3.2L16.5 13" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>',
+};
+---
+
+<html lang={lang}>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content="#FECC01" />
+		<title>{t.meta.title}</title>
+		<meta name="description" content={t.meta.description} />
+		<meta name="keywords" content={t.meta.keywords} />
+
+		<link rel="canonical" href={canonicalUrl} />
+		<link rel="alternate" hreflang="it" href={`${SITE_URL}/`} />
+		<link rel="alternate" hreflang="en" href={`${SITE_URL}/en/`} />
+		<link rel="alternate" hreflang="x-default" href={`${SITE_URL}/`} />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="MySagra" />
+		<meta property="og:url" content={canonicalUrl} />
+		<meta property="og:title" content={t.meta.title} />
+		<meta property="og:description" content={t.meta.description} />
+		<meta property="og:image" content={ogImageUrl} />
+		<meta property="og:image:width" content="1082" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:locale" content={ogLocale} />
+		<meta property="og:locale:alternate" content={ogLocaleAlternate} />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={t.meta.title} />
+		<meta name="twitter:description" content={t.meta.description} />
+		<meta name="twitter:image" content={ogImageUrl} />
+
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(organizationSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(softwareSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
+		<Analytics lang={lang} />
+	</head>
+	<body>
+		<!--
+			THESIS: Modern SaaS, played straight — the category standard at full
+			craft, not a rolled distinctive world. User-pinned canon: Toast POS /
+			Square / Lightspeed.
+			OWN-WORLD: white/off-white ground, ink #111111 text, brand yellow
+			#FECC01 as the confident single accent (buttons, icon-badge tints, a
+			soft glow behind the hero screenshot) — never a full-bleed background.
+			Rounded system throughout: 12px cards/inputs, 20px large frames, pill
+			CTAs. Soft lifted shadows on product screenshots. Inter for headings
+			(client-pinned, also the real modern-SaaS default), Work Sans body.
+			Icon-badge feature grids and a real product screenshot in the hero —
+			both load-bearing Toast/Square conventions, earned by the named canon.
+			STORY: a pro loco organizer recognizes the register instantly — "this
+			looks like real software" — and trusts it enough to ask for pricing.
+			FIRST VIEWPORT: centered headline + dek + two CTAs, a large real
+			MyCassa screenshot below in a rounded lifted frame with a soft yellow
+			glow, logo trust bar underneath.
+			FORM: canon, not a rolled direction — user explicitly asked for the
+			category standard ("voglio qualcosa di moderno da SaaS"), confirmed
+			craft bar Toast POS / Square / Lightspeed. Supersedes Bacheca (seed
+			25600760) and Il Menu del Giorno (seed 0f903a0a), both explicitly
+			rejected by the client in this session.
+			FINISH: unreviewed and undocumented is unfinished; this build ends
+			with the finish review, the verdict, and DESIGN.md.
+		-->
+		<Header lang={lang} />
+
+		<main id="top">
+			<!-- HERO -->
+			<section class="hero">
+				<div class="hero-bg" aria-hidden="true">
+					<svg class="hero-wave" viewBox="0 0 1440 140" preserveAspectRatio="none">
+						<path
+							d="M0,80 C240,140 480,20 720,50 C960,80 1200,140 1440,70 L1440,140 L0,140 Z"
+							fill="var(--color-surface)"
+						/>
+					</svg>
+				</div>
+
+				<div class="hero-copy">
+					<h1>{t.hero.h1Line1}<br />{t.hero.h1Line2}</h1>
+					<p class="dek">{t.hero.dek}</p>
+					<div class="hero-actions">
+						<button type="button" class="btn-primary" data-open-contact="informazioni" data-umami-event="contact-open" data-umami-event-location="hero-primary">{t.hero.ctaPrimary}</button>
+						<a href="#solutions" class="btn-secondary" data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="hero-secondary">{t.hero.ctaSecondary}</a>
+					</div>
+				</div>
+
+				<div class="hero-showcase">
+					<figure class="hero-image">
+						<img
+							src="/images/mycassa-terminal.webp"
+							alt={t.hero.heroImgAlt}
+							loading="eager"
+							width="1082"
+							height="630"
+						/>
+					</figure>
+				</div>
+
+				<div class="logos-strip">
+					<p class="logos-label">{t.hero.logosLabel}</p>
+					<div class="logos-track-wrap">
+						<div class="logos-fade logos-fade--left" aria-hidden="true"></div>
+						<ul class="logos-track" aria-hidden="true">
+							{partnerLogos.map((label) => <li>{label}</li>)}
+							{partnerLogos.map((label) => <li>{label}</li>)}
+							{partnerLogos.map((label) => <li>{label}</li>)}
+						</ul>
+						<div class="logos-fade logos-fade--right" aria-hidden="true"></div>
+					</div>
+				</div>
+			</section>
+
+			<!-- VANTAGGI -->
+			<section id="benefits" class="section">
+				<div class="section-head">
+					<h2>{t.vantaggi.h2}</h2>
+				</div>
+				<div class="feature-grid">
+					{
+						outcomes.map((item) => (
+							<div class="feature-card" data-reveal>
+								<span class="icon-badge" aria-hidden="true" set:html={`<svg width="20" height="20" viewBox="0 0 20 20" fill="none">${icons[item.icon]}</svg>`} />
+								<h3>{item.title}</h3>
+								<p>{item.desc}</p>
+							</div>
+						))
+					}
+				</div>
+			</section>
+
+			<!-- SOLUZIONI -->
+			<section id="solutions" class="section section--muted">
+				<div class="section-head">
+					<h2>{t.soluzioni.h2}</h2>
+					<p class="section-lede">{t.soluzioni.lede}</p>
+				</div>
+
+				<div class="tiers">
+					{
+						tiers.map((tier) => (
+							<div class:list={["tier", { "tier--featured": tier.featured }]} data-reveal>
+								{tier.tag && <span class="tier-tag">{tier.tag}</span>}
+								<span
+									class="icon-badge"
+									aria-hidden="true"
+									set:html={`<svg width="20" height="20" viewBox="0 0 20 20" fill="none">${icons[tier.icon]}</svg>`}
+								/>
+								<h3>{tier.name}</h3>
+								<p class="tier-desc">{tier.desc}</p>
+								<ul class="tier-points">
+									{tier.points.map((point) => (
+										<li>{point}</li>
+									))}
+								</ul>
+								{tier.warning && (
+									<p class="tier-warning">
+										<svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+											<path
+												d="M8 1.5 15 14H1L8 1.5Z"
+												stroke="currentColor"
+												stroke-width="1.3"
+												stroke-linejoin="round"
+											/>
+											<path d="M8 6.2v3.4M8 11.6v.1" stroke="currentColor" stroke-width="1.3" stroke-linecap="round" />
+										</svg>
+										{tier.warning}
+									</p>
+								)}
+								<button
+									type="button"
+									class="tier-cta"
+									data-open-contact="informazioni"
+									data-request-type={tier.icon}
+									data-umami-event="tier-cta-click"
+									data-umami-event-tier={tier.name}
+								>
+									{tier.cta}
+								</button>
+							</div>
+						))
+					}
+				</div>
+
+				<p class="solutions-demo-note">
+					{t.soluzioni.demoNotePrefix}{" "}
+					<button
+						type="button"
+						class="link-btn-inline"
+						data-open-contact="informazioni"
+						data-request-type="demo"
+						data-umami-event="contact-open"
+						data-umami-event-location="solutions-demo-note"
+					>
+						{t.soluzioni.demoNoteCta}
+					</button>
+				</p>
+			</section>
+
+			<!-- ECOSISTEMA -->
+			<section id="ecosystem" class="section">
+				<div class="section-head">
+					<h2>{t.ecosistema.h2}</h2>
+					<p class="section-lede">{t.ecosistema.lede}</p>
+				</div>
+
+				<div class="eco-rows">
+					{
+						ecosystem.map((item, i) => (
+							<div
+							id={`eco-${item.role}`}
+							class:list={["eco-row", { "eco-row--reverse": i % 2 === 1, "eco-row--core": item.role === "core" }]}
+							data-reveal
+						>
+								<div
+									class:list={[
+										"eco-row-media",
+										item.role === "core"
+										? "eco-row-media--hub"
+										: item.photos
+											? "eco-row-media--phone"
+											: item.photo
+												? "eco-row-media--photo"
+												: "eco-row-media--placeholder",
+									]}
+								>
+									{item.role !== "core" && (
+										<span
+											class="icon-badge eco-row-icon-mobile"
+											aria-hidden="true"
+											set:html={`<svg width="20" height="20" viewBox="0 0 20 20" fill="none">${icons[item.icon]}</svg>`}
+										/>
+									)}
+									{item.role === "core" ? (
+										<div class="eco-hub">
+											<svg class="eco-hub-lines" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+												<line class="eco-hub-line" x1="50" y1="50" x2="17" y2="20" stroke="var(--color-ink)" stroke-width="0.6" stroke-dasharray="2 2.4" opacity="0.3" />
+												<line class="eco-hub-line" x1="50" y1="50" x2="83" y2="20" stroke="var(--color-ink)" stroke-width="0.6" stroke-dasharray="2 2.4" opacity="0.3" />
+												<line class="eco-hub-line" x1="50" y1="50" x2="17" y2="80" stroke="var(--color-ink)" stroke-width="0.6" stroke-dasharray="2 2.4" opacity="0.3" />
+												<line class="eco-hub-line" x1="50" y1="50" x2="83" y2="80" stroke="var(--color-ink)" stroke-width="0.6" stroke-dasharray="2 2.4" opacity="0.3" />
+											</svg>
+											<a
+												href="#eco-core"
+												class="eco-hub-node eco-hub-node--center"
+												aria-label={t.ecosistema.items.find((it) => it.role === "core")?.name}
+												data-tooltip={t.ecosistema.items.find((it) => it.role === "core")?.name}
+												data-umami-event="ecosystem-hub-click"
+												data-umami-event-node="core"
+											>
+												<Logo width={52} height={52} markColor="#111111" groundColor="transparent" decorative />
+											</a>
+											<a
+												href="#eco-cassa"
+												class="eco-hub-node eco-hub-node--tl"
+												aria-label={t.ecosistema.items.find((it) => it.role === "cassa")?.name}
+												data-tooltip={t.ecosistema.items.find((it) => it.role === "cassa")?.name}
+												data-umami-event="ecosystem-hub-click"
+												data-umami-event-node="cassa"
+												set:html={`<svg width="30" height="30" viewBox="0 0 20 20" fill="none">${icons.cassa}</svg>`}
+											/>
+											<a
+												href="#eco-display"
+												class="eco-hub-node eco-hub-node--tr"
+												aria-label={t.ecosistema.items.find((it) => it.role === "display")?.name}
+												data-tooltip={t.ecosistema.items.find((it) => it.role === "display")?.name}
+												data-umami-event="ecosystem-hub-click"
+												data-umami-event-node="display"
+												set:html={`<svg width="30" height="30" viewBox="0 0 20 20" fill="none">${icons.numeri}</svg>`}
+											/>
+											<a
+												href="#eco-stampa"
+												class="eco-hub-node eco-hub-node--bl"
+												aria-label={t.ecosistema.items.find((it) => it.role === "stampa")?.name}
+												data-tooltip={t.ecosistema.items.find((it) => it.role === "stampa")?.name}
+												data-umami-event="ecosystem-hub-click"
+												data-umami-event-node="stampa"
+												set:html={`<svg width="30" height="30" viewBox="0 0 20 20" fill="none">${icons.stampa}</svg>`}
+											/>
+											<a
+												href="#eco-cliente"
+												class="eco-hub-node eco-hub-node--br"
+												aria-label={t.ecosistema.items.find((it) => it.role === "cliente")?.name}
+												data-tooltip={t.ecosistema.items.find((it) => it.role === "cliente")?.name}
+												data-umami-event="ecosystem-hub-click"
+												data-umami-event-node="cliente"
+												set:html={`<svg width="30" height="30" viewBox="0 0 20 20" fill="none">${icons.clienti}</svg>`}
+											/>
+										</div>
+									) : item.photos ? (
+										<>
+											<div class="phone-visual" role="img" aria-label={t.ecosistema.personalize.alt}>
+												<div class="phone-mockup-glow" aria-hidden="true" />
+												<div class="phone-frame">
+													<div class="phone-btn phone-btn--mute" aria-hidden="true" />
+													<div class="phone-btn phone-btn--vol-up" aria-hidden="true" />
+													<div class="phone-btn phone-btn--vol-down" aria-hidden="true" />
+													<div class="phone-btn phone-btn--power" aria-hidden="true" />
+													<div class="phone-notch" aria-hidden="true" />
+													<div class="phone-screen">
+														<img
+															class="phone-screen-img phone-screen-img--a"
+															src={item.photos[0]}
+															alt=""
+															aria-hidden="true"
+															loading="lazy"
+															width="1170"
+															height="2532"
+														/>
+														<img
+															class="phone-screen-img phone-screen-img--b"
+															src={item.photos[1]}
+															alt=""
+															aria-hidden="true"
+															loading="lazy"
+															width="1170"
+															height="2532"
+														/>
+													</div>
+												</div>
+											</div>
+											{
+												t.ecosistema.personalize.badges.map((badge, bi) => (
+													<span class:list={["phone-badge", `phone-badge--${bi}`]}>
+														<span
+															class="phone-badge-icon"
+															aria-hidden="true"
+															set:html={`<svg width="14" height="14" viewBox="0 0 20 20" fill="none">${icons[badge.icon]}</svg>`}
+														/>
+														{badge.label}
+													</span>
+												))
+											}
+										</>
+									) : item.photo ? (
+										<img src={item.photo} alt="" loading="lazy" width="600" height="600" />
+									) : (
+										<div class="eco-placeholder" aria-hidden="true">
+											<svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+												<rect x="3" y="4" width="18" height="14" rx="1.5" stroke="currentColor" stroke-width="1.4" />
+												<circle cx="8" cy="9" r="1.6" stroke="currentColor" stroke-width="1.4" />
+												<path
+													d="M3 15.5 8.5 11l3 2.5 4-3.5L21 14"
+													stroke="currentColor"
+													stroke-width="1.4"
+													stroke-linecap="round"
+													stroke-linejoin="round"
+												/>
+											</svg>
+											<span>{t.ecosistema.screenshotOf} {item.name}</span>
+										</div>
+									)}
+								</div>
+								<div class="eco-row-text">
+									{item.role !== "core" && (
+										<span
+											class="icon-badge eco-row-icon-desktop"
+											aria-hidden="true"
+											set:html={`<svg width="20" height="20" viewBox="0 0 20 20" fill="none">${icons[item.icon]}</svg>`}
+										/>
+									)}
+									<h3>{item.name}</h3>
+									<p>{item.desc}</p>
+								</div>
+							</div>
+						))
+					}
+				</div>
+
+				<p class="eco-custom-note">
+					{t.ecosistema.customNotePrefix} <a href="#solutions" data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="ecosystem-custom-note">{t.ecosistema.customNoteLink}</a>
+				</p>
+			</section>
+
+			<!-- CLOSING CTA -->
+			<section class="closing">
+				<div class="closing-inner">
+					<Logo width={48} height={48} markColor="#FECC01" groundColor="#111111" />
+					<h2>{t.closing.h2}</h2>
+					<p>{t.closing.p}</p>
+					<button type="button" class="btn-primary" data-open-contact="informazioni" data-umami-event="contact-open" data-umami-event-location="closing">{t.closing.cta}</button>
+					<p class="closing-note">
+						{t.closing.noteOpenSource}{" "}
+						<a href="https://github.com/mysagra" target="_blank" rel="noopener" data-umami-event="github-click" data-umami-event-location="closing">{t.closing.noteGithub}</a>.{" "}
+						{t.closing.noteAnd}{" "}
+						<a href="https://docs.mysagra.com" target="_blank" rel="noopener" data-umami-event="docs-click" data-umami-event-location="closing">{t.closing.noteDocs}</a>.
+					</p>
+				</div>
+			</section>
+
+			<!-- STORY (temporarily disabled) -->
+			{
+				false && (
+					<section id="story" class="story">
+						<div class="story-inner">
+							<div class="story-photo" aria-hidden="true">
+								<svg width="30" height="30" viewBox="0 0 24 24" fill="none">
+									<path
+										d="M4 8h3l1.5-2h7L17 8h3a1 1 0 0 1 1 1v9a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V9a1 1 0 0 1 1-1Z"
+										stroke="currentColor"
+										stroke-width="1.3"
+										stroke-linejoin="round"
+									/>
+									<circle cx="12" cy="13.5" r="3.2" stroke="currentColor" stroke-width="1.3" />
+								</svg>
+								<span>{t.story.photoLabel}</span>
+							</div>
+							<div class="story-text">
+								<h2>{t.story.h2}</h2>
+								<p>{t.story.p}</p>
+							</div>
+						</div>
+					</section>
+				)
+			}
+
+			<!-- FAQ -->
+			<section id="faq" class="section section--muted">
+				<div class="section-head">
+					<h2>{t.faq.h2}</h2>
+					<p class="section-lede">{t.faq.lede}</p>
+				</div>
+				<div class="faq-list">
+					{
+						faqItems.map((item) => (
+							<details class="faq-item" data-umami-event="faq-toggle" data-umami-event-question={item.q}>
+								<summary>{item.q}</summary>
+								<p>{item.a}</p>
+							</details>
+						))
+					}
+				</div>
+			</section>
+		</main>
+
+		<footer class="site-footer">
+			<div class="footer-inner">
+				<div class="footer-top">
+					<div class="footer-brand">
+						<a href="#top" class="footer-brand-link" data-umami-event="nav-click" data-umami-event-section="top" data-umami-event-location="footer">
+							<Logo width={28} height={28} decorative />
+							<span>MySagra</span>
+						</a>
+						<p class="footer-tagline">{t.footer.tagline}</p>
+						<a class="gh-star" href="https://github.com/mysagra" target="_blank" rel="noopener" data-umami-event="github-click" data-umami-event-location="footer">
+							<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+								<path d="M8 .3 10 5l5.3.4-4 3.6 1.2 5.2L8 11.5l-4.5 2.7L4.7 9l-4-3.6L6 5 8 .3Z" />
+							</svg>
+							{t.footer.ghStar}
+						</a>
+					</div>
+
+					<div class="footer-col">
+						<p class="footer-col-title">{t.footer.prodotto.title}</p>
+						<a href="#benefits" data-umami-event="nav-click" data-umami-event-section="benefits" data-umami-event-location="footer">{t.footer.prodotto.vantaggi}</a>
+						<a href="#solutions" data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="footer">{t.footer.prodotto.soluzioni}</a>
+						<a href="#ecosystem" data-umami-event="nav-click" data-umami-event-section="ecosystem" data-umami-event-location="footer">{t.footer.prodotto.ecosistema}</a>
+					</div>
+
+					<div class="footer-col">
+						<p class="footer-col-title">{t.footer.risorse.title}</p>
+						<a href="https://docs.mysagra.com" target="_blank" rel="noopener" data-umami-event="docs-click" data-umami-event-location="footer">{t.footer.risorse.docs}</a>
+						<a href={`mailto:${t.footer.risorse.support}`} data-umami-event="support-email-click" data-umami-event-location="footer">{t.footer.risorse.support}</a>
+					</div>
+				</div>
+
+				<div class="footer-bottom">
+					<p class="copy">© {new Date().getFullYear()} {t.footer.copyright}</p>
+					<div class="footer-legal">
+						<a href={lang === "en" ? "/en/privacy-policy" : "/privacy-policy"} data-umami-event="legal-click" data-umami-event-page="privacy">{t.privacyPolicy.h1}</a>
+						<a href={lang === "en" ? "/en/cookie-policy" : "/cookie-policy"} data-umami-event="legal-click" data-umami-event-page="cookie">{t.cookiePolicy.h1}</a>
+					</div>
+				</div>
+			</div>
+		</footer>
+
+		<ContactModal lang={lang} />
+
+		<script>
+			const io = new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) {
+						if (entry.isIntersecting) {
+							entry.target.classList.add("is-visible");
+							io.unobserve(entry.target);
+						}
+					}
+				},
+				{ threshold: 0.2, rootMargin: "0px 0px -6% 0px" },
+			);
+			document.querySelectorAll("[data-reveal]").forEach((el, i) => {
+				(el as HTMLElement).style.transitionDelay = `${Math.min(i % 3, 2) * 70}ms`;
+				io.observe(el);
+			});
+
+			interface HubNode {
+				el: HTMLElement;
+				isCorner: boolean;
+				frac: { x: number; y: number } | null;
+				amp: number;
+				phase: number;
+				x: number;
+				y: number;
+				basePx: { x: number; y: number };
+			}
+
+			const CORNER_FRACTIONS: Record<string, { x: number; y: number }> = {
+				"eco-hub-node--tl": { x: 0.17, y: 0.2 },
+				"eco-hub-node--tr": { x: 0.83, y: 0.2 },
+				"eco-hub-node--bl": { x: 0.17, y: 0.8 },
+				"eco-hub-node--br": { x: 0.83, y: 0.8 },
+			};
+			// Only a corner node within this pixel radius of the pointer
+			// reacts, and only the single nearest one — the rest stay put.
+			const REACT_RADIUS = 110;
+
+			const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+			document.querySelectorAll<HTMLElement>(".eco-hub").forEach((hub) => {
+				let pointerPx: { x: number; y: number } | null = null;
+
+				hub.addEventListener("pointermove", (event) => {
+					const rect = hub.getBoundingClientRect();
+					pointerPx = { x: event.clientX - rect.left, y: event.clientY - rect.top };
+				});
+				hub.addEventListener("pointerleave", () => {
+					pointerPx = null;
+				});
+
+				if (prefersReducedMotion) return;
+
+				const nodes: HubNode[] = Array.from(hub.querySelectorAll<HTMLElement>(".eco-hub-node")).map((el, i) => {
+					const fracEntry = Object.entries(CORNER_FRACTIONS).find(([cls]) => el.classList.contains(cls));
+					return {
+						el,
+						isCorner: !!fracEntry,
+						frac: fracEntry ? fracEntry[1] : null,
+						amp: fracEntry ? 9 : 3,
+						phase: i * 1.3,
+						x: 0,
+						y: 0,
+						basePx: { x: 0, y: 0 },
+					};
+				});
+				const cornerNodes = nodes.filter((node) => node.isCorner);
+
+				function tick(t: number) {
+					let nearest: HubNode | null = null;
+					let nearestDist = Infinity;
+
+					if (pointerPx) {
+						const rect = hub.getBoundingClientRect();
+						for (const node of cornerNodes) {
+							if (!node.frac) continue;
+							node.basePx = { x: node.frac.x * rect.width, y: node.frac.y * rect.height };
+							const dist = Math.hypot(pointerPx.x - node.basePx.x, pointerPx.y - node.basePx.y);
+							if (dist < nearestDist) {
+								nearestDist = dist;
+								nearest = node;
+							}
+						}
+					}
+
+					for (const node of nodes) {
+						const idleX = Math.sin(t / 1400 + node.phase) * node.amp;
+						const idleY = Math.cos(t / 1100 + node.phase) * node.amp * 0.6;
+						let magnetX = 0;
+						let magnetY = 0;
+						if (node === nearest && pointerPx && nearestDist < REACT_RADIUS) {
+							const pull = 1 - nearestDist / REACT_RADIUS;
+							magnetX = (pointerPx.x - node.basePx.x) * 0.35 * pull;
+							magnetY = (pointerPx.y - node.basePx.y) * 0.35 * pull;
+						}
+						node.x += (idleX + magnetX - node.x) * 0.08;
+						node.y += (idleY + magnetY - node.y) * 0.08;
+						node.el.style.setProperty("--nx", `${node.x.toFixed(2)}px`);
+						node.el.style.setProperty("--ny", `${node.y.toFixed(2)}px`);
+					}
+					requestAnimationFrame(tick);
+				}
+				requestAnimationFrame(tick);
+			});
+		</script>
+
+		<style>
+			main {
+				overflow-x: clip;
+			}
+
+			/* Opacity never gates content: only position animates, so a
+			   missed observer (no JS, a crawler, print view, a headless
+			   screenshot tool) still leaves every section fully readable. */
+			[data-reveal] {
+				transform: translateY(14px);
+				transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+			}
+			[data-reveal].is-visible {
+				transform: none;
+			}
+
+			.icon-badge {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				width: 2.5rem;
+				height: 2.5rem;
+				border-radius: var(--radius-sm);
+				background: rgba(254, 204, 1, 0.16);
+				color: var(--color-ink);
+				margin-bottom: 1rem;
+			}
+
+			/* HERO */
+			.hero {
+				position: relative;
+				padding: clamp(3.5rem, 8vw, 6rem) 1.5rem 0;
+				background: var(--color-surface);
+				overflow: hidden;
+			}
+			.hero-bg {
+				position: absolute;
+				inset: 0;
+				height: clamp(32rem, 56vw, 42rem);
+				background:
+					radial-gradient(ellipse 60% 55% at 12% 8%, rgba(254, 204, 1, 0.55), transparent 60%),
+					radial-gradient(ellipse 55% 50% at 88% 0%, rgba(254, 204, 1, 0.35), transparent 65%),
+					radial-gradient(ellipse 70% 60% at 50% 30%, rgba(255, 246, 217, 0.9), transparent 70%),
+					var(--color-surface-warm);
+				z-index: 0;
+			}
+			.hero-wave {
+				position: absolute;
+				left: 0;
+				right: 0;
+				bottom: -1px;
+				width: 100%;
+				height: 5.5rem;
+				display: block;
+			}
+			.hero-copy,
+			.hero-showcase {
+				position: relative;
+				z-index: 1;
+			}
+
+			.hero-copy {
+				max-width: 42rem;
+				margin: 0 auto;
+				text-align: center;
+			}
+			.hero-copy h1 {
+				font-size: clamp(2.3rem, 5vw, 3.75rem);
+				margin-bottom: 1.5rem;
+			}
+			.hero-copy .dek {
+				font-size: 1.1rem;
+				color: var(--color-neutral-500);
+				margin: 0 auto 2.25rem;
+				max-width: 34rem;
+			}
+			.hero-actions {
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				gap: 1rem;
+				flex-wrap: wrap;
+			}
+
+			.hero-showcase {
+				max-width: 67.625rem; /* 1082px */
+				margin: clamp(3rem, 7vw, 5rem) auto 0;
+				padding: 0 1.5rem;
+			}
+			.hero-image {
+				margin: 0;
+				border-radius: var(--radius-lg);
+				overflow: hidden;
+				box-shadow: var(--shadow-lifted);
+				border: 1px solid rgba(17, 17, 17, 0.08);
+			}
+			.hero-image img {
+				width: 100%;
+				aspect-ratio: 1082 / 630;
+				object-fit: cover;
+				object-position: 30% 30%;
+			}
+
+			@media (max-width: 40rem) {
+				.hero-showcase {
+					max-width: none;
+					padding: 0;
+					margin-left: -1.5rem;
+					margin-right: -1.5rem;
+				}
+				.hero-image {
+					border-radius: 0;
+					border: none;
+					box-shadow: none;
+				}
+				.hero-image img {
+					aspect-ratio: auto;
+					height: 180px;
+					object-position: 50% 62%;
+				}
+			}
+
+			.logos-strip {
+				max-width: 68rem;
+				margin: 0 auto;
+				padding: clamp(2.5rem, 5vw, 3.5rem) 1.5rem clamp(3rem, 6vw, 4.5rem);
+				text-align: center;
+			}
+			.logos-label {
+				font-size: 0.78rem;
+				letter-spacing: 0.03em;
+				text-transform: uppercase;
+				color: var(--color-neutral-500);
+				margin: 0 0 1.25rem;
+			}
+			.logos-track-wrap {
+				position: relative;
+				overflow: hidden;
+			}
+			/* Edge fade as two plain opaque gradient layers, not a CSS mask.
+			   mask-image on a container with an animating transform inside it
+			   is a known Chromium/GPU compositing trap on some drivers — the
+			   whole masked layer can silently stop painting (exactly what
+			   "the names don't show at all" looks like). Regular background
+			   layers can't hit that bug: they're always just painted content. */
+			.logos-fade {
+				position: absolute;
+				top: 0;
+				bottom: 0;
+				width: 4rem;
+				z-index: 2;
+				pointer-events: none;
+			}
+			.logos-fade--left {
+				left: 0;
+				background: linear-gradient(90deg, var(--color-surface), transparent);
+			}
+			.logos-fade--right {
+				right: 0;
+				background: linear-gradient(270deg, var(--color-surface), transparent);
+			}
+			.logos-track {
+				list-style: none;
+				margin: 0;
+				padding: 0;
+				display: flex;
+				flex-wrap: nowrap;
+				width: max-content;
+				will-change: transform;
+				/* Single shorthand declaration, all sub-values !important.
+				   global.css's reduced-motion block sets animation-duration
+				   AND animation-iteration-count as separate !important
+				   longhands on `*` — overriding only one of them (as a prior
+				   version of this rule did) leaves the other in force, so the
+				   animation plays its 0.01ms single iteration and then just
+				   freezes on a mid-scroll frame: a static, "broken" list.
+				   Shorthand !important here re-asserts every sub-property
+				   (duration, iteration-count, timing-function, name) in one
+				   go, so none of them can be left behind. This is purely
+				   decorative, peripheral motion (a logo strip, not core
+				   content), so keeping it running under prefers-reduced-motion
+				   is an intentional, scoped exception. */
+				animation: logos-scroll 28s linear infinite !important;
+			}
+			.logos-track li {
+				font-weight: 700;
+				font-size: 0.95rem;
+				color: var(--color-ink);
+				opacity: 0.32;
+				white-space: nowrap;
+				flex-shrink: 0;
+				/* Spacing lives on each item (not a flex `gap` on the track),
+				   so the two duplicated halves are byte-identical units with
+				   no "connector" gap to compensate for. That makes a plain
+				   translateX(-50%) exactly seamless — no fudge-factor math
+				   that can drift out of sync and show as a stutter. */
+				padding: 0 1.25rem;
+			}
+			@keyframes logos-scroll {
+				from {
+					transform: translateX(0);
+				}
+				to {
+					/* 3 identical copies in the track (see markup): shift by
+					   one copy's width (1/3 of total), not by half. Looping
+					   at -50% here would stop mid-way through the 2nd copy,
+					   landing on a different item than the start — a visible
+					   jump/stutter every loop instead of a seamless one. */
+					transform: translateX(-33.3333%);
+				}
+			}
+			.logos-note {
+				margin: 1.25rem 0 0;
+				font-size: 0.68rem;
+				color: var(--color-neutral-500);
+			}
+
+			/* SECTIONS */
+			.section {
+				padding: clamp(4rem, 8vw, 6.5rem) 1.5rem;
+				max-width: 68rem;
+				margin: 0 auto;
+			}
+			.section--muted {
+				max-width: none;
+				background: var(--color-surface-warm);
+			}
+			.section-head {
+				max-width: 40rem;
+				margin: 0 auto 3rem;
+				text-align: center;
+			}
+			.section-head h2 {
+				font-size: clamp(1.8rem, 3.4vw, 2.5rem);
+			}
+			.section-lede {
+				margin-top: 0.75rem;
+				color: var(--color-neutral-500);
+				font-size: 1.02rem;
+			}
+
+			/* FEATURE GRID */
+			.feature-grid {
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 2rem;
+			}
+			.feature-card h3 {
+				font-size: 1.05rem;
+				margin-bottom: 0.5rem;
+			}
+			.feature-card p {
+				color: var(--color-neutral-500);
+				font-size: 0.94rem;
+			}
+
+			@media (max-width: 56rem) {
+				.feature-grid {
+					grid-template-columns: repeat(2, 1fr);
+				}
+			}
+			@media (max-width: 34rem) {
+				.feature-grid {
+					grid-template-columns: 1fr;
+				}
+			}
+
+			/* SOLUZIONI */
+			.section--muted .section-head,
+			.tiers {
+				max-width: 68rem;
+			}
+			.tiers {
+				margin: 0 auto;
+				display: grid;
+				grid-template-columns: repeat(3, 1fr);
+				gap: 1.75rem;
+			}
+			.tier {
+				position: relative;
+				display: flex;
+				flex-direction: column;
+				background: var(--color-surface);
+				border: 1px solid var(--color-neutral-200);
+				border-radius: var(--radius-lg);
+				padding: 2rem;
+				box-shadow: var(--shadow-soft);
+			}
+			.tier--featured {
+				border-color: var(--color-yellow);
+				border-width: 2px;
+				box-shadow: var(--shadow-lifted);
+			}
+			.tier-tag {
+				position: absolute;
+				top: -0.8rem;
+				right: 1.75rem;
+				background: var(--color-ink);
+				color: var(--color-surface);
+				font-size: 0.72rem;
+				font-weight: 700;
+				letter-spacing: 0.02em;
+				padding: 0.3rem 0.7rem;
+				border-radius: var(--radius-pill);
+			}
+			.tier h3 {
+				font-size: 1.25rem;
+				margin-bottom: 0.6rem;
+			}
+			.tier-desc {
+				color: var(--color-neutral-500);
+				font-size: 0.92rem;
+				margin-bottom: 1.25rem;
+			}
+			.tier-points {
+				list-style: none;
+				margin: 0 0 1.25rem;
+				padding: 0;
+				display: grid;
+				gap: 0.6rem;
+			}
+			.tier-points li {
+				font-size: 0.88rem;
+				padding-left: 1.5rem;
+				position: relative;
+			}
+			.tier-points li::before {
+				content: "";
+				position: absolute;
+				left: 0;
+				top: 0.3rem;
+				width: 1rem;
+				height: 1rem;
+				border-radius: 50%;
+				background: rgba(254, 204, 1, 0.25);
+			}
+			.tier-points li::after {
+				content: "";
+				position: absolute;
+				left: 0.32rem;
+				top: 0.52rem;
+				width: 0.36rem;
+				height: 0.2rem;
+				border-left: 1.5px solid var(--color-ink);
+				border-bottom: 1.5px solid var(--color-ink);
+				transform: rotate(-45deg);
+			}
+			.tier-warning {
+				display: flex;
+				align-items: flex-start;
+				gap: 0.5rem;
+				margin: 0 0 1.25rem;
+				padding: 0.65rem 0.75rem;
+				border-radius: var(--radius-sm);
+				background: var(--color-surface-warm);
+				font-size: 0.8rem;
+				line-height: 1.4;
+				color: var(--color-neutral-500);
+			}
+			.tier-warning svg {
+				flex-shrink: 0;
+				margin-top: 0.15rem;
+				color: var(--color-ink);
+			}
+			.tier-cta {
+				margin-top: auto;
+				width: 100%;
+				background: var(--color-ink);
+				color: var(--color-surface);
+				border: none;
+				border-radius: var(--radius);
+				padding: 0.8rem;
+				font-weight: 600;
+				font-size: 0.92rem;
+				cursor: pointer;
+				transition: opacity 0.15s ease;
+			}
+			.tier-cta:hover {
+				opacity: 0.85;
+			}
+			.tier--featured .tier-cta {
+				background: var(--color-yellow);
+				color: var(--color-ink);
+			}
+
+			@media (max-width: 61rem) {
+				.tiers {
+					grid-template-columns: 1fr;
+					max-width: 32rem;
+				}
+			}
+
+			.solutions-demo-note {
+				margin: clamp(2.5rem, 5vw, 3.5rem) auto 0;
+				max-width: 68rem;
+				text-align: center;
+				font-size: 0.95rem;
+				color: var(--color-neutral-500);
+			}
+			.link-btn-inline {
+				background: none;
+				border: none;
+				padding: 0;
+				font: inherit;
+				color: var(--color-ink);
+				font-weight: 600;
+				text-decoration: underline;
+				cursor: pointer;
+			}
+
+			/* ECOSISTEMA */
+			.eco-rows {
+				display: flex;
+				flex-direction: column;
+				gap: clamp(3rem, 6vw, 4.5rem);
+				margin-top: 3rem;
+			}
+			.eco-row {
+				display: flex;
+				align-items: center;
+				gap: clamp(2rem, 4vw, 3.5rem);
+			}
+			.eco-row--reverse {
+				flex-direction: row-reverse;
+			}
+			/* MySagra's row: a distinct horizontal showcase panel — blueprint
+			   grid backdrop running the full width of the screen, hub
+			   diagram, text floating free of any icon. The margin trick
+			   (not width:100vw + left:50%) breaks out of the section's
+			   68rem container regardless of nesting: percentage margins
+			   resolve against the parent's width while the vw half stays
+			   tied to the true viewport, so the two offsets cancel out to
+			   the viewport edge no matter how the ancestor is centered. */
+			.eco-row--core {
+				position: relative;
+				margin-left: calc(50% - 50vw);
+				margin-right: calc(50% - 50vw);
+				padding: clamp(2rem, 4vw, 3rem) max(1.5rem, calc((100vw - 68rem) / 2 + 1.5rem));
+				border-radius: 0;
+				border-left: none;
+				border-right: none;
+				background-color: var(--color-surface-warm);
+				background-image:
+					linear-gradient(to right, rgba(17, 17, 17, 0.07) 1px, transparent 1px),
+					linear-gradient(to bottom, rgba(17, 17, 17, 0.07) 1px, transparent 1px);
+				background-size: 28px 28px;
+				border-top: 1px solid var(--color-neutral-200);
+				border-bottom: 1px solid var(--color-neutral-200);
+				overflow: hidden;
+			}
+			/* Softens the grid toward the panel's center — a plain radial
+			   overlay in the same surface color, not a mask: masking a
+			   container that also holds animating transforms is a known
+			   Chromium paint trap (see the earlier logos-strip note), so a
+			   painted vignette gets the same fade without that risk. */
+			.eco-row--core::after {
+				content: "";
+				position: absolute;
+				inset: 0;
+				background: radial-gradient(ellipse 65% 60% at 50% 50%, var(--color-surface-warm) 0%, transparent 72%);
+				pointer-events: none;
+			}
+			.eco-row--core .eco-row-media,
+			.eco-row--core .eco-row-text {
+				position: relative;
+				z-index: 1;
+			}
+			.eco-row--core .eco-row-text h3 {
+				font-size: clamp(1.5rem, 2.6vw, 2rem);
+			}
+			.eco-row-media,
+			.eco-row-text {
+				flex: 1 1 0;
+				min-width: 0;
+			}
+			/* aspect-ratio lives on this wrapper (a plain block), not on the
+			   image element itself: replaced elements combine CSS aspect-ratio
+			   with their own intrinsic width/height attributes in ways that
+			   can silently win over the ratio once a flex/grid ancestor is
+			   involved. A ratio-boxed wrapper + object-fit:cover on the image
+			   is the version that can't drift off-square again. */
+			.eco-row-media {
+				position: relative;
+				aspect-ratio: 1 / 1;
+				border-radius: var(--radius-lg);
+				overflow: hidden;
+			}
+			.eco-row-media img,
+			.eco-hub,
+			.eco-placeholder {
+				width: 100%;
+				height: 100%;
+			}
+			.eco-row-media img {
+				object-fit: cover;
+				display: block;
+			}
+			.eco-row-media--photo {
+				box-shadow: var(--shadow-soft);
+				border: 1px solid var(--color-neutral-200);
+			}
+			.eco-hub {
+				position: relative;
+				background: var(--color-surface-warm);
+			}
+			.eco-hub-lines {
+				position: absolute;
+				inset: 0;
+				width: 100%;
+				height: 100%;
+			}
+			/* Marching-ants flow along the connector lines: dasharray "2 2.4"
+			   repeats every 4.4 units, so shifting by exactly 2x that (-8.8)
+			   loops seamlessly with no visible jump between iterations. */
+			.eco-hub-line {
+				animation: eco-hub-line-flow 1.8s linear infinite;
+			}
+			@keyframes eco-hub-line-flow {
+				to {
+					stroke-dashoffset: -8.8;
+				}
+			}
+			/* Centering uses a negative margin (not transform:translate) so
+			   `transform` stays free for the float/hover animations below —
+			   an animated transform always wins over a plain declared one,
+			   so centering and motion can't share the same property. */
+			.eco-hub-node {
+				position: absolute;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				border-radius: 50%;
+				background: var(--color-surface);
+				border: 1px solid var(--color-neutral-200);
+				color: var(--color-ink);
+				box-shadow: var(--shadow-soft);
+				text-decoration: none;
+				transform: translate(var(--nx, 0px), var(--ny, 0px)) scale(var(--ns, 1));
+				transition:
+					box-shadow 0.2s ease,
+					border-color 0.2s ease;
+			}
+			.eco-hub-node--center {
+				width: 5.5rem;
+				height: 5.5rem;
+				left: 50%;
+				top: 50%;
+				margin: -2.75rem 0 0 -2.75rem;
+				background: var(--color-yellow);
+				border-color: var(--color-yellow);
+				z-index: 2;
+			}
+			.eco-hub-node--center::before {
+				content: "";
+				position: absolute;
+				inset: -0.85rem;
+				border-radius: 50%;
+				background: rgba(254, 204, 1, 0.4);
+				z-index: -1;
+				animation: eco-hub-glow-pulse 2.4s ease-in-out infinite;
+			}
+			@keyframes eco-hub-glow-pulse {
+				0%,
+				100% {
+					transform: scale(0.85);
+					opacity: 0.6;
+				}
+				50% {
+					transform: scale(1.3);
+					opacity: 0;
+				}
+			}
+			.eco-hub-node--tl,
+			.eco-hub-node--tr,
+			.eco-hub-node--bl,
+			.eco-hub-node--br {
+				width: 3.75rem;
+				height: 3.75rem;
+				margin: -1.875rem 0 0 -1.875rem;
+			}
+			.eco-hub-node--tl {
+				left: 17%;
+				top: 20%;
+			}
+			.eco-hub-node--tr {
+				left: 83%;
+				top: 20%;
+			}
+			.eco-hub-node--bl {
+				left: 17%;
+				top: 80%;
+			}
+			.eco-hub-node--br {
+				left: 83%;
+				top: 80%;
+			}
+			.eco-hub-node:hover,
+			.eco-hub-node:focus-visible {
+				--ns: 1.16;
+				box-shadow: var(--shadow-lifted);
+				border-color: var(--color-yellow);
+				z-index: 3;
+				outline: none;
+			}
+			/* Custom dark-pill tooltip built from the anchor's own
+			   data-tooltip attribute — no title attribute, so there's no
+			   competing native browser tooltip on top of this one. */
+			.eco-hub-node[data-tooltip]::after {
+				content: attr(data-tooltip);
+				position: absolute;
+				bottom: 100%;
+				left: 50%;
+				margin-bottom: 0.65rem;
+				transform: translate(-50%, 0.3rem);
+				background: var(--color-ink);
+				color: var(--color-surface);
+				font-family: var(--font-body);
+				font-size: 0.72rem;
+				font-weight: 600;
+				white-space: nowrap;
+				padding: 0.4rem 0.8rem;
+				border-radius: var(--radius-pill);
+				box-shadow: var(--shadow-lifted);
+				opacity: 0;
+				pointer-events: none;
+				transition:
+					opacity 0.15s ease,
+					transform 0.15s ease;
+				z-index: 10;
+			}
+			.eco-hub-node[data-tooltip]:hover::after,
+			.eco-hub-node[data-tooltip]:focus-visible::after {
+				opacity: 1;
+				transform: translate(-50%, 0);
+			}
+			/* Touch has no hover state to trigger this from, but a tap still
+			   fires :focus-visible on the anchor — hide the pill outright on
+			   touch-primary devices instead of leaving it stuck open. */
+			@media (hover: none) {
+				.eco-hub-node[data-tooltip]::after {
+					display: none;
+				}
+			}
+			.eco-row-media--hub {
+				border: 1px solid var(--color-neutral-200);
+			}
+			/* Inside the grid panel the hub sits directly on the grid, not
+			   on its own opaque tile — otherwise the diagram would blank
+			   out the very backdrop it's meant to float over. */
+			.eco-row--core .eco-row-media--hub {
+				background: transparent;
+				border: none;
+			}
+			.eco-row--core .eco-hub {
+				background: transparent;
+			}
+			.eco-placeholder {
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				gap: 0.6rem;
+				background: var(--color-surface-warm);
+				color: var(--color-neutral-500);
+			}
+			.eco-row-media--placeholder {
+				border: 1px dashed var(--color-neutral-200);
+			}
+			.eco-placeholder span {
+				font-size: 0.78rem;
+			}
+
+			/* PHONE MOCKUP (MyClienti) */
+			.eco-row-media--phone {
+				aspect-ratio: 4 / 5;
+				border-radius: 0;
+				overflow: visible;
+				/* shared by .phone-frame's width and the badges' offsets below,
+				   so the badges track the phone's actual clamped size at every
+				   viewport instead of drifting into it at mid-widths, where the
+				   container shrinks faster than the phone's own floor does. */
+				--phone-w: clamp(10.5rem, 15vw, 13.5rem);
+			}
+			.phone-visual {
+				position: absolute;
+				inset: 0;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				z-index: 1;
+			}
+			.phone-mockup-glow {
+				position: absolute;
+				inset: -12%;
+				background: radial-gradient(ellipse 60% 55% at 50% 40%, rgba(254, 204, 1, 0.4), transparent 68%);
+				z-index: 0;
+			}
+			.phone-frame {
+				position: relative;
+				z-index: 1;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				width: var(--phone-w);
+				aspect-ratio: 1170 / 2532;
+				background: linear-gradient(155deg, #3a3a3f 0%, #1c1c1f 22%, #0a0a0c 55%, #1a1a1d 100%);
+				border-radius: 2.6rem;
+				padding: 0.4rem;
+				box-shadow: var(--shadow-lifted), inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+				border: 1px solid rgba(0, 0, 0, 0.35);
+				transform: rotate(-6deg);
+			}
+			/* side buttons: thin nubs on the frame's own edge give the
+			   silhouette an actual iPhone read instead of a generic rounded
+			   rectangle with a bezel. */
+			.phone-btn {
+				position: absolute;
+				z-index: 0;
+				width: 0.15rem;
+				border-radius: 0.1rem 0 0 0.1rem;
+				background: linear-gradient(90deg, #0a0a0c, #2a2a2e);
+			}
+			.phone-btn--mute {
+				left: -0.13rem;
+				top: 13%;
+				height: 3%;
+				border-radius: 0.1rem;
+			}
+			.phone-btn--vol-up {
+				left: -0.13rem;
+				top: 19.5%;
+				height: 6.5%;
+				border-radius: 0.1rem;
+			}
+			.phone-btn--vol-down {
+				left: -0.13rem;
+				top: 28%;
+				height: 6.5%;
+				border-radius: 0.1rem;
+			}
+			.phone-btn--power {
+				right: -0.13rem;
+				left: auto;
+				top: 22%;
+				height: 9%;
+				border-radius: 0.1rem;
+				background: linear-gradient(270deg, #0a0a0c, #2a2a2e);
+			}
+			.phone-notch {
+				position: absolute;
+				top: 1.15rem;
+				left: 50%;
+				transform: translateX(-50%);
+				width: 30%;
+				height: 1.9%;
+				min-height: 0.42rem;
+				border-radius: var(--radius-pill);
+				background: #050506;
+				box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+				z-index: 3;
+			}
+			.phone-screen {
+				position: relative;
+				width: 100%;
+				height: 100%;
+				border-radius: 2.25rem;
+				overflow: hidden;
+				background: #fff;
+			}
+			/* screen box matches the screenshots' own ratio (1170x2532), so
+			   cover alone has zero overflow to crop from. Shift the image
+			   down (no scale) on purpose: opens breathing room under the
+			   notch instead of the app header sitting flush against it;
+			   the bottom just falls past the screen's own overflow:hidden. */
+			.phone-screen-img {
+				position: absolute;
+				inset: 0;
+				width: 100%;
+				height: 100%;
+				object-fit: cover;
+				object-position: center top;
+				transform: translateY(6%);
+			}
+			/* Two stacked images crossfade on a shared, complementary loop so
+			   the swap always lands on a fully-resolved frame — never a
+			   mid-fade blend — reinforcing "this is a deliberate skin change,"
+			   not a glitch. Under reduced motion, global.css collapses this to
+			   a single near-instant iteration that reverts to each image's
+			   un-animated opacity (1); since --b paints after --a in the DOM,
+			   it simply covers --a, so the fallback is a clean static frame,
+			   not a flash of both images overlapping. */
+			.phone-screen-img--a {
+				animation: phone-crossfade-a 7s ease-in-out infinite;
+			}
+			.phone-screen-img--b {
+				animation: phone-crossfade-b 7s ease-in-out infinite;
+			}
+			@keyframes phone-crossfade-a {
+				0%,
+				45% {
+					opacity: 1;
+				}
+				50%,
+				95% {
+					opacity: 0;
+				}
+				100% {
+					opacity: 1;
+				}
+			}
+			@keyframes phone-crossfade-b {
+				0%,
+				45% {
+					opacity: 0;
+				}
+				50%,
+				95% {
+					opacity: 1;
+				}
+				100% {
+					opacity: 0;
+				}
+			}
+			.phone-badge {
+				position: absolute;
+				z-index: 2;
+				display: inline-flex;
+				align-items: center;
+				gap: 0.45rem;
+				background: var(--color-surface);
+				border: 1px solid var(--color-neutral-200);
+				border-radius: var(--radius-pill);
+				padding: 0.45rem 0.85rem 0.45rem 0.45rem;
+				font-size: 0.78rem;
+				font-weight: 600;
+				color: var(--color-ink);
+				box-shadow: var(--shadow-soft);
+				white-space: nowrap;
+			}
+			.phone-badge-icon {
+				display: inline-flex;
+				align-items: center;
+				justify-content: center;
+				width: 1.55rem;
+				height: 1.55rem;
+				border-radius: 50%;
+				background: rgba(254, 204, 1, 0.35);
+				color: var(--color-ink);
+				flex-shrink: 0;
+			}
+			.phone-badge--0 {
+				top: 16%;
+				right: calc(50% + var(--phone-w) / 2 + 1.3rem);
+			}
+			.phone-badge--1 {
+				top: 24%;
+				left: calc(50% + var(--phone-w) / 2 + 1.3rem);
+			}
+			.phone-badge--2 {
+				top: 64%;
+				right: calc(50% + var(--phone-w) / 2 + 1.3rem);
+			}
+			.phone-badge--3 {
+				top: 70%;
+				left: calc(50% + var(--phone-w) / 2 + 1.3rem);
+			}
+
+			/* Below this, the two-column row is still side-by-side (that
+			   switch happens at 40rem), but the column itself is too narrow
+			   for a flanking badge on top of a rotated phone without either
+			   clipping at the row's outer edge or landing on the text
+			   column — hide the flourish rather than crowd it. */
+			@media (max-width: 64rem) {
+				.phone-badge {
+					display: none;
+				}
+			}
+			@media (max-width: 40rem) {
+				.eco-row-media--phone {
+					aspect-ratio: 1 / 1;
+				}
+				.eco-row-media--phone .eco-row-icon-mobile {
+					display: none;
+				}
+			}
+
+			.eco-row-text .icon-badge {
+				margin-bottom: 1rem;
+			}
+			.eco-row-icon-mobile {
+				display: none;
+			}
+			.eco-row-text h3 {
+				font-size: clamp(1.2rem, 2vw, 1.4rem);
+				margin-bottom: 0.65rem;
+			}
+			.eco-row-text p {
+				font-size: 1rem;
+				color: var(--color-neutral-500);
+				max-width: 30rem;
+			}
+			.eco-custom-note {
+				margin-top: clamp(3rem, 6vw, 4rem);
+				text-align: center;
+				font-size: 0.95rem;
+				color: var(--color-neutral-500);
+			}
+			.eco-custom-note a {
+				color: var(--color-ink);
+				font-weight: 600;
+				text-decoration: underline;
+			}
+
+			@media (max-width: 40rem) {
+				.eco-rows {
+					gap: 2rem;
+				}
+				.eco-row,
+				.eco-row--reverse {
+					flex-direction: column;
+					align-items: stretch;
+					padding-bottom: 1.5rem;
+					border-bottom: 1px solid var(--color-neutral-200);
+				}
+				.eco-row:last-child {
+					padding-bottom: 0;
+					border-bottom: none;
+				}
+				/* In row layout, flex:1 1 0 splits width evenly between media
+				   and text. That same rule in a column stack would flex-grow
+				   the media block along the now-vertical main axis, stretching
+				   it tall and overriding its own aspect-ratio. Let it size by
+				   its own square content on mobile instead. */
+				.eco-row-media {
+					flex: none;
+				}
+				.eco-row-text {
+					flex: none;
+				}
+				.eco-row-icon-mobile {
+					display: inline-flex;
+					position: absolute;
+					left: 0.6rem;
+					bottom: 0.6rem;
+					margin-bottom: 0;
+					z-index: 2;
+					background: var(--color-yellow);
+					box-shadow: var(--shadow-lifted);
+				}
+				.eco-row-icon-desktop {
+					display: none;
+				}
+			}
+
+			/* CLOSING */
+			.closing {
+				padding: clamp(4rem, 8vw, 6rem) 1.5rem;
+				background: var(--color-ink);
+				display: flex;
+				justify-content: center;
+			}
+			.closing-inner {
+				text-align: center;
+				max-width: 30rem;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 0.9rem;
+			}
+			.closing-inner h2 {
+				color: var(--color-surface);
+				font-size: clamp(1.7rem, 3.4vw, 2.3rem);
+			}
+			.closing-inner p {
+				color: var(--color-neutral-200);
+			}
+			.closing-inner .btn-primary {
+				margin-top: 0.5rem;
+			}
+			.closing-note {
+				margin-top: 1.75rem;
+				padding-top: 1.5rem;
+				border-top: 1px solid rgba(255, 255, 255, 0.12);
+				font-size: 0.85rem;
+				color: var(--color-neutral-200);
+				opacity: 0.75;
+			}
+			.closing-note a {
+				color: var(--color-surface);
+				text-decoration: underline;
+			}
+
+			/* STORY */
+			.story {
+				padding: clamp(4rem, 8vw, 6rem) 1.5rem;
+				max-width: 56rem;
+				margin: 0 auto;
+			}
+			.story-inner {
+				display: grid;
+				grid-template-columns: 12rem 1fr;
+				gap: 2.5rem;
+				align-items: center;
+			}
+			.story-photo {
+				aspect-ratio: 1;
+				border-radius: var(--radius-lg);
+				border: 1px dashed var(--color-neutral-200);
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				gap: 0.6rem;
+				color: var(--color-neutral-500);
+			}
+			.story-photo span {
+				font-size: 0.78rem;
+			}
+			.story-text h2 {
+				font-size: clamp(1.4rem, 2.4vw, 1.8rem);
+				margin-bottom: 0.65rem;
+			}
+			.story-text p {
+				color: var(--color-neutral-500);
+				font-size: 0.96rem;
+			}
+
+			@media (max-width: 40rem) {
+				.story-inner {
+					grid-template-columns: 1fr;
+				}
+				.story-photo {
+					aspect-ratio: 16 / 9;
+				}
+			}
+
+			/* FAQ */
+			.faq-list {
+				max-width: 44rem;
+				margin: 0 auto;
+				display: flex;
+				flex-direction: column;
+				gap: 0.75rem;
+			}
+			.faq-item {
+				background: var(--color-surface);
+				border: 1px solid var(--color-neutral-200);
+				border-radius: var(--radius);
+				padding: 1.1rem 1.25rem;
+			}
+			.faq-item summary {
+				cursor: pointer;
+				font-weight: 600;
+				font-size: 1rem;
+				list-style: none;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				gap: 1rem;
+			}
+			.faq-item summary::-webkit-details-marker {
+				display: none;
+			}
+			.faq-item summary::after {
+				content: "+";
+				flex-shrink: 0;
+				font-size: 1.3rem;
+				font-weight: 400;
+				color: var(--color-neutral-500);
+			}
+			.faq-item[open] summary::after {
+				content: "−";
+			}
+			.faq-item p {
+				margin: 0.85rem 0 0;
+				color: var(--color-neutral-500);
+				font-size: 0.95rem;
+				line-height: 1.55;
+			}
+		</style>
+
+		<style is:global>
+			.btn-primary {
+				background: var(--color-yellow);
+				color: var(--color-ink);
+				border: none;
+				border-radius: var(--radius-pill);
+				padding: 0.9rem 1.8rem;
+				font-weight: 700;
+				font-size: 1rem;
+				cursor: pointer;
+				transition:
+					transform 0.15s ease,
+					box-shadow 0.15s ease;
+			}
+			.btn-primary:hover {
+				transform: translateY(-1px);
+				box-shadow: var(--shadow-soft);
+			}
+			.btn-secondary {
+				text-decoration: none;
+				font-weight: 600;
+				color: var(--color-ink);
+				background: var(--color-surface);
+				border: 1px solid var(--color-neutral-200);
+				border-radius: var(--radius-pill);
+				padding: 0.9rem 1.8rem;
+				transition: border-color 0.15s ease;
+			}
+			.btn-secondary:hover {
+				border-color: var(--color-ink);
+			}
+
+			.site-footer {
+				background: var(--color-surface);
+				border-top: 1px solid var(--color-neutral-200);
+				padding: clamp(3rem, 6vw, 4rem) 1.5rem 2rem;
+			}
+			.footer-inner {
+				max-width: 68rem;
+				margin: 0 auto;
+			}
+			.footer-top {
+				display: grid;
+				grid-template-columns: 1.4fr 1fr 1fr;
+				gap: 3rem;
+				padding-bottom: 2.75rem;
+			}
+			.footer-brand-link {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
+				text-decoration: none;
+				color: var(--color-ink);
+				font-family: var(--font-display);
+				font-weight: 700;
+				font-size: 1.1rem;
+				margin-bottom: 0.75rem;
+			}
+			.footer-tagline {
+				color: var(--color-neutral-500);
+				font-size: 0.92rem;
+				max-width: 20rem;
+				margin-bottom: 1.5rem;
+			}
+			.footer-col-title {
+				font-size: 0.72rem;
+				text-transform: uppercase;
+				letter-spacing: 0.05em;
+				font-weight: 600;
+				color: var(--color-neutral-500);
+				margin-bottom: 1rem;
+			}
+			.footer-col {
+				display: flex;
+				flex-direction: column;
+				align-items: flex-start;
+				gap: 0.85rem;
+			}
+			.footer-col a,
+			.link-btn {
+				text-decoration: none;
+				color: var(--color-ink);
+				font-size: 0.92rem;
+				font-weight: 500;
+				opacity: 0.75;
+				background: none;
+				border: none;
+				padding: 0;
+				cursor: pointer;
+				font-family: var(--font-body);
+			}
+			.footer-col a:hover,
+			.link-btn:hover {
+				opacity: 1;
+			}
+			.gh-star {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+				text-decoration: none;
+				color: var(--color-ink);
+				font-size: 0.85rem;
+				font-weight: 600;
+				border: 1px solid var(--color-neutral-200);
+				border-radius: var(--radius-pill);
+				padding: 0.45rem 0.95rem;
+				transition: border-color 0.15s ease;
+			}
+			.gh-star:hover {
+				border-color: var(--color-ink);
+			}
+			.footer-bottom {
+				padding-top: 1.75rem;
+				border-top: 1px solid var(--color-neutral-200);
+				text-align: center;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				gap: 0.6rem;
+			}
+			.copy {
+				font-size: 0.82rem;
+				color: var(--color-neutral-500);
+			}
+			.footer-legal {
+				display: flex;
+				gap: 1rem;
+			}
+			.footer-legal a {
+				font-size: 0.78rem;
+				color: var(--color-neutral-500);
+				text-decoration: none;
+			}
+			.footer-legal a:hover {
+				color: var(--color-ink);
+			}
+
+			@media (max-width: 40rem) {
+				.footer-top {
+					grid-template-columns: 1fr;
+					gap: 2.25rem;
+				}
+			}
+		</style>
+	</body>
+</html>

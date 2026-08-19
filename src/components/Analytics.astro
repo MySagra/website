@@ -1,0 +1,16 @@
+---
+import KlaroConsent from "./KlaroConsent.astro";
+import type { Lang } from "../i18n/ui";
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+
+const umamiUrl = import.meta.env.UMAMI_URL;
+const umamiWebsiteId = import.meta.env.UMAMI_WEBSITE_ID;
+---
+
+{umamiUrl && umamiWebsiteId && <script defer src={umamiUrl} data-website-id={umamiWebsiteId}></script>}
+<KlaroConsent lang={lang} />

@@ -1,0 +1,223 @@
+---
+import "@fontsource/inter/700.css";
+import "@fontsource/work-sans/400.css";
+import "@fontsource/work-sans/600.css";
+import "../styles/global.css";
+import Logo from "./Logo.astro";
+import Analytics from "./Analytics.astro";
+import { getContent } from "../i18n/content";
+import type { Lang } from "../i18n/ui";
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getContent(lang);
+const c = t.cookiePolicy;
+
+const SITE_URL = "https://mysagra.com";
+const path = lang === "en" ? "/en/cookie-policy" : "/cookie-policy";
+const canonicalUrl = `${SITE_URL}${path}`;
+const homeHref = lang === "en" ? "/en/" : "/";
+const privacyPolicyHref = lang === "en" ? "/en/privacy-policy" : "/privacy-policy";
+---
+
+<html lang={lang}>
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link rel="icon" href="/favicon.ico" />
+		<meta name="viewport" content="width=device-width" />
+		<meta name="generator" content={Astro.generator} />
+		<meta name="theme-color" content="#FECC01" />
+		<title>{c.metaTitle}</title>
+		<meta name="description" content={c.metaDescription} />
+		<link rel="canonical" href={canonicalUrl} />
+		<link rel="alternate" hreflang="it" href={`${SITE_URL}/cookie-policy`} />
+		<link rel="alternate" hreflang="en" href={`${SITE_URL}/en/cookie-policy`} />
+		<link rel="alternate" hreflang="x-default" href={`${SITE_URL}/cookie-policy`} />
+		<meta name="robots" content="index, follow" />
+		<Analytics lang={lang} />
+	</head>
+	<body>
+		<header class="legal-bar">
+			<a href={homeHref} class="back-link">
+				<span aria-hidden="true">←</span>
+				{c.backLabel}
+			</a>
+		</header>
+
+		<main class="legal-main">
+			<Logo width={40} height={40} markColor="#FECC01" groundColor="#111111" />
+			<h1>{c.h1}</h1>
+			<p class="last-updated">{c.lastUpdated}</p>
+
+			<section class="legal-sections">
+				<div>
+					<p>{c.intro}</p>
+				</div>
+
+				<div>
+					<h2>{c.tableH2}</h2>
+					<div class="table-wrap">
+						<table>
+							<thead>
+								<tr>
+									<th>{c.tableHeaders.name}</th>
+									<th>{c.tableHeaders.provider}</th>
+									<th>{c.tableHeaders.purpose}</th>
+									<th>{c.tableHeaders.type}</th>
+									<th>{c.tableHeaders.duration}</th>
+								</tr>
+							</thead>
+							<tbody>
+								{
+									c.rows.map((row) => (
+										<tr>
+											<td class="mono">{row.name}</td>
+											<td>{row.provider}</td>
+											<td>{row.purpose}</td>
+											<td>
+												<span class:list={["badge", { "badge--essential": row.essential }]}>
+													{row.essential ? c.badgeEssential : c.badgeFunctional}
+												</span>
+											</td>
+											<td>{row.duration}</td>
+										</tr>
+									))
+								}
+							</tbody>
+						</table>
+					</div>
+				</div>
+
+				<div>
+					<h2>{c.consentH2}</h2>
+					<p>{c.consentBody}</p>
+				</div>
+
+				<div>
+					<h2>{c.contactH2}</h2>
+					<p>{c.contactPrefix}<a href="mailto:info@mysagra.com">info@mysagra.com</a></p>
+				</div>
+
+				<div>
+					<p>
+						{c.privacyNotePrefix}<a href={privacyPolicyHref}>{c.privacyNoteLinkLabel}</a>.
+					</p>
+				</div>
+			</section>
+		</main>
+
+		<footer class="legal-footer">
+			<p>
+				© {new Date().getFullYear()} MySagra · <a href={privacyPolicyHref}>{c.privacyNoteLinkLabel}</a>
+			</p>
+		</footer>
+
+		<style>
+			.legal-bar {
+				background: var(--color-ink);
+				padding: 1.1rem 1.5rem;
+			}
+			.back-link {
+				display: inline-flex;
+				align-items: center;
+				gap: 0.4rem;
+				color: var(--color-yellow);
+				font-family: var(--font-display);
+				font-weight: 700;
+				font-size: 0.95rem;
+				text-decoration: none;
+			}
+			.back-link:hover {
+				color: #fc9003;
+			}
+			.legal-main {
+				max-width: 44rem;
+				margin: 0 auto;
+				padding: 3.5rem 1.5rem 4rem;
+			}
+			.legal-main h1 {
+				font-size: clamp(1.8rem, 3.4vw, 2.4rem);
+				margin-top: 1.25rem;
+			}
+			.last-updated {
+				color: var(--color-neutral-500);
+				font-size: 0.9rem;
+				margin: 0.5rem 0 2.5rem;
+			}
+			.legal-sections {
+				display: flex;
+				flex-direction: column;
+				gap: 2rem;
+			}
+			.legal-sections h2 {
+				font-size: 1.2rem;
+				margin-bottom: 0.75rem;
+			}
+			.legal-sections p {
+				color: #334155;
+				line-height: 1.6;
+			}
+			.legal-sections a {
+				color: #fc9003;
+				text-decoration: underline;
+			}
+			.table-wrap {
+				overflow-x: auto;
+				border-radius: var(--radius);
+				border: 1px solid var(--color-neutral-200);
+			}
+			table {
+				width: 100%;
+				border-collapse: collapse;
+				font-size: 0.88rem;
+			}
+			th {
+				background: var(--color-ink);
+				color: var(--color-surface);
+				text-align: left;
+				padding: 0.75rem 0.9rem;
+				font-family: var(--font-display);
+				font-weight: 700;
+			}
+			td {
+				padding: 0.75rem 0.9rem;
+				border-top: 1px solid var(--color-neutral-200);
+				color: #334155;
+			}
+			.mono {
+				font-family: ui-monospace, "SF Mono", Consolas, monospace;
+				font-size: 0.8rem;
+			}
+			.badge {
+				display: inline-block;
+				background: var(--color-neutral-200);
+				color: #334155;
+				font-size: 0.72rem;
+				font-weight: 600;
+				padding: 0.2rem 0.55rem;
+				border-radius: var(--radius-sm);
+			}
+			.badge--essential {
+				background: var(--color-yellow);
+				color: var(--color-ink);
+			}
+			.legal-footer {
+				background: var(--color-ink);
+				color: var(--color-neutral-500);
+				font-size: 0.85rem;
+				text-align: center;
+				padding: 1.5rem;
+			}
+			.legal-footer a {
+				color: var(--color-neutral-500);
+			}
+			.legal-footer a:hover {
+				color: var(--color-yellow);
+			}
+		</style>
+	</body>
+</html>

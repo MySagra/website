@@ -1,0 +1,306 @@
+---
+import { getContent } from "../i18n/content";
+import type { Lang } from "../i18n/ui";
+
+interface Props {
+	lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getContent(lang).contactModal;
+---
+
+<dialog
+	id="contact-dialog"
+	aria-labelledby="contact-title"
+	data-i18n={JSON.stringify({
+		submit: t.submit,
+		submitting: t.submitting,
+		success: t.success,
+		errorFallback: t.errorFallback,
+	})}
+>
+	<div class="sheet">
+		<button type="button" class="close" id="contact-close" aria-label={t.closeAria}>
+			<svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+				<path d="M2 2L16 16M16 2L2 16" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+			</svg>
+		</button>
+
+		<h2 id="contact-title">{t.title}</h2>
+
+		<form id="contact-form" novalidate>
+			<input type="hidden" name="topic" value="informazioni" />
+			<input type="hidden" name="lang" value={lang} />
+
+			<label class="field">
+				<span>{t.fieldName}</span>
+				<input type="text" name="name" placeholder={t.placeholderName} required autocomplete="name" />
+			</label>
+
+			<label class="field">
+				<span>{t.fieldEmail}</span>
+				<input type="email" name="email" placeholder={t.placeholderEmail} required autocomplete="email" />
+			</label>
+
+			<label class="field">
+				<span>{t.fieldPhone}</span>
+				<div class="phone">
+					<select name="phonePrefix" aria-label={t.phonePrefixAria}>
+						<option value="+39">IT +39</option>
+						<option value="+41">CH +41</option>
+						<option value="+33">FR +33</option>
+					</select>
+					<input type="tel" name="phone" placeholder={t.placeholderPhone} autocomplete="tel-national" />
+				</div>
+			</label>
+
+			<label class="field">
+				<span>{t.fieldRequestType}</span>
+				<select name="requestType" required>
+					<option value="" disabled selected>{t.requestTypePlaceholder}</option>
+					<option value="informazioni">{t.requestTypeOptions.informazioni}</option>
+					<option value="cloud">{t.requestTypeOptions.cloud}</option>
+					<option value="onsite">{t.requestTypeOptions.onsite}</option>
+					<option value="custom">{t.requestTypeOptions.custom}</option>
+					<option value="demo">{t.requestTypeOptions.demo}</option>
+				</select>
+			</label>
+
+			<label class="field">
+				<span>{t.fieldSubject}</span>
+				<input type="text" name="subject" placeholder={t.placeholderSubject} required />
+			</label>
+
+			<label class="field">
+				<span>{t.fieldMessage}</span>
+				<textarea name="message" rows="3" placeholder={t.placeholderMessage} required></textarea>
+			</label>
+
+			<p class="form-status" id="contact-status" role="status" aria-live="polite"></p>
+
+			<button type="submit" class="submit" id="contact-submit" data-umami-event="contact-submit-click">{t.submit}</button>
+		</form>
+	</div>
+</dialog>
+
+<style>
+	dialog {
+		border: none;
+		padding: 0;
+		background: transparent;
+		max-width: min(30rem, calc(100vw - 2rem));
+		width: 100%;
+	}
+
+	dialog::backdrop {
+		background: rgba(17, 17, 17, 0.55);
+		backdrop-filter: blur(2px);
+	}
+
+	.sheet {
+		position: relative;
+		background: var(--color-surface);
+		border-radius: var(--radius);
+		padding: 1.5rem;
+		box-shadow: var(--shadow-lifted);
+		max-height: 96vh;
+		overflow-y: auto;
+	}
+
+	.close {
+		position: absolute;
+		top: 1.1rem;
+		right: 1.1rem;
+		width: 2.25rem;
+		height: 2.25rem;
+		display: grid;
+		place-items: center;
+		background: none;
+		border: 1px solid var(--color-neutral-200);
+		border-radius: var(--radius);
+		cursor: pointer;
+	}
+	.close:hover {
+		border-color: var(--color-ink);
+	}
+
+	h2 {
+		font-size: 1.5rem;
+		padding-right: 3rem;
+		margin: 0 0 1.25rem;
+	}
+
+	.field {
+		display: block;
+		margin-bottom: 0.65rem;
+	}
+	.field span {
+		display: block;
+		font-size: 0.82rem;
+		font-weight: 600;
+		margin-bottom: 0.3rem;
+	}
+	.field input,
+	.field select,
+	.field textarea {
+		width: 100%;
+		border: 1px solid var(--color-neutral-200);
+		border-radius: var(--radius);
+		padding: 0.6rem 0.8rem;
+		font-family: var(--font-body);
+		font-size: 0.95rem;
+		background: var(--color-surface);
+		color: var(--color-ink);
+	}
+	.field textarea {
+		resize: none;
+		height: 4.5rem;
+		overflow-y: auto;
+	}
+	.field input:focus-visible,
+	.field select:focus-visible,
+	.field textarea:focus-visible {
+		outline: 2px solid var(--color-ink);
+		outline-offset: 1px;
+	}
+
+	.phone {
+		display: grid;
+		grid-template-columns: auto 1fr;
+		gap: 0.5rem;
+	}
+	.phone select {
+		width: auto;
+	}
+
+	.form-status {
+		font-size: 0.9rem;
+		margin: 0;
+	}
+	.form-status:not(:empty) {
+		margin: 0 0 0.6rem;
+	}
+	.form-status[data-state="error"] {
+		color: var(--color-danger);
+	}
+	.form-status[data-state="success"] {
+		color: var(--color-success);
+	}
+
+	.submit {
+		width: 100%;
+		background: var(--color-ink);
+		color: var(--color-surface);
+		border: none;
+		border-radius: var(--radius);
+		padding: 0.75rem;
+		font-weight: 600;
+		font-size: 1rem;
+		cursor: pointer;
+		transition: opacity 0.15s ease;
+	}
+	.submit:hover {
+		opacity: 0.85;
+	}
+	.submit:disabled {
+		opacity: 0.6;
+		cursor: not-allowed;
+		transform: none;
+	}
+</style>
+
+<script>
+	interface ModalI18n {
+		submit: string;
+		submitting: string;
+		success: string;
+		errorFallback: string;
+	}
+
+	declare global {
+		interface Window {
+			umami?: { track: (event: string, data?: Record<string, string>) => void };
+		}
+	}
+
+	function initContactModal() {
+		const dialog = document.getElementById("contact-dialog") as HTMLDialogElement | null;
+		if (!dialog) return;
+
+		const i18n: ModalI18n = JSON.parse(dialog.dataset.i18n || "{}");
+
+		const closeBtn = document.getElementById("contact-close");
+		const form = document.getElementById("contact-form") as HTMLFormElement;
+		const status = document.getElementById("contact-status") as HTMLElement;
+		const submit = document.getElementById("contact-submit") as HTMLButtonElement;
+		const requestTypeSelect = form?.elements.namedItem("requestType") as HTMLSelectElement | null;
+
+		document.querySelectorAll<HTMLElement>("[data-open-contact]").forEach((trigger) => {
+			trigger.addEventListener("click", () => {
+				const requestType = trigger.getAttribute("data-request-type");
+				if (requestTypeSelect) requestTypeSelect.value = requestType || "";
+				dialog.showModal();
+			});
+		});
+
+		closeBtn?.addEventListener("click", () => dialog.close());
+		dialog.addEventListener("click", (event) => {
+			if (event.target === dialog) dialog.close();
+		});
+
+		form?.addEventListener("submit", async (event) => {
+			event.preventDefault();
+			status.removeAttribute("data-state");
+			status.textContent = "";
+
+			const data = new FormData(form);
+			const phonePrefix = String(data.get("phonePrefix") || "");
+			const phoneNumber = String(data.get("phone") || "").trim();
+
+			const payload = {
+				topic: String(data.get("topic") || "informazioni"),
+				lang: String(data.get("lang") || "it"),
+				name: String(data.get("name") || "").trim(),
+				email: String(data.get("email") || "").trim(),
+				phone: phoneNumber ? `${phonePrefix} ${phoneNumber}` : "",
+				requestType: String(data.get("requestType") || "").trim(),
+				subject: String(data.get("subject") || "").trim(),
+				message: String(data.get("message") || "").trim(),
+			};
+
+			submit.disabled = true;
+			submit.textContent = i18n.submitting;
+
+			try {
+				const res = await fetch("/api/contact", {
+					method: "POST",
+					headers: { "content-type": "application/json" },
+					body: JSON.stringify(payload),
+				});
+				const result = await res.json();
+
+				if (!res.ok || !result.ok) {
+					throw new Error(result.error || i18n.errorFallback);
+				}
+
+				status.dataset.state = "success";
+				status.textContent = i18n.success;
+				window.umami?.track("contact-submit-success", { topic: payload.topic });
+				form.reset();
+				submit.textContent = i18n.submit;
+				setTimeout(() => dialog.close(), 2200);
+			} catch (error) {
+				status.dataset.state = "error";
+				status.textContent = error instanceof Error ? error.message : i18n.errorFallback;
+				window.umami?.track("contact-submit-error", { topic: payload.topic });
+				submit.textContent = i18n.submit;
+			} finally {
+				submit.disabled = false;
+			}
+		});
+	}
+
+	initContactModal();
+	document.addEventListener("astro:page-load", initContactModal);
+</script>
