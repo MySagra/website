@@ -19,8 +19,12 @@ const p = t.privacyPolicy;
 const SITE_URL = "https://mysagra.com";
 const path = lang === "en" ? "/en/privacy-policy" : "/privacy-policy";
 const canonicalUrl = `${SITE_URL}${path}`;
-const homeHref = lang === "en" ? "/en/" : "/";
+const defaultHomeHref = lang === "en" ? "/en/" : "/";
 const cookiePolicyHref = lang === "en" ? "/en/cookie-policy" : "/cookie-policy";
+
+const callbackParam = Astro.url.searchParams.get("callback");
+const isSafeCallback = !!callbackParam && (/^\/(?!\/)/.test(callbackParam) || /^https?:\/\//i.test(callbackParam));
+const homeHref = isSafeCallback ? callbackParam : defaultHomeHref;
 ---
 
 <html lang={lang}>
