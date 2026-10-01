@@ -1,0 +1,29 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "redirects": [
+    {
+      "source": "/:page(myclienti|privacy-policy|cookie-policy)",
+      "has": [{ "type": "host", "value": "www.mysagra.com" }],
+      "destination": "https://mysagra.com/:page/",
+      "permanent": true
+    },
+    {
+      "source": "/en/:page(myclienti|privacy-policy|cookie-policy)",
+      "has": [{ "type": "host", "value": "www.mysagra.com" }],
+      "destination": "https://mysagra.com/en/:page/",
+      "permanent": true
+    },
+    {
+      "source": "/en",
+      "has": [{ "type": "host", "value": "www.mysagra.com" }],
+      "destination": "https://mysagra.com/en/",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [{ "type": "host", "value": "www.mysagra.com" }],
+      "destination": "https://mysagra.com/:path*",
+      "permanent": true
+    }
+  ]
+}

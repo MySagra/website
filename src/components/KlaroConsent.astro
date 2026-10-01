@@ -8,7 +8,7 @@ interface Props {
 
 const { lang } = Astro.props;
 const b = getContent(lang).cookieBanner;
-const privacyPolicyPath = lang === "en" ? "/en/privacy-policy" : "/privacy-policy";
+const privacyPolicyPath = lang === "en" ? "/en/privacy-policy/" : "/privacy-policy/";
 
 const klaroConfig = {
 	version: 1,

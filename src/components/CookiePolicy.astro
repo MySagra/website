@@ -17,10 +17,10 @@ const t = getContent(lang);
 const c = t.cookiePolicy;
 
 const SITE_URL = "https://mysagra.com";
-const path = lang === "en" ? "/en/cookie-policy" : "/cookie-policy";
+const path = lang === "en" ? "/en/cookie-policy/" : "/cookie-policy/";
 const canonicalUrl = `${SITE_URL}${path}`;
 const defaultHomeHref = lang === "en" ? "/en/" : "/";
-const privacyPolicyHref = lang === "en" ? "/en/privacy-policy" : "/privacy-policy";
+const privacyPolicyHref = lang === "en" ? "/en/privacy-policy/" : "/privacy-policy/";
 
 const callbackParam = Astro.url.searchParams.get("callback");
 const isSafeCallback = !!callbackParam && (/^\/(?!\/)/.test(callbackParam) || /^https?:\/\//i.test(callbackParam));
@@ -38,9 +38,9 @@ const homeHref = isSafeCallback ? callbackParam : defaultHomeHref;
 		<title>{c.metaTitle}</title>
 		<meta name="description" content={c.metaDescription} />
 		<link rel="canonical" href={canonicalUrl} />
-		<link rel="alternate" hreflang="it" href={`${SITE_URL}/cookie-policy`} />
-		<link rel="alternate" hreflang="en" href={`${SITE_URL}/en/cookie-policy`} />
-		<link rel="alternate" hreflang="x-default" href={`${SITE_URL}/cookie-policy`} />
+		<link rel="alternate" hreflang="it" href={`${SITE_URL}/cookie-policy/`} />
+		<link rel="alternate" hreflang="en" href={`${SITE_URL}/en/cookie-policy/`} />
+		<link rel="alternate" hreflang="x-default" href={`${SITE_URL}/cookie-policy/`} />
 		<meta name="robots" content="index, follow" />
 		<Analytics lang={lang} />
 	</head>
