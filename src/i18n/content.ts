@@ -161,7 +161,7 @@ const it: SiteContent = {
 	meta: {
 		title: "MySagra | Gestionale per Sagre e Feste di Paese",
 		description:
-			"Gestisci gli ordini della tua festa o sagra con cassa e cucina collegate, in un sistema pensato per i volontari. Scopri le soluzioni e provalo subito richiedendo una demo.",
+			"MySagra è il gestionale per sagre e feste di paese: ordini, cassa e cucina collegati in un sistema pensato per i volontari. Richiedi una demo.",
 		keywords:
 			"gestionale sagre, software sagre, software feste di paese, gestionale pro loco, cassa sagra offline",
 	},
@@ -172,8 +172,8 @@ const it: SiteContent = {
 		menuOpenAria: "Apri il menu",
 	},
 	hero: {
-		h1Line1: "Il gestionale smart e moderno",
-		h1Line2: "per sagre e feste.",
+		h1Line1: "Il gestionale per sagre e feste.",
+		h1Line2: "Un ecosistema sempre connesso.",
 		dek: "Il software smart e moderno per gestire sagre e feste di paese, personalizzabile per tutte le tue esigenze. Ordini in tempo reale, stampa comande e cassa integrata.",
 		ctaPrimary: "Contattaci",
 		ctaSecondary: "Vedi le soluzioni",
