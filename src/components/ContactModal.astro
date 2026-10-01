@@ -45,14 +45,18 @@ const t = getContent(lang).contactModal;
 
 			<label class="field">
 				<span>{t.fieldPhone}</span>
-				<div class="phone">
-					<select name="phonePrefix" aria-label={t.phonePrefixAria}>
-						<option value="+39">IT +39</option>
-						<option value="+41">CH +41</option>
-						<option value="+33">FR +33</option>
-					</select>
-					<input type="tel" name="phone" placeholder={t.placeholderPhone} autocomplete="tel-national" />
-				</div>
+				{lang === "en" ? (
+					<input type="tel" name="phone" placeholder={t.placeholderPhone} autocomplete="tel" />
+				) : (
+					<div class="phone">
+						<select name="phonePrefix" aria-label={t.phonePrefixAria}>
+							<option value="+39">IT +39</option>
+							<option value="+41">CH +41</option>
+							<option value="+33">FR +33</option>
+						</select>
+						<input type="tel" name="phone" placeholder={t.placeholderPhone} autocomplete="tel-national" />
+					</div>
+				)}
 			</label>
 
 			<label class="field">
@@ -61,7 +65,7 @@ const t = getContent(lang).contactModal;
 					<option value="" disabled selected>{t.requestTypePlaceholder}</option>
 					<option value="informazioni">{t.requestTypeOptions.informazioni}</option>
 					<option value="cloud">{t.requestTypeOptions.cloud}</option>
-					<option value="onsite">{t.requestTypeOptions.onsite}</option>
+					{lang === "it" && <option value="onsite">{t.requestTypeOptions.onsite}</option>}
 					<option value="custom">{t.requestTypeOptions.custom}</option>
 					<option value="demo">{t.requestTypeOptions.demo}</option>
 				</select>
@@ -263,7 +267,7 @@ const t = getContent(lang).contactModal;
 				lang: String(data.get("lang") || "it"),
 				name: String(data.get("name") || "").trim(),
 				email: String(data.get("email") || "").trim(),
-				phone: phoneNumber ? `${phonePrefix} ${phoneNumber}` : "",
+				phone: phoneNumber ? [phonePrefix, phoneNumber].filter(Boolean).join(" ") : "",
 				requestType: String(data.get("requestType") || "").trim(),
 				subject: String(data.get("subject") || "").trim(),
 				message: String(data.get("message") || "").trim(),

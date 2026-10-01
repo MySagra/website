@@ -187,7 +187,7 @@ const icons: Record<string, string> = {
 					<h1>{t.hero.h1Line1} <br />{t.hero.h1Line2}</h1>
 					<p class="dek">{t.hero.dek}</p>
 					<div class="hero-actions">
-						<button type="button" class="btn-primary" data-open-contact="informazioni" data-umami-event="contact-open" data-umami-event-location="hero-primary">{t.hero.ctaPrimary}</button>
+						<button type="button" class="btn-primary" data-open-contact="informazioni" data-request-type={lang === "en" ? "demo" : undefined} data-umami-event="contact-open" data-umami-event-location="hero-primary">{t.hero.ctaPrimary}</button>
 						<a href="#solutions" class="btn-secondary" title={lang === "en" ? "Jump to the Plans section" : "Vai alla sezione Soluzioni"} data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="hero-secondary">{t.hero.ctaSecondary}</a>
 					</div>
 				</div>
@@ -243,7 +243,7 @@ const icons: Record<string, string> = {
 					<p class="section-lede">{t.soluzioni.lede}</p>
 				</div>
 
-				<div class="tiers">
+				<div class:list={["tiers", { "tiers--two": tiers.length === 2 }]}>
 					{
 						tiers.map((tier) => (
 							<div class:list={["tier", { "tier--featured": tier.featured }]} data-reveal>
@@ -983,6 +983,12 @@ const icons: Record<string, string> = {
 				display: grid;
 				grid-template-columns: repeat(3, 1fr);
 				gap: 1.75rem;
+			}
+			@media (min-width: 61.001rem) {
+				.tiers--two {
+					grid-template-columns: repeat(2, minmax(0, 1fr));
+					max-width: 52rem;
+				}
 			}
 			.tier {
 				position: relative;

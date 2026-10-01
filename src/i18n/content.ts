@@ -137,7 +137,7 @@ export interface SiteContent {
 		requestTypeOptions: {
 			informazioni: string;
 			cloud: string;
-			onsite: string;
+			onsite?: string;
 			custom: string;
 			demo: string;
 		};
@@ -161,7 +161,7 @@ const it: SiteContent = {
 	meta: {
 		title: "MySagra | Gestionale per Sagre e Feste di Paese",
 		description:
-			"MySagra è il gestionale per sagre e feste di paese: cassa, cucina, stampa comande e tabellone numeri, facile per i volontari, anche senza internet.",
+			"Gestisci gli ordini della tua festa o sagra con cassa e cucina collegate, in un sistema pensato per i volontari. Scopri le soluzioni e provalo subito richiedendo una demo.",
 		keywords:
 			"gestionale sagre, software sagre, software feste di paese, gestionale pro loco, cassa sagra offline",
 	},
@@ -492,11 +492,11 @@ const it: SiteContent = {
 
 const en: SiteContent = {
 	meta: {
-		title: "MySagra | Festival Management Software for Village Fairs",
+		title: "Festival POS & Food Ordering Software | MySagra",
 		description:
-			"MySagra is festival management software for village fairs: checkout, kitchen, ticket printing and queue display, easy for volunteers, even offline.",
+			"Keep food orders moving from checkout to kitchen with MySagra. Cloud POS for volunteer-run community festivals, with guided setup. Request a demo.",
 		keywords:
-			"festival management software, village fair POS, queue management software, offline POS system",
+			"festival POS, food ordering software for events, community festival software, cloud POS, kitchen order printing",
 	},
 	header: {
 		nav: { vantaggi: "Benefits", soluzioni: "Plans", ecosistema: "Ecosystem", docs: "Open Source" },
@@ -505,51 +505,51 @@ const en: SiteContent = {
 		menuOpenAria: "Open menu",
 	},
 	hero: {
-		h1Line1: "The smart, modern platform",
-		h1Line2: "for festivals and fairs.",
-		dek: "The smart, modern software for running village festivals and fairs, customizable to your needs. Real-time orders, ticket printing and integrated checkout.",
-		ctaPrimary: "Contact us",
-		ctaSecondary: "See the plans",
+		h1Line1: "Food and drink orders, connected.",
+		h1Line2: "Built for community festivals.",
+		dek: "Run checkout, kitchen orders and customer self-ordering in one volunteer-friendly cloud platform. We manage the servers and guide you through setting up the local printing service that connects your printers to MySagra.",
+		ctaPrimary: "Request a demo",
+		ctaSecondary: "Explore managed cloud",
 		heroImgAlt: "Volunteers at the counter using MyCassa on screen while customers order during a festival",
 		logosLabel: "Used by festivals and fairs across Italy",
 	},
-	vantaggi: { h2: "How MySagra changes your event" },
+	vantaggi: { h2: "Keep checkout and kitchen orders in sync" },
 	outcomes: [
 		{
 			title: "No more lost orders",
-			desc: "Every ticket prints automatically at the right station.",
+			desc: "Kitchen order tickets print automatically at the right station: kitchen, grill, bar or pizzeria.",
 			icon: "receipt",
 		},
 		{
 			title: "Multiple registers, one event",
-			desc: "Every terminal stays in sync: checkout, printing and dashboard see the same orders in real time, even with several stations running at once.",
+			desc: "Take orders at several checkout stations. Your registers, kitchen printers and dashboard share the same orders through MySagra's cloud platform.",
 			icon: "wifi",
 		},
 		{
-			title: "Real numbers, at closing time",
-			desc: "Real-time dashboard: no more counting by hand after close. Data exportable to Excel.",
+			title: "Sales reports without the paperwork",
+			desc: "Follow sales on a real-time dashboard and export your data to Excel for your end-of-event report.",
 			icon: "chart",
 		},
 		{
-			title: "The counter never chokes",
-			desc: "MyCassa and MyStampa hold up even on the busiest nights of the year.",
+			title: "A simpler workflow for volunteers",
+			desc: "Give volunteers a clear checkout workflow, with orders sent to the kitchen without handwritten notes or shouted instructions.",
 			icon: "shield",
 		},
 		{
 			title: "Saved orders, always recoverable",
-			desc: "Recover or cancel any order whenever you need, with precise stats at the end of the night.",
+			desc: "Find previous orders, cancel them when needed and keep track of sales throughout your event.",
 			icon: "history",
 		},
 		{
 			title: "Works with the hardware you already have",
-			desc: "Compatible with any device and with standard ESC/POS thermal printers.",
+			desc: "Use browser-based checkout on your computers, tablets or phones. We guide you through connecting compatible ESC/POS thermal printers.",
 			icon: "plug",
 		},
 	],
 	soluzioni: {
-		h2: "Three ways to bring MySagra to your festival",
-		lede: "No made-up numbers here: pricing is discussed together, per event or per season.",
-		demoNotePrefix: "Want to see how it actually works?",
+		h2: "Managed cloud, with help getting started",
+		lede: "We run the servers and guide you through setting up local printing. Pricing is quoted per event or per season, based on your requirements.",
+		demoNotePrefix: "Want to see the checkout and kitchen workflow?",
 		demoNoteCta: "Contact us to request a demo →",
 		tiers: [
 			{
@@ -557,58 +557,51 @@ const en: SiteContent = {
 				name: "Managed cloud",
 				tag: "Recommended",
 				featured: true,
-				desc: "A ready-to-use MySagra instance: hosting, security, updates and backups on us. Support during your events too.",
-				points: ["No server to manage", "Support during the event", "Scales from small to large crowds"],
+				desc: "Your MySagra instance hosted and maintained by us, with security, updates and backups managed for you. We guide you through installing and configuring the local printing service that communicates with our servers.",
+				points: ["Hosting, updates and backups managed for you", "Guided local printing setup included", "Customer self-ordering included", "Support during your event"],
 				warning:
-					"Requires a stable internet connection. We don't provide the devices: terminals, printers and tablets remain on your side.",
-				cta: "Request a quote",
-			},
-			{
-				icon: "onsite",
-				name: "On-site installation",
-				desc: "The full stack on your event's own hardware: local network, printers, terminals and displays set up by us. We're based in Bergamo, Italy: even closer if your festival is nearby.",
-				points: ["LAN-first network, survives if internet drops", "Volunteer training", "On-site at opening, on request", "Priority support"],
+					"Requires a stable internet connection. You provide checkout devices, compatible printers and the device running the local printing service.",
 				cta: "Request a quote",
 			},
 			{
 				icon: "custom",
-				name: "Custom build",
-				desc: "Special needs? We adapt MySagra to your festival: dedicated features, integrations, non-standard flows.",
-				points: ["Custom development", "Dedicated integrations", "Built with you, not just for you"],
+				name: "Custom development",
+				desc: "Need a different workflow for your festival? Tell us about your requirements and we can scope dedicated features or integrations for your MySagra setup.",
+				points: ["Event-specific workflows", "Dedicated features and integrations", "Scope and quote agreed with you"],
 				cta: "Tell us what you need",
 			},
 		],
 	},
 	ecosistema: {
-		h2: "A composable ecosystem",
-		lede: "Five independent tools, wired to the same brain. Turn on only what you need, add the rest whenever you want.",
+		h2: "One connected system for festival food orders",
+		lede: "Manage your event in the cloud, take orders at checkout or from customers' phones, and print kitchen tickets locally. Each tool connects to MySagra.",
 		items: [
 			{
 				name: "MySagra",
 				role: "core",
 				icon: "core",
-				desc: "The brain: events, menus, categories, variants, stations, roles, real-time dashboard. Keeps every order and the festival's stats.",
+				desc: "Your cloud-based event management hub: menus, categories, variants, preparation stations, staff roles and a real-time sales dashboard. Orders from checkout and customer self-ordering are managed in the same system.",
 			},
 			{
 				name: "MyCassa",
 				role: "cassa",
 				icon: "cassa",
 				photo: "/images/mycassa-terminal.webp",
-				desc: "Terminal that fits any device: from a PC to a phone, touch or not. Handles card and cash payments, and talks to the cash drawer too.",
+				desc: "Browser-based point of sale (POS) for your event's checkout stations. Volunteers take food and drink orders on a computer, tablet or phone, with orders shared through MySagra and sent to the right preparation stations.",
 			},
 			{
 				name: "MyClienti",
 				role: "cliente",
 				icon: "clienti",
 				photos: ["/images/myclienti-app-1.webp", "/images/myclienti-app-2.webp"],
-				desc: "Menu and self-ordering from the customer's phone, skinned with your own images, events and sponsors: customers order without queueing, while payment still happens at the counter. Included in every plan.",
+				desc: "Let customers browse your menu and place their own orders from a phone, using your event's images and sponsors. Customers still pay at the counter, not through the app. Self-ordering is included with managed cloud.",
 			},
 			{
 				name: "MyStampa",
 				role: "stampa",
 				icon: "stampa",
 				photo: "/images/mystampa-receipt.webp",
-				desc: "Order tickets and thermal receipts split automatically by station: kitchen, grill, bar, pizzeria. Also prints end-of-night reports, with sales stats and quantities.",
+				desc: "Print kitchen order tickets and thermal receipts locally, automatically split by station: kitchen, grill, bar or pizzeria. We guide you through setting up the local printing service that connects your printers to our cloud servers. MyStampa also prints end-of-event sales reports.",
 			},
 			/* temporarily disabled
 			{
@@ -621,7 +614,7 @@ const en: SiteContent = {
 		],
 		screenshotOf: "Screenshot of",
 		customNotePrefix: "Special needs?",
-		customNoteLink: "Check out the Custom build plan →",
+		customNoteLink: "Explore custom development →",
 		personalize: {
 			alt: "Preview of the MyClienti app, customizable with your colors, events, sponsors and menu",
 			badges: [
@@ -648,47 +641,43 @@ const en: SiteContent = {
 	},
 	faq: {
 		h2: "Frequently asked questions",
-		lede: "The questions pro loco presidents and organizers ask us most.",
+		lede: "What community festival organizers need to know about cloud checkout, kitchen printing and setup.",
 		items: [
 			{
 				q: "What is MySagra?",
-				a: "MySagra is festival management software for village festivals and fairs: it connects checkout, kitchen, ticket printing and a queue-number display in one system, built for volunteers with no technical training.",
+				a: "MySagra is cloud POS and food ordering software for community festivals and volunteer-run food events. It connects checkout stations, customer self-ordering and local kitchen printing, with menus and sales reports managed in one system. It focuses on food and drink orders, rather than admission ticketing or festival scheduling.",
 			},
 			{
-				q: "What's the best festival management software that works without internet?",
-				a: "MySagra is built for exactly this: a LAN-first architecture keeps checkout, ticket printing and the queue display running on the event's local network even if the internet connection drops. That's the core difference versus shop POS software adapted for a festival.",
+				q: "Do we need to manage a server?",
+				a: "No. With managed cloud, MySagra runs on our servers and we handle hosting, security, updates and backups. Your team uses the web interface for checkout and event management. For kitchen printing, you also run a local printing service on a device at your event; we guide you through its setup.",
 			},
 			{
-				q: "Does MySagra still work if the Wi-Fi drops?",
-				a: "Depends on the plan. With on-site installation, yes: the architecture is LAN-first, so checkout and printing keep working on the local network even when the event's internet connection is unreliable. With the managed cloud plan you need a stable connection instead: if it drops, you only lose customer self-ordering from their phones — handy, but not essential for running the counter.",
+				q: "How does kitchen order printing work with managed cloud?",
+				a: "A local printing service communicates with MySagra's cloud servers and sends kitchen order tickets to your compatible printers. Orders are split by preparation station, such as the kitchen, grill, bar or pizzeria. Guidance for installing and configuring this service is included with managed cloud; you provide the printers and the device running it.",
 			},
 			{
-				q: "What is MyNumeri, the queue-number display for festivals?",
-				a: "MyNumeri is the public screen that calls out ready order numbers, synced in real time with checkout and kitchen: customers wait without crowding the counter.",
+				q: "Does the managed cloud service need an internet connection?",
+				a: "Yes. Managed cloud requires a stable internet connection so checkout devices and the local printing service can communicate with our servers. Installing the printing service locally does not make the cloud platform an offline system. Plan for reliable connectivity at your venue before choosing this service.",
+			},
+			{
+				q: "Do customers pay through the self-ordering app?",
+				a: "No. Customers can browse your menu and place food and drink orders from their phones, but payment happens at the checkout counter, not through the app. Customer self-ordering is included with managed cloud and connects to the same order management system as your checkout stations.",
+			},
+			{
+				q: "What hardware do we need for managed cloud?",
+				a: "You provide computers, tablets or phones with a browser for checkout, compatible ESC/POS thermal printers, and a device to run the local printing service. You also need a stable internet connection. Tell us which hardware you have before setup so we can guide you on printer compatibility and configuration.",
+			},
+			{
+				q: "Can volunteers use MySagra without technical training?",
+				a: "MySagra is designed for volunteers without an IT background. Checkout staff take orders through a browser-based interface, while kitchen tickets are routed to the appropriate preparation stations. The local printing service needs to be installed and configured before the event, and we guide you through that setup.",
 			},
 			{
 				q: "How much does MySagra cost?",
-				a: "Pricing is agreed together, per event or per season, based on the plan you choose: managed cloud, on-site installation or custom build. There's no fixed published price — contact us for a quote.",
+				a: "Managed cloud is quoted per event or per season, based on your requirements. It includes managed hosting, updates, backups, customer self-ordering and guidance for local printing setup. You provide the hardware. If you need dedicated features or integrations, we agree on the scope and quote for custom development separately.",
 			},
 			{
-				q: "Do we need a technician to run MySagra during the event?",
-				a: "No. The system is built for volunteers with no IT background. For on-site installations we also train staff before opening.",
-			},
-			{
-				q: "How long does it take to install MySagra before the festival?",
-				a: "Our team installs everything in a single evening: local network, switch, router, printers and stations ready for opening.",
-			},
-			{
-				q: "Is MySagra hard for volunteers to learn and configure?",
-				a: "No, quite the opposite by design: the software is simple and intuitive, and volunteers learn to use it the same evening it's installed. Setting up menus, the customer app, pickup stations and printers takes just a few minutes, no technician needed.",
-			},
-			{
-				q: "What does MySagra provide for on-site installation?",
-				a: "MySagra uses a different management model than usual: a server exists, and we provide and set up printers, cabling, local network creation, switch and router, plus paper for the printers. Cabling and paper are priced based on how much the event actually needs.",
-			},
-			{
-				q: "Does MySagra also provide monitors, tablets and phones?",
-				a: "No, deliberately: since MySagra is a web page, it runs on any device with a browser, even older ones — we've used it on Windows 7 PCs too. Almost everyone already owns a phone or tablet today, so lending them out would be pointless — which is also why MySagra tends to be priced lower than the competition.",
+				q: "How do we get started before our festival?",
+				a: "Contact us with your event dates, menu, checkout stations and existing hardware. We can discuss your requirements, arrange a demo and quote managed cloud for your event or season. We guide you through setting up the local printing service so you can test your checkout-to-kitchen workflow before opening.",
 			},
 		],
 	},
@@ -777,7 +766,7 @@ const en: SiteContent = {
 		privacyPolicyName: "privacy policy",
 	},
 	footer: {
-		tagline: "The smart, modern platform for festivals and fairs.",
+		tagline: "Cloud POS and food ordering for community festivals.",
 		ghStar: "Star on GitHub",
 		prodotto: { title: "Product", vantaggi: "Benefits", soluzioni: "Plans", ecosistema: "Ecosystem" },
 		risorse: { title: "Resources", docs: "Docs", support: "support@mysagra.com" },
@@ -791,18 +780,17 @@ const en: SiteContent = {
 		fieldPhone: "Phone (optional)",
 		fieldRequestType: "Request type *",
 		fieldSubject: "Subject *",
-		fieldMessage: "Tell us how you'd like to adapt MySagra to your festival *",
+		fieldMessage: "Tell us about your festival *",
 		placeholderName: "Jane Smith",
 		placeholderEmail: "m@example.com",
-		placeholderPhone: "333 123 4567",
+		placeholderPhone: "+44 7700 900123",
 		placeholderSubject: "Subject of your request",
-		placeholderMessage: "Tell us about your event: number of volunteers, courses served, hardware you already have, timeline…",
+		placeholderMessage: "Tell us your event dates, food and drink menu, number of checkout stations, and the devices and printers you already have…",
 		requestTypePlaceholder: "Select a request",
 		requestTypeOptions: {
 			informazioni: "Information",
 			cloud: "Managed cloud",
-			onsite: "On-site installation",
-			custom: "Custom build",
+			custom: "Custom development",
 			demo: "Demo request",
 		},
 		phonePrefixAria: "Prefix",
