@@ -83,7 +83,7 @@ const faqSchema = {
 	})),
 };
 
-const partnerLogos = ["FOLLOW THE SUN", "INSIEME IN FESTA", "NOI CON VOI NOI PER VOI", "SANROCK"];
+const partnerLogos = ["FOLLOW THE SUN", "INSIEME IN FESTA", "NOI CON VOI NOI PER VOI", "SANROCK", "QUEEN MOTO CLUB", "ANGOLO GIOVANE CONCOREZZO"];
 
 const icons: Record<string, string> = {
 	receipt:
@@ -487,7 +487,7 @@ const icons: Record<string, string> = {
 									)}
 									<h3>{item.name}</h3>
 									<p>{item.desc}</p>
-									{item.role === "cliente" && <a href={lang === "en" ? "/en/myclienti/" : "/myclienti/"} data-umami-event="myclienti-page-click">{lang === "en" ? "Explore MyClienti and your online menu" : "Scopri MyClienti e il tuo menu online"}</a>}
+									{item.role === "cliente" && <a href={lang === "en" ? "/en/myclienti/" : "/myclienti/"} data-umami-event="myclienti-page-click">{lang === "en" ? "Learn more" : "Scopri di più"}</a>}
 								</div>
 							</div>
 						))

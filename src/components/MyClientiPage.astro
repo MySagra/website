@@ -20,13 +20,19 @@ const site = 'https://mysagra.com';
 const canonical = `${site}${path}`;
 const demo = 'https://clientidemo.mysagra.com/';
 const ids = ['customize', 'sync', 'share'];
+const orderScreens = [
+  { name: 'myclienti-order-menu', height: 1282 },
+  { name: 'myclienti-order-cart', height: 1599 },
+  { name: 'myclienti-order-confirmation', height: 2536 },
+];
 const schema = {
   '@context': 'https://schema.org',
   '@graph': [
-    { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: t.title, description: t.description, inLanguage: lang, about: { '@id': `${canonical}#software` } },
-    { '@type': 'SoftwareApplication', '@id': `${canonical}#software`, name: 'MyClienti', applicationCategory: 'BusinessApplication', operatingSystem: 'Web', url: canonical, description: t.description, publisher: { '@type': 'Organization', name: 'MySagra', url: site } },
-    { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'MySagra', item: `${site}${home}` }, { '@type': 'ListItem', position: 2, name: 'MyClienti', item: canonical }] },
-    { '@type': 'FAQPage', inLanguage: lang, mainEntity: t.faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
+    { '@type': 'Organization', '@id': `${site}/#organization`, name: 'MySagra', url: `${site}/`, logo: `${site}/favicon.svg`, sameAs: ['https://github.com/mysagra'] },
+    { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: t.title, description: t.description, inLanguage: lang, publisher: { '@id': `${site}/#organization` }, mainEntity: { '@id': `${canonical}#software` }, breadcrumb: { '@id': `${canonical}#breadcrumb` } },
+    { '@type': 'SoftwareApplication', '@id': `${canonical}#software`, name: 'MyClienti', applicationCategory: 'BusinessApplication', operatingSystem: 'Web', url: canonical, description: t.intro, inLanguage: lang, featureList: t.fields.map(([title, description]) => `${title}: ${description}`), screenshot: [`${site}/images/myclienti-app-1.webp`, ...orderScreens.map((screen) => `${site}/images/${screen.name}.webp`)], publisher: { '@id': `${site}/#organization` } },
+    { '@type': 'BreadcrumbList', '@id': `${canonical}#breadcrumb`, itemListElement: [{ '@type': 'ListItem', position: 1, name: 'MySagra', item: `${site}${home}` }, { '@type': 'ListItem', position: 2, name: 'MyClienti', item: canonical }] },
+    { '@type': 'FAQPage', '@id': `${canonical}#faq`, isPartOf: { '@id': `${canonical}#webpage` }, inLanguage: lang, mainEntity: t.faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
   ],
 };
 ---
@@ -49,12 +55,16 @@ const schema = {
     <meta property="og:description" content={t.description} />
     <meta property="og:url" content={canonical} />
     <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'it_IT'} />
+    <meta property="og:locale:alternate" content={lang === 'en' ? 'it_IT' : 'en_US'} />
     <meta property="og:image" content={`${site}/images/myclienti-app-1.webp`} />
     <meta property="og:image:alt" content={t.alt} />
+    <meta property="og:image:width" content="1170" />
+    <meta property="og:image:height" content="2532" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={t.title} />
     <meta name="twitter:description" content={t.description} />
     <meta name="twitter:image" content={`${site}/images/myclienti-app-1.webp`} />
+    <meta name="twitter:image:alt" content={t.alt} />
     <script is:inline type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />
     <Analytics lang={lang} />
   </head>
@@ -66,16 +76,16 @@ const schema = {
         <nav class="breadcrumb" aria-label="Breadcrumb"><a href={home}>MySagra</a><span aria-hidden="true">/</span><span aria-current="page">MyClienti</span></nav>
         <section class="hero" aria-labelledby="hero-title">
           <div class="hero-copy">
-            <h1 id="hero-title">{t.headline}<span>{t.headlineEnd}</span></h1>
+            <h1 id="hero-title">{t.headline}{' '}<span>{t.headlineEnd}</span></h1>
             <p class="lede">{t.intro}</p>
             <div class="buttons">
               <a class="btn primary" href={demo} data-umami-event="myclienti-demo-click" data-umami-event-location="hero">{t.demo}</a>
               <button class="btn secondary" type="button" data-open-contact="informazioni" data-request-type="demo" data-umami-event="contact-open" data-umami-event-location="myclienti-hero">{t.access}</button>
             </div>
-            <p class="small-note">{t.note}</p>
+            <p class="small-note">{t.note} <a href={`${home}#solutions`} data-umami-event="myclienti-plans-click" data-umami-event-location="hero">{t.plans}</a></p>
           </div>
           <figure class="hero-product">
-            <img src="/images/myclienti-app-1.webp" alt={t.alt} width="1170" height="2532" fetchpriority="high" />
+            <img src="/images/myclienti-app-1-540.webp" srcset="/images/myclienti-app-1-540.webp 540w, /images/myclienti-app-1.webp 1170w" sizes="(max-width: 363px) 200px, (max-width: 445px) 55vw, (max-width: 740px) 245px, 270px" alt={t.alt} width="1170" height="2532" fetchpriority="high" />
             <figcaption>{t.caption}</figcaption>
           </figure>
         </section>
@@ -93,23 +103,49 @@ const schema = {
           </div>
           <div class="preview">
             <div class="preview-controls" hidden aria-label={t.previewTitle}>
-              {t.previewButtons.map((label, index) => <button type="button" data-preview={index} aria-pressed={index === 0}>{label}</button>)}
+              {t.previewButtons.map((label, index) => <button type="button" data-preview={index} aria-pressed={index === 2}>{label}</button>)}
             </div>
             <figure>
-              <img id="menu-preview" src="/images/myclienti-app-2.webp" alt={t.sponsorAlt} data-event-alt={t.alt} data-sponsor-alt={t.sponsorAlt} width="1170" height="2532" loading="lazy" />
+              <div class="preview-stage">
+                <div class="preview-frame">
+                  <img id="menu-preview" src="/images/mysagra-admin-categories-540.webp" srcset="/images/mysagra-admin-categories-540.webp 540w, /images/mysagra-admin-categories.webp 1080w" sizes="(max-width: 440px) calc(100vw - 40px), 400px" alt={t.adminAlt} data-banner-alt={t.bannerAlt} data-categories-alt={t.categoriesAlt} data-admin-alt={t.adminAlt} width="1080" height="1145" loading="lazy" decoding="async" />
+                </div>
+              </div>
               <figcaption>{t.previewNote}</figcaption>
             </figure>
           </div>
         </div>
       </section>
-      <section id="sync" class="section">
+      <section id="sync" class="section" aria-labelledby="sync-title">
         <div class="container">
-          <div class="section-heading"><h2>{t.syncTitle}</h2><p class="section-intro">{t.syncIntro}</p></div>
-          <div class="ecosystem-flow">
-            {['MySagra', 'MyCassa', 'MyClienti'].map((name, index) => <div class:list={['system', { 'system-core': index === 0 }]}><span class="system-name">{name}</span><p>{t.syncRoles[index]}</p></div>)}
+          <div class="sync-grid">
+            <div class="sync-copy">
+              <h2 id="sync-title">{t.syncTitle}</h2>
+              <p class="section-intro"><strong>{t.syncLive}</strong> {t.syncIntro}</p>
+              <a class="text-action" href={`${home}#ecosystem`}>{t.ecosystem}<svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h16m-6-6 6 6-6 6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" /></svg></a>
+            </div>
+            <figure class="ecosystem-flow" aria-label={t.syncDiagram}>
+              <div class="sync-hub">
+                <svg class="sync-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="7" rx="2" stroke="currentColor" stroke-width="1.5" /><rect x="3" y="14" width="18" height="7" rx="2" stroke="currentColor" stroke-width="1.5" /><path d="M7 6.5h.01M7 17.5h.01M12 6.5h5M12 17.5h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg>
+                <h3>MySagra</h3><p>{t.syncRoles[0]}</p>
+              </div>
+              <div class="sync-connectors" aria-hidden="true"><span></span></div>
+              <div class="sync-endpoints">
+                <div class="sync-node">
+                  <svg class="sync-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="6" y="2" width="12" height="20" rx="3" stroke="currentColor" stroke-width="1.5" /><path d="M10 5h4M11 19h2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg>
+                  <h3>MyClienti</h3><p>{t.syncRoles[1]}</p>
+                </div>
+                <div class="sync-node">
+                  <svg class="sync-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="12" rx="2" stroke="currentColor" stroke-width="1.5" /><path d="M9 15v4m6-4v4M6 20h12M7 7h10M7 11h5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg>
+                  <h3>MyCassa</h3><p>{t.syncRoles[2]}</p>
+                </div>
+              </div>
+            </figure>
           </div>
-          <p class="sync-note">{t.syncNote}</p>
-          <a class="text-action" href={`${home}#ecosystem`}>{t.ecosystem}</a>
+          <div class="order-recovery">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="10.5" cy="10.5" r="7" stroke="currentColor" stroke-width="1.5" /><path d="m16 16 5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /><circle cx="10.5" cy="8.5" r="2" stroke="currentColor" stroke-width="1.5" /><path d="M7 14c.5-2 6.5-2 7 0" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" /></svg>
+            <div><h3>{t.recoveryTitle}</h3><p>{t.recoveryCopy}</p></div>
+          </div>
         </div>
       </section>
       <section id="share" class="section warm">
@@ -118,12 +154,29 @@ const schema = {
           <dl class="share-details">{t.shareDetails.map(([title, desc]) => <div><dt>{title}</dt><dd>{desc}</dd></div>)}</dl>
         </div>
       </section>
-      <section id="access" class="section">
+      <section id="ordering" class="section" aria-labelledby="ordering-title">
+        <div class="container">
+          <div class="section-heading"><h2 id="ordering-title">{t.orderTitle}</h2><p class="section-intro">{t.orderIntro}</p></div>
+          <ol class="order-steps">
+            {orderScreens.map((screen, index) => <li>
+              <div class="order-step-heading"><span class="step" aria-hidden="true">{index + 1}</span><h3>{t.orderSteps[index][0]}</h3></div>
+              <p>{t.orderSteps[index][1]}</p>
+              <img src={`/images/${screen.name}-540.webp`} srcset={`/images/${screen.name}-540.webp 540w, /images/${screen.name}.webp 1080w`} sizes="(max-width: 740px) 270px, (max-width: 850px) 200px, 270px" alt={t.orderSteps[index][2]} width="1080" height={screen.height} loading="lazy" decoding="async" />
+            </li>)}
+          </ol>
+          <p class="order-note">{t.orderNote}</p>
+        </div>
+      </section>
+      <section id="access" class="section warm">
         <div class="container">
           <div class="section-heading"><h2>{t.demoTitle}</h2><p class="section-intro">{t.demoIntro}</p></div>
           <div class="access-grid">
             <article><h3>{t.publicTitle}</h3><p>{t.publicCopy}</p><a class="btn primary" href={demo} data-umami-event="myclienti-demo-click" data-umami-event-location="access">{t.demo}</a></article>
             <article><h3>{t.adminTitle}</h3><p>{t.adminCopy}</p><button class="btn secondary" type="button" data-open-contact="informazioni" data-request-type="demo" data-umami-event="contact-open" data-umami-event-location="myclienti-access">{t.access}</button></article>
+          </div>
+          <div class="plans-callout">
+            <div><h3>{t.plansTitle}</h3><p>{t.plansCopy}</p></div>
+            <a class="btn primary" href={`${home}#solutions`} data-umami-event="myclienti-plans-click" data-umami-event-location="access">{t.plans}</a>
           </div>
         </div>
       </section>
@@ -131,7 +184,7 @@ const schema = {
         <div class="container faq-grid"><h2 id="faq-title">{t.faqTitle}</h2><div>{t.faq.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}</div></div>
       </section>
       <section class="closing">
-        <div class="container"><h2>{t.closing}</h2><p>{t.closingCopy}</p><div class="buttons"><a class="btn primary" href={demo} data-umami-event="myclienti-demo-click" data-umami-event-location="closing">{t.demo}</a><button class="btn dark-secondary" type="button" data-open-contact="informazioni" data-request-type="demo">{t.access}</button></div></div>
+        <div class="container"><h2>{t.closing}</h2><p>{t.closingCopy}</p><div class="buttons"><a class="btn primary" href={`${home}#solutions`} data-umami-event="myclienti-plans-click" data-umami-event-location="closing">{t.plans}</a><button class="btn dark-secondary" type="button" data-open-contact="informazioni" data-request-type="demo">{t.access}</button></div></div>
       </section>
     </main>
     <Footer lang={lang} />
@@ -156,6 +209,7 @@ const schema = {
   .secondary { background: var(--color-surface); border-color: var(--color-neutral-200); }
   .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-soft); }
   .secondary:hover { border-color: var(--color-ink); }
+  .small-note a { display: inline-block; font-weight: 600; padding-block: .5rem; }
   .small-note { margin-top: 1.2rem; font-size: .86rem; color: #52565e; max-width: 48ch; }
   figure { margin: 0; }
   .hero-product { justify-self: center; text-align: center; }
@@ -181,22 +235,43 @@ const schema = {
   .fields > div { padding-block: 1.1rem; border-bottom: 1px solid var(--color-neutral-200); }
   .text-action { display: inline-flex; gap: .5rem; color: var(--color-ink); border: 0; background: none; padding: .65rem 0; font-weight: 600; text-decoration: underline; cursor: pointer; font-size: 1rem; text-underline-offset: .25em; }
   .text-action:hover { text-decoration-thickness: 2px; }
-  .preview { text-align: center; }
+  .preview { text-align: center; overflow: clip; padding-block: 1.5rem; margin-block: -1.5rem; }
   .preview-controls { display: flex; justify-content: center; background: var(--color-neutral-200); border-radius: var(--radius-sm); padding: .3rem; gap: .25rem; margin: 0 auto 1.5rem; width: fit-content; }
   .preview-controls[hidden] { display: none; }
   .preview-controls button { border: 0; background: transparent; border-radius: var(--radius-sm); padding: .75rem .85rem; font-size: .85rem; cursor: pointer; }
   .preview-controls button[aria-pressed="true"] { background: var(--color-surface); box-shadow: var(--shadow-soft); }
-  .preview img { width: 265px; height: auto; margin-inline: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-lifted); border: 1px solid var(--color-neutral-200); }
-  .preview img.changed { animation: preview-change .3s cubic-bezier(.16, 1, .3, 1); }
-  @keyframes preview-change { from { transform: translateY(8px); } to { transform: translateY(0); } }
+  .preview-stage { position: relative; width: min(100%, 400px); aspect-ratio: 1080 / 1145; margin-inline: auto; }
+  .preview-frame { width: 100%; height: 100%; overflow: hidden; border-radius: var(--radius-lg); box-shadow: var(--shadow-lifted); background: var(--color-surface); }
+  .preview-frame img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .preview-stage :global(.preview-outgoing) { position: absolute; inset: 0; pointer-events: none; }
+  .order-steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2rem; padding: 0; margin: 3rem 0 0; list-style: none; }
+  .order-step-heading { display: flex; align-items: center; gap: .75rem; }
+  .order-step-heading h3 { font-size: 1.1rem; line-height: 1.3; }
+  .order-steps p { color: #454950; margin-top: .8rem; min-height: 4.7rem; }
+  .order-steps img { width: 270px; height: auto; margin: 1.5rem auto 0; border-radius: var(--radius-lg); box-shadow: var(--shadow-soft); }
+  .order-note { font-size: .875rem; color: #52565e; text-align: center; margin: 2rem auto 0; max-width: 75ch; }
   .section-heading { max-width: 49rem; margin-inline: auto; text-align: center; }
-  .ecosystem-flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
-  .system { padding: 2.2rem; border: 1px solid var(--color-neutral-200); border-radius: var(--radius-lg); background: var(--color-surface-warm); }
-  .system-name { font: 700 1.5rem var(--font-display); }
-  .system p { margin-top: .6rem; font-size: .95rem; }
-  .system-core { background: var(--color-ink); color: var(--color-surface); }
-  .system-core .system-name { color: var(--color-yellow); }
-  .sync-note { margin-top: 1.5rem; font-size: .95rem; }
+  .sync-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; }
+  .sync-copy h2 { max-width: 20ch; }
+  .sync-copy .text-action { margin-top: 1.3rem; gap: .75rem; }
+  .ecosystem-flow { padding: 2rem; background: var(--color-surface-warm); border-radius: var(--radius-lg); }
+  .sync-hub { padding: 1.5rem; background: var(--color-ink); color: var(--color-surface); border-radius: var(--radius); text-align: center; }
+  .sync-copy strong { color: var(--color-ink); }
+  .sync-hub .sync-icon { color: var(--color-ink); background: var(--color-yellow); }
+  .sync-hub h3 { font-size: 1.6rem; color: var(--color-yellow); }
+  .sync-hub p { margin-top: .4rem; font-size: .95rem; }
+  .sync-connectors { position: relative; height: 3rem; width: 50%; margin-inline: auto; }
+  .sync-connectors::before { content: ''; position: absolute; top: 0; left: 50%; height: 50%; border-left: 1px solid var(--color-ink); }
+  .sync-connectors span { position: absolute; inset: 50% 0 0; border: 1px solid var(--color-ink); border-bottom: 0; border-radius: .5rem .5rem 0 0; }
+  .sync-endpoints { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .sync-node { padding: 1.25rem 1rem; border: 1px solid var(--color-neutral-200); background: var(--color-surface); border-radius: var(--radius); text-align: center; }
+  .sync-icon { display: block; box-sizing: content-box; padding: .6rem; margin: 0 auto .8rem; border-radius: var(--radius-sm); background: color-mix(in srgb, var(--color-yellow) 16%, transparent); }
+  .sync-node h3 { font-size: 1.2rem; }
+  .sync-node p { font-size: .95rem; margin-top: .5rem; }
+  .order-recovery { display: flex; align-items: flex-start; gap: 1.25rem; padding: 2rem; margin-top: 3rem; background: var(--color-surface-warm); border-radius: var(--radius-lg); }
+  .order-recovery > svg { flex-shrink: 0; box-sizing: content-box; padding: .75rem; background: var(--color-yellow); border-radius: var(--radius-sm); }
+  .order-recovery h3 { font-size: 1.25rem; line-height: 1.3; }
+  .order-recovery p { margin-top: .65rem; color: #454950; max-width: 80ch; }
   .share-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 6rem; }
   .share-grid .btn { margin-top: 1.7rem; }
   .share-details > div { padding-block: 1.3rem; border-bottom: 1px solid var(--color-neutral-200); }
@@ -205,6 +280,9 @@ const schema = {
   .access-grid article { display: flex; flex-direction: column; align-items: flex-start; padding: 2.25rem; border: 1px solid var(--color-neutral-200); border-radius: var(--radius-lg); }
   .access-grid p { margin-block: 1rem 1.5rem; color: #454950; }
   .access-grid .btn { margin-top: auto; }
+  .plans-callout { display: flex; align-items: center; justify-content: space-between; gap: 2rem; margin-top: 2.5rem; padding-top: 2.5rem; border-top: 1px solid var(--color-neutral-200); }
+  .plans-callout p { max-width: 62ch; margin-top: .8rem; color: #454950; }
+  .plans-callout .btn { flex-shrink: 0; }
   .faq-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 5rem; }
   details { border-bottom: 1px solid var(--color-neutral-200); padding-block: 1.1rem; }
   details:first-child { padding-top: 0; }
@@ -217,22 +295,52 @@ const schema = {
   .dark-secondary:hover { border-color: var(--color-surface); }
   @media (max-width: 850px) {
     .hero { gap: 2rem; grid-template-columns: 1.2fr 1fr; }
+    .plans-callout { align-items: flex-start; flex-direction: column; }
     .customize-grid, .share-grid { gap: 2.5rem; }
     .faq-grid { gap: 2rem; grid-template-columns: 1fr 1.4fr; }
     .journey a { padding-inline: .65rem; gap: .6rem; }
-    .system { padding: 1.5rem; }
+    .sync-grid { gap: 2rem; }
+    .ecosystem-flow { padding: 1.25rem; }
   }
-  @media (max-width: 640px) {
+  @media (max-width: 740px) {
     .container { padding-inline: 1.25rem; }
     .hero, .customize-grid, .share-grid, .faq-grid { grid-template-columns: 1fr; }
-    .hero { padding-top: 2rem; gap: 2.5rem; }
-    h1 { font-size: 2.55rem; max-width: 17ch; }
-    .hero-product img { width: 245px; }
+    .breadcrumb { padding-top: 1.2rem; }
+    .hero { padding-block: 1.5rem 2.5rem; gap: 2rem; }
+    h1 { font-size: clamp(2rem, 7.5vw, 2.8rem); max-width: 20ch; }
+    .lede { margin-top: 1.2rem; font-size: 1.0625rem; }
+    .buttons { flex-direction: column; align-items: stretch; gap: .65rem; margin-top: 1.4rem; }
+    .btn { text-align: center; }
+    .small-note { margin-top: 1rem; font-size: .95rem; }
+    .hero-product { width: 100%; }
+    .hero-product img { width: clamp(200px, 55vw, 245px); margin-inline: auto; }
+    figcaption { font-size: .875rem; }
+    .preview-controls { width: 100%; max-width: 22rem; }
+    .preview-controls button { flex: 1; min-height: 44px; font-size: .9rem; padding-inline: .55rem; }
+    .order-steps { grid-template-columns: 1fr; gap: 2.5rem; margin-top: 2rem; }
+    .order-steps p { min-height: 0; }
+    .order-steps img { max-width: 100%; }
+    .order-note { text-align: left; }
+    .journey-desc { font-size: .95rem; }
+    .customize-grid, .share-grid, .faq-grid { gap: 2rem; }
+    .fields { margin-block: 1.5rem; }
+    .section-intro { margin-top: 1rem; }
+    .share-grid .btn, .access-grid .btn, .plans-callout .btn { width: 100%; }
+    .access-grid { margin-top: 2rem; gap: 1rem; }
+    .sync-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .sync-copy h2 { max-width: none; }
+    .sync-node { padding: 1rem .65rem; }
+    .sync-node h3 { font-size: 1.05rem; }
+    .sync-node p { font-size: .875rem; }
+    .order-recovery { flex-direction: column; padding: 1.5rem; gap: 1rem; margin-top: 2rem; }
+    .order-recovery > svg { width: 24px; height: 24px; padding: .5rem; }
+    .plans-callout { gap: 1.25rem; margin-top: 2rem; padding-top: 2rem; }
+    .closing .buttons { max-width: 25rem; margin-inline: auto; }
     .journey { grid-template-columns: 1fr; margin-bottom: 3rem; }
     .journey li + li { border-left: 0; border-top: 1px solid var(--color-neutral-200); }
     .journey a { padding: 1.1rem .4rem; }
     .section { padding-block: 3.5rem; scroll-margin-top: 8rem; }
-    .ecosystem-flow, .access-grid { grid-template-columns: 1fr; }
+    .access-grid { grid-template-columns: 1fr; }
     .section-heading { text-align: left; }
     .access-grid article { padding: 1.5rem; }
     .closing { padding-block: 3.5rem; }
@@ -242,18 +350,62 @@ const schema = {
 <script>
   const preview = document.querySelector<HTMLImageElement>('#menu-preview');
   const controls = document.querySelector<HTMLElement>('.preview-controls');
-  if (preview && controls) {
-    // Controls progressively enhance the static sponsor screenshot.
+  const frame = document.querySelector<HTMLElement>('.preview-frame');
+  const stage = document.querySelector<HTMLElement>('.preview-stage');
+  if (preview && controls && frame && stage) {
     controls.hidden = false;
     const buttons = [...controls.querySelectorAll<HTMLButtonElement>('button')];
-    const selectPreview = (index: number) => {
-      preview.src = `/images/myclienti-app-${index + 1}.webp`;
-      preview.alt = (index === 0 ? preview.dataset.eventAlt : preview.dataset.sponsorAlt) || '';
+    const names = ['myclienti-preview-banner', 'myclienti-preview-categories', 'mysagra-admin-categories'];
+    const alts = [preview.dataset.bannerAlt, preview.dataset.categoriesAlt, preview.dataset.adminAlt];
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let currentIndex = 2;
+    let requestId = 0;
+    let animations: Animation[] = [];
+
+    const selectPreview = async (index: number) => {
+      const id = ++requestId;
+      animations.forEach((animation) => animation.cancel());
+      stage.querySelector('.preview-outgoing')?.remove();
+      if (index === currentIndex) return;
+
+      const next = new Image();
+      next.sizes = preview.sizes;
+      next.srcset = `/images/${names[index]}-540.webp 540w, /images/${names[index]}.webp 1080w`;
+      next.src = `/images/${names[index]}-540.webp`;
+      try {
+        await next.decode();
+      } catch {
+        return;
+      }
+      if (id !== requestId) return;
+
+      const outgoing = frame.cloneNode(true) as HTMLElement;
+      outgoing.classList.add('preview-outgoing');
+      outgoing.querySelector('img')?.removeAttribute('id');
+      outgoing.setAttribute('aria-hidden', 'true');
+      const direction = index > currentIndex ? 1 : -1;
+      preview.srcset = next.srcset;
+      preview.src = next.src;
+      preview.alt = alts[index] || '';
+      currentIndex = index;
       buttons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
-      preview.classList.remove('changed');
-      requestAnimationFrame(() => preview.classList.add('changed'));
+      if (reducedMotion.matches) return;
+
+      stage.append(outgoing);
+      const timing = { duration: 360, easing: 'cubic-bezier(.16, 1, .3, 1)' };
+      animations = [
+        outgoing.animate([
+          { transform: 'translateX(0) rotate(0)', opacity: 1 },
+          { transform: `translateX(${-direction * 64}px) rotate(${-direction * 3}deg)`, opacity: 0 },
+        ], { ...timing, fill: 'forwards' }),
+        frame.animate([
+          { transform: `translateX(${direction * 64}px) rotate(${direction * 3}deg)`, opacity: 0 },
+          { transform: 'translateX(0) rotate(0)', opacity: 1 },
+        ], timing),
+      ];
+      await Promise.allSettled(animations.map((animation) => animation.finished));
+      outgoing.remove();
     };
-    buttons.forEach((button, index) => button.addEventListener('click', () => selectPreview(index)));
-    selectPreview(0);
+    buttons.forEach((button, index) => button.addEventListener('click', () => { void selectPreview(index); }));
   }
 </script>
