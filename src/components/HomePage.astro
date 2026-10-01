@@ -8,6 +8,7 @@ import "@fontsource/work-sans/600.css";
 import "@fontsource/work-sans/700.css";
 import "../styles/global.css";
 import Header from "./Header.astro";
+import Footer from "./Footer.astro";
 import ContactModal from "./ContactModal.astro";
 import Logo from "./Logo.astro";
 import Analytics from "./Analytics.astro";
@@ -486,6 +487,7 @@ const icons: Record<string, string> = {
 									)}
 									<h3>{item.name}</h3>
 									<p>{item.desc}</p>
+									{item.role === "cliente" && <a href={lang === "en" ? "/en/myclienti/" : "/myclienti/"} data-umami-event="myclienti-page-click">{lang === "en" ? "Explore MyClienti and your online menu" : "Scopri MyClienti e il tuo menu online"}</a>}
 								</div>
 							</div>
 						))
@@ -558,46 +560,7 @@ const icons: Record<string, string> = {
 			</section>
 		</main>
 
-		<footer class="site-footer">
-			<div class="footer-inner">
-				<div class="footer-top">
-					<div class="footer-brand">
-						<a href="#top" class="footer-brand-link" title={lang === "en" ? "Back to top" : "Torna in cima alla pagina"} data-umami-event="nav-click" data-umami-event-section="top" data-umami-event-location="footer">
-							<Logo width={28} height={28} decorative />
-							<span>MySagra</span>
-						</a>
-						<p class="footer-tagline">{t.footer.tagline}</p>
-						<a class="gh-star" href="https://github.com/mysagra" target="_blank" rel="noopener" title={lang === "en" ? "Star MySagra on GitHub" : "Metti una stella a MySagra su GitHub"} data-umami-event="github-click" data-umami-event-location="footer">
-							<svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
-								<path d="M8 .3 10 5l5.3.4-4 3.6 1.2 5.2L8 11.5l-4.5 2.7L4.7 9l-4-3.6L6 5 8 .3Z" />
-							</svg>
-							{t.footer.ghStar}
-						</a>
-					</div>
-
-					<div class="footer-col">
-						<p class="footer-col-title">{t.footer.prodotto.title}</p>
-						<a href="#benefits" title={lang === "en" ? "Jump to the Benefits section" : "Vai alla sezione Vantaggi"} data-umami-event="nav-click" data-umami-event-section="benefits" data-umami-event-location="footer">{t.footer.prodotto.vantaggi}</a>
-						<a href="#solutions" title={lang === "en" ? "Jump to the Plans section" : "Vai alla sezione Soluzioni"} data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="footer">{t.footer.prodotto.soluzioni}</a>
-						<a href="#ecosystem" title={lang === "en" ? "Jump to the Ecosystem section" : "Vai alla sezione Ecosistema"} data-umami-event="nav-click" data-umami-event-section="ecosystem" data-umami-event-location="footer">{t.footer.prodotto.ecosistema}</a>
-					</div>
-
-					<div class="footer-col">
-						<p class="footer-col-title">{t.footer.risorse.title}</p>
-						<a href="https://docs.mysagra.com" target="_blank" rel="noopener" title={lang === "en" ? "Open MySagra documentation" : "Apri la documentazione MySagra"} data-umami-event="docs-click" data-umami-event-location="footer">{t.footer.risorse.docs}</a>
-						<a href={`mailto:${t.footer.risorse.support}`} title={lang === "en" ? `Email ${t.footer.risorse.support}` : `Invia un'email a ${t.footer.risorse.support}`} data-umami-event="support-email-click" data-umami-event-location="footer">{t.footer.risorse.support}</a>
-					</div>
-				</div>
-
-				<div class="footer-bottom">
-					<p class="copy">© {new Date().getFullYear()} {t.footer.copyright}</p>
-					<div class="footer-legal">
-						<a href={lang === "en" ? "/en/privacy-policy" : "/privacy-policy"} title={lang === "en" ? "Read the Privacy Policy" : "Leggi la Privacy Policy"} data-umami-event="legal-click" data-umami-event-page="privacy">{t.privacyPolicy.h1}</a>
-						<a href={lang === "en" ? "/en/cookie-policy" : "/cookie-policy"} title={lang === "en" ? "Read the Cookie Policy" : "Leggi la Cookie Policy"} data-umami-event="legal-click" data-umami-event-page="cookie">{t.cookiePolicy.h1}</a>
-					</div>
-				</div>
-			</div>
-		</footer>
+		<Footer lang={lang} />
 
 		<ContactModal lang={lang} />
 
@@ -1851,117 +1814,6 @@ const icons: Record<string, string> = {
 				border-color: var(--color-ink);
 			}
 
-			.site-footer {
-				background: var(--color-surface);
-				border-top: 1px solid var(--color-neutral-200);
-				padding: clamp(3rem, 6vw, 4rem) 1.5rem 2rem;
-			}
-			.footer-inner {
-				max-width: 68rem;
-				margin: 0 auto;
-			}
-			.footer-top {
-				display: grid;
-				grid-template-columns: 1.4fr 1fr 1fr;
-				gap: 3rem;
-				padding-bottom: 2.75rem;
-			}
-			.footer-brand-link {
-				display: inline-flex;
-				align-items: center;
-				gap: 0.5rem;
-				text-decoration: none;
-				color: var(--color-ink);
-				font-family: var(--font-display);
-				font-weight: 700;
-				font-size: 1.1rem;
-				margin-bottom: 0.75rem;
-			}
-			.footer-tagline {
-				color: var(--color-neutral-500);
-				font-size: 0.92rem;
-				max-width: 20rem;
-				margin-bottom: 1.5rem;
-			}
-			.footer-col-title {
-				font-size: 0.72rem;
-				text-transform: uppercase;
-				letter-spacing: 0.05em;
-				font-weight: 600;
-				color: var(--color-neutral-500);
-				margin-bottom: 1rem;
-			}
-			.footer-col {
-				display: flex;
-				flex-direction: column;
-				align-items: flex-start;
-				gap: 0.85rem;
-			}
-			.footer-col a,
-			.link-btn {
-				text-decoration: none;
-				color: var(--color-ink);
-				font-size: 0.92rem;
-				font-weight: 500;
-				opacity: 0.75;
-				background: none;
-				border: none;
-				padding: 0;
-				cursor: pointer;
-				font-family: var(--font-body);
-			}
-			.footer-col a:hover,
-			.link-btn:hover {
-				opacity: 1;
-			}
-			.gh-star {
-				display: inline-flex;
-				align-items: center;
-				gap: 0.4rem;
-				text-decoration: none;
-				color: var(--color-ink);
-				font-size: 0.85rem;
-				font-weight: 600;
-				border: 1px solid var(--color-neutral-200);
-				border-radius: var(--radius-pill);
-				padding: 0.45rem 0.95rem;
-				transition: border-color 0.15s ease;
-			}
-			.gh-star:hover {
-				border-color: var(--color-ink);
-			}
-			.footer-bottom {
-				padding-top: 1.75rem;
-				border-top: 1px solid var(--color-neutral-200);
-				text-align: center;
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				gap: 0.6rem;
-			}
-			.copy {
-				font-size: 0.82rem;
-				color: var(--color-neutral-500);
-			}
-			.footer-legal {
-				display: flex;
-				gap: 1rem;
-			}
-			.footer-legal a {
-				font-size: 0.78rem;
-				color: var(--color-neutral-500);
-				text-decoration: none;
-			}
-			.footer-legal a:hover {
-				color: var(--color-ink);
-			}
-
-			@media (max-width: 40rem) {
-				.footer-top {
-					grid-template-columns: 1fr;
-					gap: 2.25rem;
-				}
-			}
 		</style>
 	</body>
 </html>

@@ -30,6 +30,8 @@ Ecosystem components, all connecting to the MySagra core:
 | **MyNumeri** | Public order-number display monitor. |
 | **MyClienti** | Customer-facing app, skinned per sagra (colors, events, sponsors): menu browsing, self-order, pre-order. Payment always happens at the counter — never through the app. Included in every plan. |
 
+MyClienti's public menu can be browsed without registration. Organizers customize dishes, descriptions, categories, images, banners, and customer instructions from the MySagra management panel, without writing code. The public demo at https://clientidemo.mysagra.com/ demonstrates the customer experience; management-panel credentials must be requested separately to try customization.
+
 Event conditions the product is built around: volunteer, largely untrained staff; unreliable outdoor Wi-Fi; roughly one week of setup time; multi-night events with zero tolerance for downtime.
 
 ## Capabilities and Constraints

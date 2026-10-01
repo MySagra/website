@@ -4,9 +4,10 @@ import type { Lang } from "../i18n/ui";
 
 interface Props {
 	lang: Lang;
+	defaultSubject?: string;
 }
 
-const { lang } = Astro.props;
+const { lang, defaultSubject = "" } = Astro.props;
 const t = getContent(lang).contactModal;
 ---
 
@@ -73,7 +74,7 @@ const t = getContent(lang).contactModal;
 
 			<label class="field">
 				<span>{t.fieldSubject}</span>
-				<input type="text" name="subject" placeholder={t.placeholderSubject} required />
+				<input type="text" name="subject" placeholder={t.placeholderSubject} value={defaultSubject} required />
 			</label>
 
 			<label class="field">

@@ -1,0 +1,259 @@
+---
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
+import '@fontsource/work-sans/400.css';
+import '@fontsource/work-sans/500.css';
+import '@fontsource/work-sans/600.css';
+import '../styles/global.css';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import ContactModal from './ContactModal.astro';
+import Analytics from './Analytics.astro';
+import { getMyClientiContent } from '../i18n/myclienti';
+import type { Lang } from '../i18n/ui';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = getMyClientiContent(lang);
+const home = lang === 'en' ? '/en/' : '/';
+const path = `${home}myclienti/`;
+const site = 'https://mysagra.com';
+const canonical = `${site}${path}`;
+const demo = 'https://clientidemo.mysagra.com/';
+const ids = ['customize', 'sync', 'share'];
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: t.title, description: t.description, inLanguage: lang, about: { '@id': `${canonical}#software` } },
+    { '@type': 'SoftwareApplication', '@id': `${canonical}#software`, name: 'MyClienti', applicationCategory: 'BusinessApplication', operatingSystem: 'Web', url: canonical, description: t.description, publisher: { '@type': 'Organization', name: 'MySagra', url: site } },
+    { '@type': 'BreadcrumbList', itemListElement: [{ '@type': 'ListItem', position: 1, name: 'MySagra', item: `${site}${home}` }, { '@type': 'ListItem', position: 2, name: 'MyClienti', item: canonical }] },
+    { '@type': 'FAQPage', inLanguage: lang, mainEntity: t.faq.map(([q, a]) => ({ '@type': 'Question', name: q, acceptedAnswer: { '@type': 'Answer', text: a } })) },
+  ],
+};
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t.title}</title>
+    <meta name="description" content={t.description} />
+    <meta name="theme-color" content="#FECC01" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" hreflang="it" href={`${site}/myclienti/`} />
+    <link rel="alternate" hreflang="en" href={`${site}/en/myclienti/`} />
+    <link rel="alternate" hreflang="x-default" href={`${site}/myclienti/`} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MySagra" />
+    <meta property="og:title" content={t.title} />
+    <meta property="og:description" content={t.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'it_IT'} />
+    <meta property="og:image" content={`${site}/images/myclienti-app-1.webp`} />
+    <meta property="og:image:alt" content={t.alt} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={t.title} />
+    <meta name="twitter:description" content={t.description} />
+    <meta name="twitter:image" content={`${site}/images/myclienti-app-1.webp`} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />
+    <Analytics lang={lang} />
+  </head>
+  <body>
+    <a href="#main" class="skip-link">{lang === 'en' ? 'Skip to content' : 'Vai al contenuto'}</a>
+    <Header lang={lang} />
+    <main id="main">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href={home}>MySagra</a><span aria-hidden="true">/</span><span aria-current="page">MyClienti</span></nav>
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <h1 id="hero-title">{t.headline}<span>{t.headlineEnd}</span></h1>
+            <p class="lede">{t.intro}</p>
+            <div class="buttons">
+              <a class="btn primary" href={demo} data-umami-event="myclienti-demo-click" data-umami-event-location="hero">{t.demo}</a>
+              <button class="btn secondary" type="button" data-open-contact="informazioni" data-request-type="demo" data-umami-event="contact-open" data-umami-event-location="myclienti-hero">{t.access}</button>
+            </div>
+            <p class="small-note">{t.note}</p>
+          </div>
+          <figure class="hero-product">
+            <img src="/images/myclienti-app-1.webp" alt={t.alt} width="1170" height="2532" fetchpriority="high" />
+            <figcaption>{t.caption}</figcaption>
+          </figure>
+        </section>
+        <ol class="journey" aria-label={lang === 'en' ? 'From your idea to your online menu' : 'Dalla tua idea al menu online'}>
+          {t.journey.map(([title, desc], index) => <li><a href={`#${ids[index]}`}><span class="step" aria-hidden="true">{index + 1}</span><span><strong>{title}</strong><span class="journey-desc">{desc}</span></span></a></li>)}
+        </ol>
+      </div>
+      <section id="customize" class="section warm">
+        <div class="container customize-grid">
+          <div>
+            <h2>{t.customizeTitle}</h2>
+            <p class="section-intro">{t.customizeIntro}</p>
+            <dl class="fields">{t.fields.map(([title, desc]) => <div><dt>{title}</dt><dd>{desc}</dd></div>)}</dl>
+            <button class="text-action" type="button" data-open-contact="informazioni" data-request-type="demo">{t.access}</button>
+          </div>
+          <div class="preview">
+            <div class="preview-controls" hidden aria-label={t.previewTitle}>
+              {t.previewButtons.map((label, index) => <button type="button" data-preview={index} aria-pressed={index === 0}>{label}</button>)}
+            </div>
+            <figure>
+              <img id="menu-preview" src="/images/myclienti-app-2.webp" alt={t.sponsorAlt} data-event-alt={t.alt} data-sponsor-alt={t.sponsorAlt} width="1170" height="2532" loading="lazy" />
+              <figcaption>{t.previewNote}</figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+      <section id="sync" class="section">
+        <div class="container">
+          <div class="section-heading"><h2>{t.syncTitle}</h2><p class="section-intro">{t.syncIntro}</p></div>
+          <div class="ecosystem-flow">
+            {['MySagra', 'MyCassa', 'MyClienti'].map((name, index) => <div class:list={['system', { 'system-core': index === 0 }]}><span class="system-name">{name}</span><p>{t.syncRoles[index]}</p></div>)}
+          </div>
+          <p class="sync-note">{t.syncNote}</p>
+          <a class="text-action" href={`${home}#ecosystem`}>{t.ecosystem}</a>
+        </div>
+      </section>
+      <section id="share" class="section warm">
+        <div class="container share-grid">
+          <div><h2>{t.shareTitle}</h2><p class="section-intro">{t.shareIntro}</p><a class="btn primary" href={demo} data-umami-event="myclienti-demo-click" data-umami-event-location="share">{t.demo}</a></div>
+          <dl class="share-details">{t.shareDetails.map(([title, desc]) => <div><dt>{title}</dt><dd>{desc}</dd></div>)}</dl>
+        </div>
+      </section>
+      <section id="access" class="section">
+        <div class="container">
+          <div class="section-heading"><h2>{t.demoTitle}</h2><p class="section-intro">{t.demoIntro}</p></div>
+          <div class="access-grid">
+            <article><h3>{t.publicTitle}</h3><p>{t.publicCopy}</p><a class="btn primary" href={demo} data-umami-event="myclienti-demo-click" data-umami-event-location="access">{t.demo}</a></article>
+            <article><h3>{t.adminTitle}</h3><p>{t.adminCopy}</p><button class="btn secondary" type="button" data-open-contact="informazioni" data-request-type="demo" data-umami-event="contact-open" data-umami-event-location="myclienti-access">{t.access}</button></article>
+          </div>
+        </div>
+      </section>
+      <section class="section warm faq" aria-labelledby="faq-title">
+        <div class="container faq-grid"><h2 id="faq-title">{t.faqTitle}</h2><div>{t.faq.map(([q, a]) => <details><summary>{q}</summary><p>{a}</p></details>)}</div></div>
+      </section>
+      <section class="closing">
+        <div class="container"><h2>{t.closing}</h2><p>{t.closingCopy}</p><div class="buttons"><a class="btn primary" href={demo} data-umami-event="myclienti-demo-click" data-umami-event-location="closing">{t.demo}</a><button class="btn dark-secondary" type="button" data-open-contact="informazioni" data-request-type="demo">{t.access}</button></div></div>
+      </section>
+    </main>
+    <Footer lang={lang} />
+    <ContactModal lang={lang} defaultSubject={t.subject} />
+  </body>
+</html>
+
+<style>
+  :global(body) { background: var(--color-surface); }
+  .container { max-width: 71rem; padding-inline: 1.5rem; margin-inline: auto; }
+  a { text-underline-offset: .22em; }
+  .skip-link { position: fixed; top: -6rem; left: 1rem; z-index: 100; padding: .75rem; background: var(--color-yellow); }
+  .skip-link:focus { top: 1rem; }
+  .breadcrumb { display: flex; gap: .75rem; font-size: .85rem; padding-top: 1.8rem; color: #52565e; }
+  .hero { display: grid; grid-template-columns: 1.3fr 1fr; gap: 4rem; align-items: center; padding: 2.2rem 0 3.5rem; }
+  h1 { font-size: clamp(2.3rem, 4.1vw, 3.6rem); line-height: 1.1; max-width: 16ch; }
+  h1 span { display: block; margin-top: .22em; }
+  .lede { margin-top: 1.6rem; font-size: 1.14rem; max-width: 49ch; color: #454950; }
+  .buttons { display: flex; flex-wrap: wrap; gap: .8rem; margin-top: 1.8rem; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; gap: .8rem; padding: .9rem 1.45rem; min-height: 48px; border-radius: var(--radius-pill); border: 1px solid transparent; font-size: .95rem; font-weight: 600; text-decoration: none; cursor: pointer; transition: transform .2s, box-shadow .2s, border-color .2s; }
+  .primary { background: var(--color-yellow); color: var(--color-ink); }
+  .secondary { background: var(--color-surface); border-color: var(--color-neutral-200); }
+  .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-soft); }
+  .secondary:hover { border-color: var(--color-ink); }
+  .small-note { margin-top: 1.2rem; font-size: .86rem; color: #52565e; max-width: 48ch; }
+  figure { margin: 0; }
+  .hero-product { justify-self: center; text-align: center; }
+  .hero-product img { width: 270px; height: auto; border: 1px solid var(--color-neutral-200); border-radius: var(--radius-lg); box-shadow: var(--shadow-lifted); }
+  figcaption { margin: 1.1rem auto 0; max-width: 37ch; font-size: .78rem; color: #52565e; }
+  .journey { display: grid; grid-template-columns: repeat(3, 1fr); list-style: none; padding: 0; margin: 0 0 4rem; border-block: 1px solid var(--color-neutral-200); }
+  .journey li + li { border-left: 1px solid var(--color-neutral-200); }
+  .journey a { display: flex; align-items: center; gap: .9rem; padding: 1.5rem 1.1rem; text-decoration: none; height: 100%; }
+  .journey a:hover { background: var(--color-surface-warm); }
+  .step { display: grid; place-items: center; width: 2rem; height: 2rem; flex-shrink: 0; background: var(--color-yellow); border-radius: 50%; font-weight: 600; font-size: .9rem; }
+  .journey strong { display: block; font-family: var(--font-display); font-size: 1rem; }
+  .journey-desc { display: block; font-size: .84rem; color: #52565e; margin-top: .25rem; }
+  .section { padding-block: 6rem; scroll-margin-top: 6rem; }
+  .warm { background: var(--color-surface-warm); }
+  h2 { font-size: clamp(1.8rem, 3.1vw, 2.6rem); line-height: 1.13; }
+  h3 { font-size: 1.3rem; }
+  .section-intro { margin-top: 1.3rem; max-width: 68ch; color: #454950; }
+  .customize-grid { display: grid; grid-template-columns: 1.15fr 1fr; align-items: center; gap: 6rem; }
+  dl { margin: 0; }
+  dt { font-family: var(--font-display); font-weight: 600; }
+  dd { margin: .45rem 0 0; color: #454950; font-size: 1rem; }
+  .fields { margin-block: 2rem; }
+  .fields > div { padding-block: 1.1rem; border-bottom: 1px solid var(--color-neutral-200); }
+  .text-action { display: inline-flex; gap: .5rem; color: var(--color-ink); border: 0; background: none; padding: .65rem 0; font-weight: 600; text-decoration: underline; cursor: pointer; font-size: 1rem; text-underline-offset: .25em; }
+  .text-action:hover { text-decoration-thickness: 2px; }
+  .preview { text-align: center; }
+  .preview-controls { display: flex; justify-content: center; background: var(--color-neutral-200); border-radius: var(--radius-sm); padding: .3rem; gap: .25rem; margin: 0 auto 1.5rem; width: fit-content; }
+  .preview-controls[hidden] { display: none; }
+  .preview-controls button { border: 0; background: transparent; border-radius: var(--radius-sm); padding: .75rem .85rem; font-size: .85rem; cursor: pointer; }
+  .preview-controls button[aria-pressed="true"] { background: var(--color-surface); box-shadow: var(--shadow-soft); }
+  .preview img { width: 265px; height: auto; margin-inline: auto; border-radius: var(--radius-lg); box-shadow: var(--shadow-lifted); border: 1px solid var(--color-neutral-200); }
+  .preview img.changed { animation: preview-change .3s cubic-bezier(.16, 1, .3, 1); }
+  @keyframes preview-change { from { transform: translateY(8px); } to { transform: translateY(0); } }
+  .section-heading { max-width: 49rem; margin-inline: auto; text-align: center; }
+  .ecosystem-flow { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; margin-top: 3rem; }
+  .system { padding: 2.2rem; border: 1px solid var(--color-neutral-200); border-radius: var(--radius-lg); background: var(--color-surface-warm); }
+  .system-name { font: 700 1.5rem var(--font-display); }
+  .system p { margin-top: .6rem; font-size: .95rem; }
+  .system-core { background: var(--color-ink); color: var(--color-surface); }
+  .system-core .system-name { color: var(--color-yellow); }
+  .sync-note { margin-top: 1.5rem; font-size: .95rem; }
+  .share-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 6rem; }
+  .share-grid .btn { margin-top: 1.7rem; }
+  .share-details > div { padding-block: 1.3rem; border-bottom: 1px solid var(--color-neutral-200); }
+  .share-details > div:first-child { padding-top: 0; }
+  .access-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; }
+  .access-grid article { display: flex; flex-direction: column; align-items: flex-start; padding: 2.25rem; border: 1px solid var(--color-neutral-200); border-radius: var(--radius-lg); }
+  .access-grid p { margin-block: 1rem 1.5rem; color: #454950; }
+  .access-grid .btn { margin-top: auto; }
+  .faq-grid { display: grid; grid-template-columns: 1fr 1.6fr; gap: 5rem; }
+  details { border-bottom: 1px solid var(--color-neutral-200); padding-block: 1.1rem; }
+  details:first-child { padding-top: 0; }
+  summary { cursor: pointer; font-weight: 600; padding-block: .5rem; }
+  details p { padding: .7rem 0 .4rem; color: #454950; font-size: 1rem; }
+  .closing { padding-block: 5rem; background: var(--color-ink); color: var(--color-surface); text-align: center; }
+  .closing p { max-width: 60ch; margin: 1.3rem auto 0; color: var(--color-neutral-200); }
+  .closing .buttons { justify-content: center; }
+  .dark-secondary { background: transparent; color: var(--color-surface); border-color: #83837e; }
+  .dark-secondary:hover { border-color: var(--color-surface); }
+  @media (max-width: 850px) {
+    .hero { gap: 2rem; grid-template-columns: 1.2fr 1fr; }
+    .customize-grid, .share-grid { gap: 2.5rem; }
+    .faq-grid { gap: 2rem; grid-template-columns: 1fr 1.4fr; }
+    .journey a { padding-inline: .65rem; gap: .6rem; }
+    .system { padding: 1.5rem; }
+  }
+  @media (max-width: 640px) {
+    .container { padding-inline: 1.25rem; }
+    .hero, .customize-grid, .share-grid, .faq-grid { grid-template-columns: 1fr; }
+    .hero { padding-top: 2rem; gap: 2.5rem; }
+    h1 { font-size: 2.55rem; max-width: 17ch; }
+    .hero-product img { width: 245px; }
+    .journey { grid-template-columns: 1fr; margin-bottom: 3rem; }
+    .journey li + li { border-left: 0; border-top: 1px solid var(--color-neutral-200); }
+    .journey a { padding: 1.1rem .4rem; }
+    .section { padding-block: 3.5rem; scroll-margin-top: 8rem; }
+    .ecosystem-flow, .access-grid { grid-template-columns: 1fr; }
+    .section-heading { text-align: left; }
+    .access-grid article { padding: 1.5rem; }
+    .closing { padding-block: 3.5rem; }
+  }
+</style>
+
+<script>
+  const preview = document.querySelector<HTMLImageElement>('#menu-preview');
+  const controls = document.querySelector<HTMLElement>('.preview-controls');
+  if (preview && controls) {
+    // Controls progressively enhance the static sponsor screenshot.
+    controls.hidden = false;
+    const buttons = [...controls.querySelectorAll<HTMLButtonElement>('button')];
+    const selectPreview = (index: number) => {
+      preview.src = `/images/myclienti-app-${index + 1}.webp`;
+      preview.alt = (index === 0 ? preview.dataset.eventAlt : preview.dataset.sponsorAlt) || '';
+      buttons.forEach((button, i) => button.setAttribute('aria-pressed', String(i === index)));
+      preview.classList.remove('changed');
+      requestAnimationFrame(() => preview.classList.add('changed'));
+    };
+    buttons.forEach((button, index) => button.addEventListener('click', () => selectPreview(index)));
+    selectPreview(0);
+  }
+</script>
