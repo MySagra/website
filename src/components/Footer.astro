@@ -1,0 +1,64 @@
+---
+import Logo from './Logo.astro';
+import { getContent } from '../i18n/content';
+import type { Lang } from '../i18n/ui';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = getContent(lang);
+const home = lang === 'en' ? '/en/' : '/';
+const sectionHref = (id: string) => `${Astro.url.pathname === home ? '' : home}#${id}`;
+---
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div class="footer-brand">
+        <a href={sectionHref('top')} class="footer-brand-link" title={lang === 'en' ? 'Back to homepage' : 'Torna alla home'} data-umami-event="nav-click" data-umami-event-section="top" data-umami-event-location="footer">
+          <Logo width={28} height={28} decorative /><span>MySagra</span>
+        </a>
+        <p class="footer-tagline">{t.footer.tagline}</p>
+        <a class="gh-star" href="https://github.com/mysagra" target="_blank" rel="noopener" title={lang === 'en' ? 'Star MySagra on GitHub' : 'Metti una stella a MySagra su GitHub'} data-umami-event="github-click" data-umami-event-location="footer">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 .3 10 5l5.3.4-4 3.6 1.2 5.2L8 11.5l-4.5 2.7L4.7 9l-4-3.6L6 5 8 .3Z" /></svg>
+          {t.footer.ghStar}
+        </a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">{t.footer.prodotto.title}</p>
+        <a href={`${home}myclienti/`}>MyClienti — {lang === 'en' ? 'online menu' : 'menu online'}</a>
+        <a href={sectionHref('benefits')} data-umami-event="nav-click" data-umami-event-section="benefits" data-umami-event-location="footer">{t.footer.prodotto.vantaggi}</a>
+        <a href={sectionHref('solutions')} data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="footer">{t.footer.prodotto.soluzioni}</a>
+        <a href={sectionHref('ecosystem')} data-umami-event="nav-click" data-umami-event-section="ecosystem" data-umami-event-location="footer">{t.footer.prodotto.ecosistema}</a>
+      </div>
+      <div class="footer-col">
+        <p class="footer-col-title">{t.footer.risorse.title}</p>
+        <a href="https://docs.mysagra.com" target="_blank" rel="noopener" data-umami-event="docs-click" data-umami-event-location="footer">{t.footer.risorse.docs}</a>
+        <a href={`mailto:${t.footer.risorse.support}`} data-umami-event="support-email-click" data-umami-event-location="footer">{t.footer.risorse.support}</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="copy">© {new Date().getFullYear()} {t.footer.copyright}</p>
+      <div class="footer-legal">
+        <a href={`${home}privacy-policy`} data-umami-event="legal-click" data-umami-event-page="privacy">{t.privacyPolicy.h1}</a>
+        <a href={`${home}cookie-policy`} data-umami-event="legal-click" data-umami-event-page="cookie">{t.cookiePolicy.h1}</a>
+      </div>
+    </div>
+  </div>
+</footer>
+<style>
+  .site-footer { background: var(--color-surface); border-top: 1px solid var(--color-neutral-200); padding: clamp(3rem, 6vw, 4rem) 1.5rem 2rem; }
+  .footer-inner { max-width: 68rem; margin: 0 auto; }
+  .footer-top { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 3rem; padding-bottom: 2.75rem; }
+  .footer-brand-link { display: inline-flex; align-items: center; gap: .5rem; text-decoration: none; color: var(--color-ink); font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; margin-bottom: .75rem; }
+  .footer-tagline { color: var(--color-neutral-500); font-size: .92rem; max-width: 20rem; margin-bottom: 1.5rem; }
+  .footer-col-title { font-size: .72rem; text-transform: uppercase; letter-spacing: .05em; font-weight: 600; color: var(--color-neutral-500); margin-bottom: 1rem; }
+  .footer-col { display: flex; flex-direction: column; align-items: flex-start; gap: .85rem; }
+  .footer-col a { text-decoration: none; color: var(--color-ink); font-size: .92rem; font-weight: 500; opacity: .75; }
+  .footer-col a:hover { opacity: 1; }
+  .gh-star { display: inline-flex; align-items: center; gap: .4rem; text-decoration: none; color: var(--color-ink); font-size: .85rem; font-weight: 600; border: 1px solid var(--color-neutral-200); border-radius: var(--radius-pill); padding: .45rem .95rem; transition: border-color .15s ease; }
+  .gh-star:hover { border-color: var(--color-ink); }
+  .footer-bottom { padding-top: 1.75rem; border-top: 1px solid var(--color-neutral-200); text-align: center; display: flex; flex-direction: column; align-items: center; gap: .6rem; }
+  .copy { font-size: .82rem; color: var(--color-neutral-500); }
+  .footer-legal { display: flex; gap: 1rem; }
+  .footer-legal a { font-size: .78rem; color: var(--color-neutral-500); text-decoration: none; }
+  .footer-legal a:hover { color: var(--color-ink); }
+  @media (max-width: 40rem) { .footer-top { grid-template-columns: 1fr; gap: 2.25rem; } }
+</style>

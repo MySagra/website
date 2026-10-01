@@ -49,4 +49,20 @@
 		<changefreq>yearly</changefreq>
 		<priority>0.3</priority>
 	</url>
+	<url>
+		<loc>https://mysagra.com/myclienti/</loc>
+		<xhtml:link rel="alternate" hreflang="it" href="https://mysagra.com/myclienti/" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://mysagra.com/en/myclienti/" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://mysagra.com/myclienti/" />
+		<changefreq>monthly</changefreq>
+		<priority>0.8</priority>
+	</url>
+	<url>
+		<loc>https://mysagra.com/en/myclienti/</loc>
+		<xhtml:link rel="alternate" hreflang="it" href="https://mysagra.com/myclienti/" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://mysagra.com/en/myclienti/" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://mysagra.com/myclienti/" />
+		<changefreq>monthly</changefreq>
+		<priority>0.8</priority>
+	</url>
 </urlset>
