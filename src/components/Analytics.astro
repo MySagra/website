@@ -8,9 +8,32 @@ interface Props {
 
 const { lang } = Astro.props;
 
-const umamiUrl = import.meta.env.UMAMI_URL;
-const umamiWebsiteId = import.meta.env.UMAMI_WEBSITE_ID;
+const umamiUrl = import.meta.env.UMAMI_URL || "https://umami.mysagra.com/script.js";
+const umamiWebsiteId = import.meta.env.UMAMI_WEBSITE_ID || "eb5e2fa8-fffe-4470-9426-f1257163974d";
+const recorderUrl = "https://umami.mysagra.com/recorder.js";
 ---
 
-{umamiUrl && umamiWebsiteId && <script defer src={umamiUrl} data-website-id={umamiWebsiteId}></script>}
+<!-- The recorder needs the analytics tracker's session cache. Both require consent. -->
+<script
+	is:inline
+	defer
+	type="text/plain"
+	data-type="text/javascript"
+	data-name="umami-replays"
+	data-src={umamiUrl}
+	data-website-id={umamiWebsiteId}
+></script>
+<script
+	is:inline
+	defer
+	type="text/plain"
+	data-type="text/javascript"
+	data-name="umami-replays"
+	data-src={recorderUrl}
+	data-website-id={umamiWebsiteId}
+	data-block-selector="#contact-dialog"
+	data-sample-rate="0.15"
+	data-mask-level="moderate"
+	data-max-duration="300000"
+></script>
 <KlaroConsent lang={lang} />

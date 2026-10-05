@@ -37,6 +37,7 @@ const sectionHref = (id: string) => `${Astro.url.pathname === home ? '' : home}#
     <div class="footer-bottom">
       <p class="copy">© {new Date().getFullYear()} {t.footer.copyright}</p>
       <div class="footer-legal">
+        <button type="button" data-open-privacy-settings>{lang === 'en' ? 'Privacy preferences' : 'Preferenze privacy'}</button>
         <a href={`${home}privacy-policy/`} data-umami-event="legal-click" data-umami-event-page="privacy">{t.privacyPolicy.h1}</a>
         <a href={`${home}cookie-policy/`} data-umami-event="legal-click" data-umami-event-page="cookie">{t.cookiePolicy.h1}</a>
       </div>
@@ -57,7 +58,9 @@ const sectionHref = (id: string) => `${Astro.url.pathname === home ? '' : home}#
   .gh-star:hover { border-color: var(--color-ink); }
   .footer-bottom { padding-top: 1.75rem; border-top: 1px solid var(--color-neutral-200); text-align: center; display: flex; flex-direction: column; align-items: center; gap: .6rem; }
   .copy { font-size: .82rem; color: var(--color-neutral-500); }
-  .footer-legal { display: flex; gap: 1rem; }
+  .footer-legal { display: flex; flex-wrap: wrap; justify-content: center; gap: 1rem; }
+  .footer-legal button { font: inherit; font-size: .78rem; color: var(--color-neutral-500); background: none; border: 0; padding: 0; cursor: pointer; text-decoration: underline; }
+  .footer-legal button:hover { color: var(--color-ink); }
   .footer-legal a { font-size: .78rem; color: var(--color-neutral-500); text-decoration: none; }
   .footer-legal a:hover { color: var(--color-ink); }
   @media (max-width: 40rem) { .footer-top { grid-template-columns: 1fr; gap: 2.25rem; } }

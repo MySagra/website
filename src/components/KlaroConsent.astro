@@ -11,28 +11,34 @@ const b = getContent(lang).cookieBanner;
 const privacyPolicyPath = lang === "en" ? "/en/privacy-policy/" : "/privacy-policy/";
 
 const klaroConfig = {
-	version: 1,
+	version: 2,
+	default: false,
 	storageMethod: "localStorage",
-	cookieName: "klaro-consent",
+	cookieName: "klaro-consent-v2",
 	cookieExpiresAfterDays: 365,
 	privacyPolicy: privacyPolicyPath,
 	mustConsent: false,
 	acceptAll: true,
-	hideDeclineAll: true,
+	hideDeclineAll: false,
 	lang,
 	translations: {
 		[lang]: {
 			consentNotice: { description: b.description, learnMore: b.learnMore },
 			ok: b.acceptAll,
+			acceptAll: b.acceptAll,
+			decline: lang === "en" ? "Reject" : "Rifiuta",
+			consentModal: { description: b.description },
+			"umami-replays": { description: b.description },
 			privacyPolicy: { name: b.privacyPolicyName },
 		},
 	},
 	services: [
 		{
-			name: "umami",
-			title: "Umami Analytics",
+			name: "umami-replays",
+			title: "Umami Analytics & Session Replay",
 			purposes: ["analytics"],
-			required: true,
+			required: false,
+			default: false,
 		},
 	],
 };
@@ -44,7 +50,19 @@ const klaroConfig = {
 	const config = JSON.parse(el?.dataset.config || "{}");
 
 	import("klaro").then((Klaro) => {
+		let trackerStarted = false;
+		config.services[0].callback = (consent: boolean) => {
+			if (consent) trackerStarted = true;
+			else if (trackerStarted) {
+				// Removing a script does not stop its active recorder/listeners.
+				// Reload after Klaro saves the refusal to stop collection.
+				setTimeout(() => window.location.reload(), 0);
+			}
+		};
 		Klaro.setup(config);
+		document.querySelectorAll("[data-open-privacy-settings]").forEach((button) => {
+			button.addEventListener("click", () => Klaro.show(config));
+		});
 	});
 </script>
 
