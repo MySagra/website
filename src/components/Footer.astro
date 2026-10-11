@@ -30,6 +30,7 @@ const sectionHref = (id: string) => `${Astro.url.pathname === home ? '' : home}#
       </div>
       <div class="footer-col">
         <p class="footer-col-title">{t.footer.risorse.title}</p>
+        <a href={`${home}self-hosting/`} data-umami-event="selfhosting-page-click" data-umami-event-location="footer">{lang === 'en' ? 'Free self-hosting and source code' : 'Self-hosting gratuito e codice sorgente'}</a>
         <a href="https://docs.mysagra.com" target="_blank" rel="noopener" data-umami-event="docs-click" data-umami-event-location="footer">{t.footer.risorse.docs}</a>
         <a href={`mailto:${t.footer.risorse.support}`} data-umami-event="support-email-click" data-umami-event-location="footer">{t.footer.risorse.support}</a>
       </div>

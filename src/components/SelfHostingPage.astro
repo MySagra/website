@@ -1,0 +1,364 @@
+---
+import '@fontsource/inter/600.css';
+import '@fontsource/inter/700.css';
+import '@fontsource/work-sans/400.css';
+import '@fontsource/work-sans/500.css';
+import '@fontsource/work-sans/600.css';
+import '../styles/global.css';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import ContactModal from './ContactModal.astro';
+import Analytics from './Analytics.astro';
+import { getSelfHostingContent } from '../i18n/self-hosting';
+import { SELF_HOSTING_UPDATED_AT, getSelfHostingUpdatedLabel, selfHostingCommands as commands } from '../lib/self-hosting';
+import type { Lang } from '../i18n/ui';
+
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = getSelfHostingContent(lang);
+const home = lang === 'en' ? '/en/' : '/';
+const site = 'https://mysagra.com';
+const canonical = `${site}${home}self-hosting/`;
+const repository = 'https://github.com/MySagra/mywizard';
+const guide = `${repository}/blob/main/installer/README.md`;
+const license = 'https://github.com/MySagra/mysagra?tab=License-1-ov-file';
+const sourceRepository = 'https://github.com/MySagra/mysagra';
+const image = `${site}/images/mycassa-terminal.webp`;
+const markdownUrl = `${site}${home}self-hosting.md`;
+Astro.response.headers.append('Link', `<${markdownUrl}>; rel="alternate"; type="text/markdown"`);
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    { '@type': 'Organization', '@id': `${site}/#organization`, name: 'MySagra', url: `${site}/`, logo: `${site}/favicon.svg`, sameAs: ['https://github.com/MySagra'] },
+    { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: t.title, headline: t.headline, description: t.description, inLanguage: lang, dateModified: SELF_HOSTING_UPDATED_AT, citation: t.sources.map(([, url]) => url), author: { '@id': `${site}/#organization` }, publisher: { '@id': `${site}/#organization` }, mainEntity: { '@id': `${site}/#source-code` }, primaryImageOfPage: { '@id': `${canonical}#primary-image` }, breadcrumb: { '@id': `${canonical}#breadcrumb` } },
+    { '@type': 'SoftwareSourceCode', '@id': `${site}/#source-code`, name: 'MySagra', description: t.sourceDescription, url: sourceRepository, codeRepository: sourceRepository, license: 'https://github.com/MySagra/mysagra/blob/main/LICENSE.md', publisher: { '@id': `${site}/#organization` } },
+    { '@type': 'ImageObject', '@id': `${canonical}#primary-image`, contentUrl: image, caption: t.socialImageAlt, width: 2400, height: 1601 },
+    { '@type': 'BreadcrumbList', '@id': `${canonical}#breadcrumb`, itemListElement: [{ '@type': 'ListItem', position: 1, name: 'MySagra', item: `${site}${home}` }, { '@type': 'ListItem', position: 2, name: t.breadcrumb, item: canonical }] },
+    { '@type': 'FAQPage', '@id': `${canonical}#faq`, isPartOf: { '@id': `${canonical}#webpage` }, inLanguage: lang, mainEntity: t.faq.map(([question, answer]) => ({ '@type': 'Question', name: question, acceptedAnswer: { '@type': 'Answer', text: answer } })) },
+  ],
+};
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t.title}</title>
+    <meta name="description" content={t.description} />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="theme-color" content="#FECC01" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="text/markdown" href={markdownUrl} />
+    <link rel="alternate" hreflang="it" href={`${site}/self-hosting/`} />
+    <link rel="alternate" hreflang="en" href={`${site}/en/self-hosting/`} />
+    <link rel="alternate" hreflang="x-default" href={`${site}/self-hosting/`} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MySagra" />
+    <meta property="og:title" content={t.title} />
+    <meta property="og:description" content={t.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={lang === 'en' ? 'en_US' : 'it_IT'} />
+    <meta property="og:locale:alternate" content={lang === 'en' ? 'it_IT' : 'en_US'} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:alt" content={t.socialImageAlt} />
+    <meta property="og:image:width" content="2400" />
+    <meta property="og:image:height" content="1601" />
+    <meta property="og:image:type" content="image/webp" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={t.title} />
+    <meta name="twitter:description" content={t.description} />
+    <meta name="twitter:image" content={image} />
+    <meta name="twitter:image:alt" content={t.socialImageAlt} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />
+    <Analytics lang={lang} />
+  </head>
+  <body>
+    <!-- THESIS: Separate free self-hosting intent from the homepage's managed-service offer.
+    OWN-WORLD: Existing white, ink and yellow surfaces, Inter headings and pill actions.
+    STORY: Try the real wizard, understand responsibilities and licensing, then choose support.
+    FIRST VIEWPORT: Split introduction and working command panel; paid-service action stays visible.
+    FORM: User-approved K3s-inspired command-first structure; no concept roll for a pinned structure.
+    FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, and DESIGN.md -->
+    <a href="#main" class="skip-link">{t.skip}</a>
+    <Header lang={lang} />
+    <main id="main">
+      <div class="container">
+        <div class="page-navigation">
+          <nav class="breadcrumb" aria-label="Breadcrumb"><a href={home}>MySagra</a><span aria-hidden="true">/</span><span aria-current="page">{t.breadcrumb}</span></nav>
+          <a class="language" href={lang === 'en' ? '/self-hosting/' : '/en/self-hosting/'} lang={lang === 'en' ? 'it' : 'en'}>{t.language}</a>
+        </div>
+        <section class="hero" aria-labelledby="hero-title">
+          <div class="hero-copy">
+            <h1 id="hero-title">{t.headline}</h1>
+            <p class="intro">{t.intro}</p>
+            <a class="button primary" href={`${home}#solutions`} data-umami-event="selfhosting-plans-click" data-umami-event-location="hero">{t.plans}</a>
+            <p class="note">{t.heroNote}</p>
+          </div>
+          <div id="wizard" class="wizard">
+            <div class="wizard-heading"><h2>MyWizard</h2><span class="badge">Beta</span></div>
+            <p class="wizard-intro">{t.wizardIntro}</p>
+            <div class="terminal">
+              <div class="command-controls" hidden role="group" aria-label={t.platform}>
+                {commands.map(({ id, label }, index) => <button type="button" data-platform={id} aria-controls={`command-${id}`} aria-pressed={index === 0}>{label}</button>)}
+              </div>
+              {commands.map(({ id, label, command }) => <div id={`command-${id}`} class="command-panel" data-command-panel={id}>
+                <p class="command-label">{label}</p>
+                <pre tabindex="0" aria-label={`${t.copy}: ${label}`}><code>{command}</code></pre>
+              </div>)}
+              <div class="copy-row">
+                <button type="button" class="copy-button" id="copy-command" hidden data-copy={t.copy} data-copied={t.copied} data-copying={t.copying} data-error={t.copyError}>
+                  <svg class="copy-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="8" y="8" width="12" height="13" rx="2" stroke="currentColor" stroke-width="1.5" /><path d="M15 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h3" stroke="currentColor" stroke-width="1.5" /></svg>
+                  <svg class="copied-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m5 12 4 4L19 6" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                  <span>{t.copy}</span>
+                </button>
+                <p id="copy-status" role="status" aria-live="polite"></p>
+              </div>
+            </div>
+            <p class="beta-note">{t.beta}</p>
+            <div class="wizard-links">
+              <a class="text-link" href={repository} data-umami-event="selfhosting-repo-click">{t.repository}<span aria-hidden="true"> →</span></a>
+              <a class="github-star" href="https://github.com/MySagra/mysagra" target="_blank" rel="noopener" data-umami-event="github-click" data-umami-event-location="selfhosting-wizard">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m12 3 2.8 5.7 6.2.9-4.5 4.4 1.1 6.2-5.6-3-5.6 3 1.1-6.2L3 9.6l6.2-.9L12 3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" /></svg>
+                {t.githubStar}
+              </a>
+            </div>
+          </div>
+        </section>
+        <p class="socket-note">{t.socket}</p>
+      </div>
+      <section class="section warm" aria-labelledby="requirements-title">
+        <div class="container requirements-grid">
+          <div><h2 id="requirements-title">{t.requirementsTitle}</h2><p class="section-intro">{t.requirementsIntro}</p></div>
+          <dl class="requirements">{t.requirements.map(([title, description]) => <div><dt>{title}</dt><dd>{description}</dd></div>)}</dl>
+        </div>
+      </section>
+      <section class="section" aria-labelledby="steps-title">
+        <div class="container">
+          <h2 id="steps-title">{t.stepsTitle}</h2>
+          <ol class="steps">{t.steps.map(([title, description], index) => <li><span class="step-number" aria-hidden="true">{index + 1}</span><div><h3>{title}</h3><p>{description}</p></div></li>)}</ol>
+          <a class="text-link" href={guide}>{t.docs}<span aria-hidden="true"> →</span></a>
+        </div>
+      </section>
+      <section id="license" class="section warm" aria-labelledby="license-title">
+        <div class="container license-grid">
+          <div><h2 id="license-title">{t.licenseTitle}</h2><p class="section-intro">{t.licenseIntro}</p></div>
+          <div class="license-copy"><p>{t.licenseCopy}</p><p class="note">{t.licenseNote}</p><div class="license-links"><a class="text-link" href={license}>{t.licenseLink}</a><a class="text-link" href="https://github.com/MySagra/mysagra">{t.sourceLink}</a></div></div>
+        </div>
+      </section>
+      <section id="options" class="section" aria-labelledby="choice-title">
+        <div class="container">
+          <div class="section-heading"><h2 id="choice-title">{t.choiceTitle}</h2><p class="section-intro">{t.choiceIntro}</p></div>
+          <div class="options">
+            <article class="option self"><h3>{t.selfTitle}</h3><p>{t.selfCopy}</p><ul>{t.selfItems.map((item) => <li>{item}</li>)}</ul><a class="button secondary" href="#wizard">{t.selfAction}</a></article>
+            <article class="option paid"><h3>{t.paidTitle}</h3><p>{t.paidCopy}</p><ul class="benefit-list">{t.paidItems.map((item) => <li><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" /></svg><span>{item}</span></li>)}</ul><button type="button" class="button primary" data-open-contact="informazioni" data-request-type="cloud" data-umami-event="contact-open" data-umami-event-location="selfhosting-comparison">{t.quote}</button></article>
+          </div>
+          <p class="scope">{t.scope}</p>
+        </div>
+      </section>
+      <section class="section warm" aria-labelledby="faq-title">
+        <div class="container faq-grid"><h2 id="faq-title">{t.faqTitle}</h2><div>{t.faq.map(([question, answer]) => <details><summary>{question}</summary><p>{answer}</p></details>)}</div></div>
+        <div class="container">
+          <div class="source-notes">
+            <h3>{t.sourcesTitle}</h3>
+            <p>{t.sourcesIntro}</p>
+            <ul>{t.sources.map(([label, url]) => <li><a href={url}>{label}</a></li>)}</ul>
+            <p class="source-updated">{t.updatedLabel} <time datetime={SELF_HOSTING_UPDATED_AT}>{getSelfHostingUpdatedLabel(lang)}</time>. <a href={`${home}self-hosting.md`}>{t.markdownLink}</a></p>
+          </div>
+        </div>
+      </section>
+      <section class="closing">
+        <div class="container"><h2>{t.closingTitle}</h2><p>{t.closingCopy}</p><div class="closing-actions"><button class="button primary" type="button" data-open-contact="informazioni" data-request-type="cloud" data-umami-event="contact-open" data-umami-event-location="selfhosting-closing">{t.quote}</button><a class="button dark-secondary" href={`${home}#solutions`}>{t.plans}</a></div></div>
+      </section>
+    </main>
+    <Footer lang={lang} />
+    <ContactModal lang={lang} defaultSubject={t.subject} />
+  </body>
+</html>
+
+<script>
+  const controls = document.querySelector<HTMLElement>('.command-controls');
+  const panels = Array.from(document.querySelectorAll<HTMLElement>('[data-command-panel]'));
+  const copy = document.querySelector<HTMLButtonElement>('#copy-command');
+  const status = document.querySelector<HTMLElement>('#copy-status');
+  let active = 'bash';
+  let copying = false;
+  let resetTimer: ReturnType<typeof setTimeout> | undefined;
+
+  function resetCopy() {
+    if (resetTimer) clearTimeout(resetTimer);
+    if (status) {
+      status.textContent = '';
+      status.classList.remove('copy-error');
+    }
+    copy?.classList.remove('is-copied');
+    const label = copy?.querySelector('span');
+    if (label && copy) label.textContent = copy.dataset.copy || '';
+  }
+
+  function selectPlatform(id: string) {
+    active = id;
+    resetCopy();
+    panels.forEach((panel) => { panel.hidden = panel.dataset.commandPanel !== active; });
+    controls?.querySelectorAll<HTMLButtonElement>('button').forEach((button) => {
+      button.setAttribute('aria-pressed', String(button.dataset.platform === active));
+    });
+  }
+
+  if (controls && panels.length && copy) {
+    controls.hidden = false;
+    copy.hidden = false;
+    selectPlatform(active);
+    controls.addEventListener('click', (event) => {
+      if (copying) return;
+      const button = event.target instanceof Element ? event.target.closest<HTMLButtonElement>('[data-platform]') : null;
+      if (button?.dataset.platform) selectPlatform(button.dataset.platform);
+    });
+    copy.addEventListener('click', async () => {
+      const command = panels.find((panel) => panel.dataset.commandPanel === active)?.querySelector('code')?.textContent;
+      if (!command || copying) return;
+      resetCopy();
+      copying = true;
+      copy.disabled = true;
+      const label = copy.querySelector('span');
+      if (label) label.textContent = copy.dataset.copying || '';
+      try {
+        await navigator.clipboard.writeText(command);
+        copy.classList.add('is-copied');
+        if (label) label.textContent = copy.dataset.copied || '';
+        if (status) status.textContent = copy.dataset.copied || '';
+      } catch {
+        if (label) label.textContent = copy.dataset.copy || '';
+        if (status) {
+          status.classList.add('copy-error');
+          status.textContent = copy.dataset.error || '';
+        }
+      } finally {
+        copying = false;
+        copy.disabled = false;
+        resetTimer = setTimeout(resetCopy, 6000);
+      }
+    });
+  }
+</script>
+
+<style>
+  :global(body) { background: var(--color-surface); }
+  .container { width: 100%; max-width: 71rem; margin-inline: auto; padding-inline: 1.5rem; }
+  a { text-underline-offset: .22em; }
+  .skip-link { position: fixed; top: -6rem; left: 1rem; z-index: 100; padding: .75rem; background: var(--color-yellow); }
+  .skip-link:focus { top: 1rem; }
+  .page-navigation { display: flex; flex-wrap: wrap; justify-content: space-between; gap: .75rem 2rem; padding-block: 1.8rem; font-size: .85rem; color: #52565e; }
+  .breadcrumb { display: flex; flex-wrap: wrap; gap: .75rem; align-items: center; }
+  .language { padding-block: .25rem; }
+  .hero { display: grid; grid-template-columns: 1fr 1.08fr; gap: 3rem; padding-block: 1.2rem 2rem; align-items: start; }
+  .hero > *, .requirements-grid > *, .license-grid > *, .faq-grid > * { min-width: 0; }
+  h1 { font-size: clamp(2.3rem, 4.2vw, 3.55rem); line-height: 1.1; max-width: 17ch; }
+  h2 { font-size: clamp(1.8rem, 3vw, 2.45rem); line-height: 1.15; }
+  h3 { font-size: 1.2rem; line-height: 1.25; }
+  .intro { margin-block: 1.5rem 1.8rem; color: #454950; font-size: 1.12rem; }
+  .note { margin-top: 1.2rem; color: #52565e; font-size: .9rem; }
+  .hero-copy .note { max-width: 46ch; }
+  .button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: .9rem 1.4rem; border: 1px solid transparent; border-radius: var(--radius-pill); text-decoration: none; text-align: center; font-weight: 600; font-size: .95rem; cursor: pointer; transition: transform .18s, border-color .18s; }
+  .button:hover { transform: translateY(-1px); }
+  .primary { background: var(--color-yellow); color: var(--color-ink); }
+  .secondary { background: var(--color-surface); border-color: var(--color-neutral-200); }
+  .secondary:hover { border-color: var(--color-ink); }
+  .wizard-heading { display: flex; align-items: center; gap: .85rem; }
+  .wizard-heading h2 { font-size: 1.65rem; }
+  .badge { background: var(--color-yellow); padding: .2rem .65rem; border-radius: var(--radius-pill); font-size: .8rem; font-weight: 600; }
+  .wizard-intro { color: #454950; font-size: .97rem; margin-block: .85rem 1.2rem; }
+  .terminal { background: var(--color-ink); color: var(--color-surface); border-radius: var(--radius-lg); padding: .8rem; box-shadow: var(--shadow-lifted); }
+  .command-controls { display: flex; flex-wrap: wrap; gap: .35rem; padding-bottom: .6rem; border-bottom: 1px solid #454950; }
+  .command-controls[hidden], .command-panel[hidden], .copy-button[hidden] { display: none; }
+  .command-controls button { background: transparent; color: #fff; border: 1px solid transparent; border-radius: var(--radius-sm); min-height: 44px; padding: .5rem .75rem; font-size: .85rem; cursor: pointer; }
+  .command-controls button[aria-pressed="true"] { background: #fff; color: var(--color-ink); }
+  .command-controls button:hover { border-color: #92969c; }
+  .command-label { font-size: .8rem; padding: .6rem; color: #d2d4d7; }
+  .command-controls:not([hidden]) ~ .command-panel .command-label { display: none; }
+  pre { margin: 0; padding: 1.3rem .6rem; overflow-x: auto; font-size: .79rem; line-height: 1.9; scrollbar-color: #92969c #111; scrollbar-width: thin; }
+  code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; }
+  .terminal :focus-visible { outline-color: var(--color-yellow); }
+  .copy-row { padding: .5rem .6rem; border-top: 1px solid #454950; }
+  .copy-button { display: inline-flex; gap: .6rem; align-items: center; background: transparent; color: #fff; border: 1px solid #92969c; border-radius: var(--radius-pill); min-height: 44px; padding: .5rem .8rem; font-size: .85rem; cursor: pointer; }
+  .copy-button .copied-icon, .copy-button.is-copied .copy-icon { display: none; }
+  .copy-button.is-copied .copied-icon { display: block; }
+  .copy-button svg { flex-shrink: 0; }
+  .copy-button:hover { background: #303236; }
+  .copy-button:disabled { opacity: .6; cursor: wait; }
+  #copy-status { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  #copy-status.copy-error { position: static; width: auto; height: auto; margin: .6rem 0 0; overflow: visible; clip-path: none; white-space: normal; font-size: .8rem; color: #e5e7eb; }
+  .beta-note { margin-top: 1.4rem; font-size: .87rem; color: #52565e; }
+  .text-link { display: inline-block; padding-block: .6rem; font-weight: 600; font-size: .95rem; }
+  .wizard-links { display: flex; flex-wrap: wrap; align-items: center; gap: .7rem 1.2rem; margin-top: 1rem; }
+  .github-star { display: inline-flex; align-items: center; gap: .5rem; min-height: 44px; padding: .5rem .9rem; border: 1px solid var(--color-neutral-200); border-radius: var(--radius-pill); font-size: .85rem; font-weight: 600; text-decoration: none; transition: border-color .18s; }
+  .github-star:hover { border-color: var(--color-ink); }
+  .github-star svg { flex-shrink: 0; }
+  .socket-note { font-size: .87rem; color: #52565e; border-top: 1px solid var(--color-neutral-200); padding-block: 1.3rem 2.4rem; max-width: 100%; }
+  .section { padding-block: clamp(3.5rem, 7vw, 5.5rem); }
+  .warm { background: var(--color-surface-warm); }
+  .requirements-grid, .license-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 4.5rem; }
+  .section-intro { color: #454950; margin-top: 1.2rem; max-width: 70ch; }
+  .requirements { margin: 0; }
+  .requirements > div { padding-block: 1.3rem; border-bottom: 1px solid var(--color-neutral-200); }
+  .requirements > div:first-child { padding-top: 0; }
+  dt { font-weight: 600; font-family: var(--font-display); }
+  dd { margin: .55rem 0 0; color: #454950; font-size: .97rem; }
+  .steps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 2.5rem; list-style: none; margin: 2.3rem 0 1.5rem; padding: 0; }
+  .steps li { display: flex; align-items: start; gap: 1rem; }
+  .step-number { display: grid; place-items: center; flex-shrink: 0; width: 2rem; height: 2rem; background: #fff4c4; border-radius: 50%; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .steps p { margin-top: .8rem; color: #454950; font-size: .97rem; }
+  .license-copy > p:first-child { color: #454950; }
+  .license-links { display: flex; flex-wrap: wrap; gap: .2rem 1.5rem; margin-top: 1.2rem; }
+  .section-heading { max-width: 51rem; margin-bottom: 2.5rem; }
+  .options { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: stretch; }
+  .option { display: flex; flex-direction: column; border: 1px solid var(--color-neutral-200); border-radius: var(--radius-lg); padding: 2rem; }
+  .option .button { align-self: flex-start; margin-top: auto; }
+  .option > p { margin-top: .9rem; color: #454950; }
+  .option h3 { font-size: 1.5rem; }
+  .option ul { padding-left: 1.25rem; margin-block: 1.6rem; }
+  .option li { margin-block: .8rem; padding-left: .25rem; }
+  .option .benefit-list { list-style: none; padding-left: 0; }
+  .benefit-list li { display: flex; align-items: flex-start; gap: .75rem; padding-left: 0; }
+  .benefit-list svg { flex-shrink: 0; margin-top: .2rem; color: var(--color-yellow); }
+  .paid { background: var(--color-ink); color: #fff; border-color: var(--color-ink); }
+  .paid > p { color: #d2d4d7; }
+  .scope { margin-top: 1.3rem; font-size: .86rem; color: #52565e; max-width: 80ch; }
+  .paid :focus-visible { outline-color: var(--color-yellow); }
+  .faq-grid { display: grid; grid-template-columns: .85fr 1.3fr; gap: 4rem; }
+  .source-notes { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid var(--color-neutral-200); }
+  .source-notes p { max-width: 70ch; margin-top: .9rem; color: #454950; font-size: .97rem; }
+  .source-notes ul { padding-left: 1.25rem; margin-block: 1rem; }
+  .source-notes li { padding-block: .4rem; font-size: .95rem; }
+  .source-notes .source-updated { font-size: .85rem; color: #52565e; }
+  .source-updated a { display: inline-block; padding-block: .4rem; }
+  details { border-bottom: 1px solid var(--color-neutral-200); }
+  summary { cursor: pointer; font-weight: 600; padding-block: 1.3rem; }
+  details:first-child summary { padding-top: .2rem; }
+  details p { color: #454950; padding-block: 0 1.3rem; font-size: .97rem; }
+  .closing { background: var(--color-ink); color: #fff; padding-block: 4.5rem; }
+  .closing h2 { max-width: 28ch; }
+  .closing p { max-width: 65ch; color: #d2d4d7; margin-top: 1.3rem; }
+  .closing-actions { display: flex; flex-wrap: wrap; gap: .9rem; margin-top: 2rem; }
+  .dark-secondary { border-color: #92969c; color: #fff; }
+  .dark-secondary:hover { border-color: #fff; }
+  .closing :focus-visible { outline-color: var(--color-yellow); }
+  @media (max-width: 60rem) {
+    .hero { grid-template-columns: 1fr 1.1fr; gap: 2rem; }
+    .requirements-grid, .license-grid, .faq-grid { gap: 2.5rem; }
+    .steps { gap: 1.5rem; }
+  }
+  @media (max-width: 47rem) {
+    .hero, .requirements-grid, .license-grid, .faq-grid, .options { grid-template-columns: 1fr; }
+    .hero { gap: 2.5rem; }
+    h1 { max-width: 22ch; }
+    .hero-copy .note { max-width: 65ch; }
+    .steps { grid-template-columns: 1fr; gap: 1.8rem; }
+    .steps p { max-width: 65ch; }
+    .option { padding: 1.5rem; }
+    .faq-grid { gap: 1.8rem; }
+    .page-navigation { padding-block: 1.2rem; }
+    pre { font-size: .76rem; }
+  }
+  @media (prefers-reduced-motion: reduce) { .button:hover { transform: none; } }
+</style>

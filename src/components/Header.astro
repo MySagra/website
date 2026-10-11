@@ -25,6 +25,7 @@ const sectionHref = (id: string) => `${onHome ? "" : home}#${id}`;
 			<a href={sectionHref("benefits")} title={lang === "en" ? "Jump to the Benefits section" : "Vai alla sezione Vantaggi"} data-umami-event="nav-click" data-umami-event-section="benefits" data-umami-event-location="header">{t.header.nav.vantaggi}</a>
 			<a href={sectionHref("solutions")} title={lang === "en" ? "Jump to the Plans section" : "Vai alla sezione Soluzioni"} data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="header">{t.header.nav.soluzioni}</a>
 			<a href={sectionHref("ecosystem")} title={lang === "en" ? "Jump to the Ecosystem section" : "Vai alla sezione Ecosistema"} data-umami-event="nav-click" data-umami-event-section="ecosystem" data-umami-event-location="header">{t.header.nav.ecosistema}</a>
+			<a href={`${home}self-hosting/`} data-umami-event="selfhosting-page-click" data-umami-event-location="header">{t.header.nav.docs}</a>
 		</nav>
 
 		<div class="actions">
@@ -51,6 +52,7 @@ const sectionHref = (id: string) => `${onHome ? "" : home}#${id}`;
 		<a href={sectionHref("benefits")} title={lang === "en" ? "Jump to the Benefits section" : "Vai alla sezione Vantaggi"} data-umami-event="nav-click" data-umami-event-section="benefits" data-umami-event-location="header-mobile"><span>{t.header.nav.vantaggi}</span></a>
 		<a href={sectionHref("solutions")} title={lang === "en" ? "Jump to the Plans section" : "Vai alla sezione Soluzioni"} data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="header-mobile"><span>{t.header.nav.soluzioni}</span></a>
 		<a href={sectionHref("ecosystem")} title={lang === "en" ? "Jump to the Ecosystem section" : "Vai alla sezione Ecosistema"} data-umami-event="nav-click" data-umami-event-section="ecosystem" data-umami-event-location="header-mobile"><span>{t.header.nav.ecosistema}</span></a>
+		<a href={`${home}self-hosting/`} data-umami-event="selfhosting-page-click" data-umami-event-location="header-mobile"><span>{t.header.nav.docs}</span></a>
 	</nav>
 </header>
 

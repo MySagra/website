@@ -3,6 +3,8 @@ const PAGE_PATHS = new Set([
 	"/en",
 	"/myclienti",
 	"/en/myclienti",
+	"/self-hosting",
+	"/en/self-hosting",
 	"/privacy-policy",
 	"/en/privacy-policy",
 	"/cookie-policy",

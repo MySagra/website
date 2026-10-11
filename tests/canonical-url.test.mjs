@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { getCanonicalRedirect } from "../src/lib/canonical-url.ts";
 
-const pages = ["/en", "/myclienti", "/en/myclienti", "/privacy-policy", "/en/privacy-policy", "/cookie-policy", "/en/cookie-policy"];
+const pages = ["/en", "/myclienti", "/en/myclienti", "/self-hosting", "/en/self-hosting", "/privacy-policy", "/en/privacy-policy", "/cookie-policy", "/en/cookie-policy"];
 
 for (const path of pages) {
 	test(`normalizes ${path} and preserves query parameters`, () => {

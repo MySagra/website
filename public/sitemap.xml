@@ -65,4 +65,20 @@
 		<changefreq>monthly</changefreq>
 		<priority>0.8</priority>
 	</url>
+	<url>
+		<loc>https://mysagra.com/self-hosting/</loc>
+		<xhtml:link rel="alternate" hreflang="it" href="https://mysagra.com/self-hosting/" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://mysagra.com/en/self-hosting/" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://mysagra.com/self-hosting/" />
+		<changefreq>monthly</changefreq>
+		<priority>0.8</priority>
+	</url>
+	<url>
+		<loc>https://mysagra.com/en/self-hosting/</loc>
+		<xhtml:link rel="alternate" hreflang="it" href="https://mysagra.com/self-hosting/" />
+		<xhtml:link rel="alternate" hreflang="en" href="https://mysagra.com/en/self-hosting/" />
+		<xhtml:link rel="alternate" hreflang="x-default" href="https://mysagra.com/self-hosting/" />
+		<changefreq>monthly</changefreq>
+		<priority>0.8</priority>
+	</url>
 </urlset>

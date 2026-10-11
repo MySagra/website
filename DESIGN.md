@@ -137,6 +137,23 @@ Rounded system, four steps: `8px` (small controls: menu toggle, icon-badge corne
 ### Ecosystem "core" card (signature component)
 Ink-filled card with a yellow icon badge, spans the full grid width above the other four product cards — the platform's "everything connects here" moment. Product name and role tag sit inline (role as a translucent pill beside the name, not above it).
 
+### Deployment command panel
+The self-hosting surface inherits the existing ink, yellow, Inter and Work Sans system rather than introducing a developer-themed identity. A real command is the focal artifact: an ink panel with the large frame radius and Lifted shadow, white-on-ink code, rounded platform controls and a bordered copy action. Yellow focus rings remain visible on dark surfaces. Monospace is reserved for executable code, not headings or marketing copy.
+
+Both commands remain readable without JavaScript. Platform selection and clipboard feedback progressively enhance the panel; success feedback appears once in the action with a visually hidden live announcement, while error feedback remains visible and explains manual copying. Dark professional-service panels reuse the same white/ink contrast and yellow primary action. Paired comparison panels stretch to equal heights on desktop with bottom-aligned actions; yellow SVG plus markers identify professional-service advantages. Scope qualifications sit beneath the pair rather than changing one panel's height. Supporting text uses darker local neutral tones where needed for small-copy legibility, not additional brand accents.
+
+### Team story photo
+
+The homepage story section uses the supplied square team photograph, stored as `public/images/mysagra-team.webp`, instead of a camera placeholder. The white section blends with the photograph's existing white corners, without an added frame or shadow. A 68rem two-column composition gives the uncropped image up to 28rem of width beside a large, balanced heading and more readable prose. A short yellow rule below the title provides a restrained brand accent. On mobile, the image sits above the text, capped at 24rem. Explicit image dimensions reserve its space, and lazy loading keeps this below-the-fold asset out of the initial image request path. The story copy identifies Nicolò Spampatti and Bianco Gabriele, their computer engineering studies at the University of Bergamo and the project's roots in parish youth activities and volunteer work. The Italian text is supplied by the owner; the English version is a faithful translation.
+
+### Privacy preferences
+
+Klaro's privacy panel uses the same white surface, ink typography, Inter heading, Work Sans body, pill actions and yellow accent as the site. The sole optional replay service is shown directly, without a redundant purpose accordion. A short introduction distinguishes always-loaded basic statistics from optional replay; the service description explains masking and the contact-form exclusion. The two visible actions are rejection and saving the selected preference. Save uses an ink background with white text for strong contrast; yellow remains on the replay toggle. Explicit color overrides prevent Klaro's default blue action styling from returning. Keep the banner's direct acceptance action functional, and do not substitute the modal's save action with unconditional acceptance. Mobile actions stack with equal 48px minimum targets, the close button has a 44px target, and the panel scrolls within the viewport on short screens. Focus remains visible on the toggle, buttons and links.
+
+### Official source notes
+
+The self-hosting FAQ ends with plain linked official references under a hairline rule on the existing warm surface. A small project-attribution line and semantic update date establish provenance without inventing an expert reviewer or adding another card. The Markdown link is a secondary text action; this block must not compete with the paired service comparison or commercial close.
+
 ## Do's and Don'ts
 
 ### Do:

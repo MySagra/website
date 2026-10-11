@@ -13,14 +13,10 @@ const umamiWebsiteId = import.meta.env.UMAMI_WEBSITE_ID || "eb5e2fa8-fffe-4470-9
 const recorderUrl = "https://umami.mysagra.com/recorder.js";
 ---
 
-<!-- The recorder needs the analytics tracker's session cache. Both require consent. -->
 <script
 	is:inline
 	defer
-	type="text/plain"
-	data-type="text/javascript"
-	data-name="umami-replays"
-	data-src={umamiUrl}
+	src={umamiUrl}
 	data-website-id={umamiWebsiteId}
 ></script>
 <script

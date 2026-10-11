@@ -13,7 +13,7 @@
     },
     "shadows": [
       { "name": "soft", "value": "0 2px 8px rgba(17,17,17,.06)", "purpose": "Resting cards, hovered buttons." },
-      { "name": "lifted", "value": "0 24px 48px -16px rgba(17,17,17,.22), 0 8px 16px -8px rgba(17,17,17,.1)", "purpose": "Hero screenshot, featured pricing card, contact dialog." }
+      { "name": "lifted", "value": "0 24px 48px -16px rgba(17,17,17,.22), 0 8px 16px -8px rgba(17,17,17,.1)", "purpose": "Hero screenshot, featured pricing card, contact dialog and deployment command panel." }
     ],
     "motion": [
       { "name": "rise", "value": "transform 0.6s cubic-bezier(0.16,1,0.3,1)", "purpose": "Cards rise into place on scroll. Transform-only — opacity is never the gating property, so content never goes invisible if the observer misses." }
@@ -25,6 +25,13 @@
     ]
   },
   "components": [
+    {
+      "name": "Deployment Command Panel",
+      "kind": "custom",
+      "description": "Real deployment code on an ink surface, with platform controls and a progressive copy action.",
+      "html": "<div class=\"ds-terminal\"><div class=\"ds-platforms\"><button aria-pressed=\"true\">Linux / macOS</button><button aria-pressed=\"false\">Windows · PowerShell</button></div><pre><code>docker run --rm -it ghcr.io/mysagra/mywizard:latest</code></pre><button class=\"ds-copy\">Copy command</button></div>",
+      "css": ".ds-terminal { background: var(--color-ink, #111111); color: var(--color-surface, #ffffff); border-radius: var(--radius-lg, 20px); padding: .8rem; box-shadow: 0 24px 48px -16px rgba(17,17,17,.22), 0 8px 16px -8px rgba(17,17,17,.1); } .ds-platforms { display: flex; flex-wrap: wrap; gap: .35rem; border-bottom: 1px solid #454950; padding-bottom: .6rem; } .ds-platforms button { background: transparent; color: #fff; border: 1px solid transparent; border-radius: 8px; min-height: 44px; padding: .5rem .75rem; cursor: pointer; } .ds-platforms button[aria-pressed=true] { background: #fff; color: #111; } .ds-platforms button:hover { border-color: #92969c; } .ds-terminal pre { padding: 1.3rem .6rem; overflow-x: auto; font-size: .79rem; line-height: 1.9; } .ds-terminal code { font-family: ui-monospace, SFMono-Regular, Consolas, monospace; } .ds-copy { color: #fff; background: transparent; border: 1px solid #92969c; border-radius: 999px; padding: .5rem .8rem; min-height: 44px; cursor: pointer; } .ds-copy:hover { background: #303236; } .ds-terminal :focus-visible { outline: 3px solid var(--color-yellow, #fecc01); outline-offset: 3px; }"
+    },
     {
       "name": "Primary Button",
       "kind": "button",

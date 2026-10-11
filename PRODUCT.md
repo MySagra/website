@@ -40,7 +40,7 @@ Three purchase models:
 
 1. **SaaS Managed Cloud (flagship)** — hosted, secured, monitored, updated, backed up; priced per event or per season; support during event nights.
 2. **On-site turnkey installation** — full stack deployed on-premise, local network/printers/terminals/displays configured, volunteers trained, LAN-first so the event survives an internet outage.
-3. **Self-hosted core (source available, PolyForm Shield)** — Docker-deployable under the license terms, for a pro loco with a technical volunteer. This is the entry door and trust signal, not the primary offer.
+3. **Self-hosted core (source available, PolyForm Shield)** — free to self-host for an organization's own festival, Docker-deployable, for a pro loco with a technical volunteer. MySagra uses PolyForm Shield 1.0.0, which restricts competing products and services; it is not open source. This is the entry door and trust signal, not the primary offer. MyWizard is a tested but still beta, ephemeral deployment container; it generates Docker Compose configuration and can start the stack. Technical operations and professional support are not included in free self-hosting.
 
 Add-ons across all three: custom development, priority event-day support, menu setup/data entry, staff training, hardware supply.
 
@@ -63,10 +63,10 @@ Pizza Village is the intended anchor case study, but concrete numbers (scale, vo
 ## Product Principles
 
 1. Sell the outcome (shorter queues, no lost orders, kitchen/bar in sync, real closing numbers), not the license — lead with commercial value, not the source-available license.
-2. The commercial CTA ("See pricing" / "Talk to us") is primary and repeated; self-hosting/GitHub is a footer-level trust signal, never the hero action.
-3. Speak to the buyer (pro loco president/organizer), not the developer — avoid Docker/TLS/repository language on marketing surfaces; that vocabulary belongs in docs, not the homepage.
+2. The commercial CTA ("See pricing" / "Talk to us") is primary and repeated on the homepage; self-hosting/GitHub is a secondary trust signal there. The dedicated `/self-hosting/` acquisition page may lead with the real wizard command while keeping paid professional services visible.
+3. Speak to the buyer (pro loco president/organizer), not the developer on the homepage. Docker, certificates and repository details belong in docs and the dedicated self-hosting page, where technical requirements must be explicit.
 4. Reliability under real event conditions (volunteer staff, bad Wi-Fi, LAN-first, one-week setup, zero-failure event nights) is the core differentiator and should anchor proof and positioning.
-5. Source availability is a transparency signal, not the offer — proof beats promises, using real events and real names once evidence is confirmed. MySagra uses the PolyForm Shield license: describe it as source available, not open source; do not imply unrestricted use.
+5. Public source code is a transparency signal, not an open-source or unrestricted-use claim. Describe MySagra as source available under PolyForm Shield and link the full license; proof beats promises, using real events and real names once evidence is confirmed.
 
 ## Accessibility & Inclusion
 

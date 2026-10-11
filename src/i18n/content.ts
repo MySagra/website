@@ -109,6 +109,10 @@ export interface SiteContent {
 	cookieBanner: {
 		description: string;
 		learnMore: string;
+		modalTitle: string;
+		modalDescription: string;
+		replayDescription: string;
+		savePreferences: string;
 		acceptAll: string;
 		privacyPolicyName: string;
 	};
@@ -166,7 +170,7 @@ const it: SiteContent = {
 			"gestionale sagre, software sagre, software feste di paese, gestionale pro loco, cassa sagra offline",
 	},
 	header: {
-		nav: { vantaggi: "Vantaggi", soluzioni: "Soluzioni", ecosistema: "Ecosistema", docs: "Codice sorgente" },
+		nav: { vantaggi: "Vantaggi", soluzioni: "Soluzioni", ecosistema: "Ecosistema", docs: "Self-hosting" },
 		cta: "Contattaci",
 		sectionsAria: "Sezioni",
 		menuOpenAria: "Apri il menu",
@@ -303,14 +307,14 @@ const it: SiteContent = {
 		h2: "Raccontateci la vostra sagra.",
 		p: "Rispondiamo entro un giorno lavorativo. Nessun impegno.",
 		cta: "Contattaci",
-		noteSourceAvailable: "MySagra è source available: il codice è consultabile con licenza PolyForm Shield",
+		noteSourceAvailable: "MySagra è source available: self-hosting gratuito nei termini della licenza PolyForm Shield",
 		noteGithub: "su GitHub ↗",
 		noteAnd: "Trovate tutto anche nella",
 		noteDocs: "documentazione ↗",
 	},
 	story: {
 		h2: "Come nasce MySagra",
-		p: "Tutto comincia con due studenti universitari, una sagra di paese e un quaderno di comande che non tornava mai a fine serata. MySagra nasce da lì: uno strumento pensato da chi ha passato le proprie estati dietro un banco, non da chi guarda le sagre da fuori.",
+		p: "Siamo Nicolò Spampatti e Gabriele Bianco due studenti di ingegneria informatica dell'Università di Bergamo e due ragazzi di \"Oratorio\" che hanno deciso di creare questo gestionale per aiutare i volontari. Il sistema nasce unendo la nostra passione per l'informatica e le attività di volontariato all'esigenza di creare un sistema moderno, veloce e facile da usare a basso costo.",
 		photoLabel: "Foto del team",
 	},
 	faq: {
@@ -363,7 +367,7 @@ const it: SiteContent = {
 		metaTitle: "Privacy Policy | MySagra",
 		metaDescription: "Informativa sulla privacy di MySagra. Scopri come trattiamo i tuoi dati.",
 		h1: "Privacy Policy",
-		lastUpdated: "Ultimo aggiornamento: agosto 2026",
+		lastUpdated: "Ultimo aggiornamento: 11 ottobre 2026",
 		backLabel: "Torna al sito",
 		controllerH2: "Titolare del trattamento",
 		controllerBody:
@@ -371,10 +375,10 @@ const it: SiteContent = {
 		contactLabel: "Contatto: ",
 		dataH2: "Dati raccolti",
 		dataBody:
-			"Con il vostro consenso facoltativo, MySagra usa Umami Analytics e Session Replay per analizzare la navigazione e ricostruire un campione delle visite (clic, scroll, movimenti del puntatore e cambi di pagina). I replay non sono video dello schermo e non sono semplici statistiche aggregate. Gli input sono mascherati e il modulo di contatto è escluso dalla registrazione; queste misure riducono il rischio di raccogliere dati personali, ma non garantiscono da sole l'anonimato. Se ci scrivete, trattiamo inoltre i dati inseriti volontariamente nel modulo (nome, email, telefono se fornito, oggetto e messaggio). Non usiamo i replay per pubblicità o tracciamento tra siti.",
+			"MySagra usa Umami Analytics per le statistiche di base delle visite, attive anche se rifiutate i replay. Solo con il vostro consenso facoltativo, Umami Session Replay ricostruisce un campione delle visite (clic, scroll, movimenti del puntatore e cambi di pagina). I replay non sono video dello schermo e non sono semplici statistiche aggregate. Gli input sono mascherati e il modulo di contatto è escluso dalla registrazione; queste misure riducono il rischio di raccogliere dati personali, ma non garantiscono da sole l'anonimato. Se ci scrivete, trattiamo inoltre i dati inseriti volontariamente nel modulo (nome, email, telefono se fornito, oggetto e messaggio). Non usiamo i replay per pubblicità o tracciamento tra siti.",
 		purposesH2: "Finalità del trattamento",
 		purposes: [
-			"Analisi dell'utilizzo del sito e individuazione di problemi di usabilità tramite Umami Analytics e Session Replay, sulla base del consenso, revocabile in qualsiasi momento dalle preferenze privacy",
+			"Statistiche di base sull'utilizzo del sito tramite Umami Analytics; analisi dei problemi di usabilità tramite Session Replay solo con consenso, revocabile in qualsiasi momento dalle preferenze privacy",
 			"Gestione delle richieste inviate tramite il modulo di contatto (Resend)",
 			"Protezione da traffico malevolo e sicurezza della rete (Cloudflare, se attivo sul dominio)",
 		],
@@ -382,7 +386,7 @@ const it: SiteContent = {
 		services: [
 			{
 				name: "Umami Analytics",
-				desc: "Umami è ospitato su umami.mysagra.com. Il tracker, senza cookie di analytics, si carica solo dopo il consenso. I replay sono configurati per campionare il 15% delle sessioni consentite, con durata massima di 5 minuti e mascheramento degli input; il modulo di contatto è escluso. La conservazione standard dei replay prevista da Umami è di 30 giorni. Le impostazioni di registrazione devono essere abilitate e verificate anche nel pannello Umami.",
+				desc: "Umami è ospitato su umami.mysagra.com. Il tracker per le statistiche di base, senza cookie di analytics, si carica anche senza consenso ai replay. I replay sono configurati per campionare il 15% delle sessioni consentite, con durata massima di 5 minuti e mascheramento degli input; il modulo di contatto è escluso. La conservazione standard dei replay prevista da Umami è di 30 giorni. Le impostazioni di registrazione devono essere abilitate e verificate anche nel pannello Umami.",
 			},
 			{
 				name: "Resend",
@@ -394,7 +398,7 @@ const it: SiteContent = {
 			},
 		],
 		rightsH2: "Diritti degli utenti",
-		rightsIntro: "Quando trattiamo dati personali, potete esercitare, nei casi previsti dalla legge, i seguenti diritti. Potete inoltre rifiutare o revocare il consenso all'analisi e ai replay senza limitazioni all'uso del sito; la revoca non pregiudica la liceità del trattamento precedente:",
+		rightsIntro: "Quando trattiamo dati personali, potete esercitare, nei casi previsti dalla legge, i seguenti diritti. Potete inoltre rifiutare o revocare il consenso ai replay senza limitazioni all'uso del sito; le statistiche di base restano attive e la revoca non pregiudica la liceità del trattamento precedente:",
 		rightsList: [
 			"Accesso ai dati che ci avete fornito",
 			"Rettifica di dati inesatti o incompleti",
@@ -412,10 +416,10 @@ const it: SiteContent = {
 		metaTitle: "Cookie Policy | MySagra",
 		metaDescription: "Cookie Policy di MySagra. Dettaglio dei cookie utilizzati sul sito.",
 		h1: "Cookie Policy",
-		lastUpdated: "Ultimo aggiornamento: agosto 2026",
+		lastUpdated: "Ultimo aggiornamento: 11 ottobre 2026",
 		backLabel: "Torna al sito",
 		intro:
-			"Non usiamo cookie pubblicitari. Umami Analytics e Session Replay non impostano cookie di analytics, ma analizzano le interazioni durante la visita e si attivano solo con il consenso. Le preferenze vengono salvate nel localStorage del browser, non in un cookie.",
+			"Non usiamo cookie pubblicitari. Il tracker Umami per le statistiche di base non imposta cookie di analytics e resta attivo anche senza consenso ai replay. Umami Session Replay si attiva solo con il consenso facoltativo. Le preferenze vengono salvate nel localStorage del browser, non in un cookie.",
 		tableH2: "Cookie e memoria locale",
 		tableHeaders: { name: "Nome", provider: "Provider", purpose: "Scopo", type: "Tipo", duration: "Durata" },
 		rows: [
@@ -432,7 +436,7 @@ const it: SiteContent = {
 		badgeFunctional: "Funzionale",
 		consentH2: "Gestione del consenso",
 		consentBody:
-			"Puoi accettare o rifiutare Umami Analytics e Session Replay dal banner. Il tracker resta bloccato fino al consenso; rifiutare non impedisce di usare il sito o inviare richieste. Puoi riaprire le preferenze dal footer o dal pulsante qui sotto e revocare il consenso. Alla revoca, la pagina viene ricaricata per fermare il tracker: eventuali dati non salvati nel modulo vengono persi. La revoca non elimina automaticamente i dati già raccolti.",
+			"Puoi accettare o rifiutare Umami Session Replay dal banner. I replay restano bloccati fino al consenso; le statistiche di base Umami restano attive anche se rifiuti. Rifiutare non impedisce di usare il sito o inviare richieste. Puoi riaprire le preferenze dal footer o dal pulsante qui sotto e revocare il consenso ai replay. Alla revoca, la pagina viene ricaricata per fermare la registrazione, mantenendo le statistiche di base: eventuali dati non salvati nel modulo vengono persi. La revoca non elimina automaticamente i dati già raccolti.",
 		contactH2: "Contatti",
 		contactPrefix: "Per qualsiasi domanda: ",
 		privacyNotePrefix: "Per maggiori dettagli sul trattamento dei dati, consulta la nostra ",
@@ -440,8 +444,12 @@ const it: SiteContent = {
 	},
 	cookieBanner: {
 		description:
-			"Con il tuo consenso usiamo Umami per statistiche e replay di un campione delle visite (clic e scroll), per migliorare il sito. Gli input sono mascherati e il modulo contatti è escluso. Puoi rifiutare e cambiare scelta in qualsiasi momento.",
-		learnMore: "Scopri di più",
+			"Le statistiche di base Umami sono attive anche senza consenso ai replay. Con il tuo consenso facoltativo registriamo anche replay di un campione delle visite (clic e scroll) per migliorare il sito. Gli input sono mascherati e il modulo contatti è escluso. Rifiuta blocca solo i replay; puoi cambiare scelta in qualsiasi momento.",
+		learnMore: "Preferenze privacy",
+		modalTitle: "Le tue preferenze privacy",
+		modalDescription: "Le statistiche di base Umami restano attive. Qui scegli solo se consentire i replay delle visite: sono facoltativi e puoi disattivarli in qualsiasi momento.",
+		replayDescription: "Ci aiutano a capire come viene usato il sito attraverso clic, scroll e navigazione. Registriamo solo un campione delle visite, con input mascherati e modulo contatti escluso. Si attivano solo con il tuo consenso.",
+		savePreferences: "Salva preferenze",
 		acceptAll: "Accetta",
 		privacyPolicyName: "privacy policy",
 	},
@@ -499,7 +507,7 @@ const en: SiteContent = {
 			"festival POS, food ordering software for events, community festival software, cloud POS, kitchen order printing",
 	},
 	header: {
-		nav: { vantaggi: "Benefits", soluzioni: "Plans", ecosistema: "Ecosystem", docs: "Source code" },
+		nav: { vantaggi: "Benefits", soluzioni: "Plans", ecosistema: "Ecosystem", docs: "Self-hosting" },
 		cta: "Contact us",
 		sectionsAria: "Sections",
 		menuOpenAria: "Open menu",
@@ -629,14 +637,14 @@ const en: SiteContent = {
 		h2: "Tell us about your festival.",
 		p: "We reply within one business day. No commitment.",
 		cta: "Contact us",
-		noteSourceAvailable: "MySagra is source available: the code is available under the PolyForm Shield license",
+		noteSourceAvailable: "MySagra is source available: free self-hosting under the PolyForm Shield license",
 		noteGithub: "on GitHub ↗",
 		noteAnd: "You'll also find everything in the",
 		noteDocs: "documentation ↗",
 	},
 	story: {
 		h2: "How MySagra started",
-		p: "It all starts with two university students, a village festival and an order notebook that never balanced by the end of the night. MySagra was born from that: a tool built by people who spent their summers behind a counter, not by people watching festivals from the outside.",
+		p: "We are Nicolò Spampatti and Bianco Gabriele, two computer engineering students at the University of Bergamo and two young people involved in our parish youth centre who decided to create this management software to help volunteers. The system brings together our passion for computing and our volunteer work with the need for a modern, fast, easy-to-use and low-cost solution.",
 		photoLabel: "Team photo",
 	},
 	faq: {
@@ -685,17 +693,17 @@ const en: SiteContent = {
 		metaTitle: "Privacy Policy | MySagra",
 		metaDescription: "MySagra privacy policy. Learn how we handle your data.",
 		h1: "Privacy Policy",
-		lastUpdated: "Last updated: August 2026",
+		lastUpdated: "Last updated: 11 October 2026",
 		backLabel: "Back to site",
 		controllerH2: "Data Controller",
 		controllerBody: "The data controller is Nicolò Spampatti, developer and creator of MySagra.",
 		contactLabel: "Contact: ",
 		dataH2: "Data Collected",
 		dataBody:
-			"With your optional consent, MySagra uses Umami Analytics and Session Replay to analyse navigation and reconstruct a sample of visits (clicks, scrolling, pointer movements and page changes). Replays are not screen videos or simply aggregate statistics. Inputs are masked and the contact form is excluded from recording; these measures reduce the risk of collecting personal data but do not by themselves guarantee anonymity. If you contact us, we also process the data you voluntarily enter (name, email, optional phone number, subject and message). We do not use replays for advertising or cross-site tracking.",
+			"MySagra uses Umami Analytics for basic visit statistics, which remain active if you reject replays. Only with your optional consent does Umami Session Replay reconstruct a sample of visits (clicks, scrolling, pointer movements and page changes). Replays are not screen videos or simply aggregate statistics. Inputs are masked and the contact form is excluded from recording; these measures reduce the risk of collecting personal data but do not by themselves guarantee anonymity. If you contact us, we also process the data you voluntarily enter (name, email, optional phone number, subject and message). We do not use replays for advertising or cross-site tracking.",
 		purposesH2: "Purpose of Processing",
 		purposes: [
-			"Site usage analysis and identification of usability issues through Umami Analytics and Session Replay, based on consent that can be withdrawn at any time in privacy preferences",
+			"Basic site usage statistics through Umami Analytics; analysis of usability issues through Session Replay only with consent, which can be withdrawn at any time in privacy preferences",
 			"Handling requests submitted via the contact form (Resend)",
 			"Protection from malicious traffic and network security (Cloudflare, if active on the domain)",
 		],
@@ -703,7 +711,7 @@ const en: SiteContent = {
 		services: [
 			{
 				name: "Umami Analytics",
-				desc: "Umami is hosted at umami.mysagra.com. Its tracker sets no analytics cookies and loads only after consent. Replays are configured to sample 15% of consenting sessions, with a maximum duration of 5 minutes and masked inputs; the contact form is excluded. Umami's standard replay retention is 30 days. Recording settings must also be enabled and verified in the Umami dashboard.",
+				desc: "Umami is hosted at umami.mysagra.com. Its basic statistics tracker sets no analytics cookies and loads even without consent to replays. Replays are configured to sample 15% of consenting sessions, with a maximum duration of 5 minutes and masked inputs; the contact form is excluded. Umami's standard replay retention is 30 days. Recording settings must also be enabled and verified in the Umami dashboard.",
 			},
 			{
 				name: "Resend",
@@ -715,7 +723,7 @@ const en: SiteContent = {
 			},
 		],
 		rightsH2: "User Rights",
-		rightsIntro: "Where we process personal data, you may exercise the following rights as provided by law. You may also refuse or withdraw consent to analytics and replays without restrictions on using the site; withdrawal does not affect the lawfulness of prior processing:",
+		rightsIntro: "Where we process personal data, you may exercise the following rights as provided by law. You may also refuse or withdraw consent to replays without restrictions on using the site; basic statistics remain active and withdrawal does not affect the lawfulness of prior processing:",
 		rightsList: [
 			"Access to the data you've provided us",
 			"Rectification of inaccurate or incomplete data",
@@ -732,10 +740,10 @@ const en: SiteContent = {
 		metaTitle: "Cookie Policy | MySagra",
 		metaDescription: "MySagra Cookie Policy. Details about the cookies used on this site.",
 		h1: "Cookie Policy",
-		lastUpdated: "Last updated: August 2026",
+		lastUpdated: "Last updated: 11 October 2026",
 		backLabel: "Back to site",
 		intro:
-			"We do not use advertising cookies. Umami Analytics and Session Replay set no analytics cookies, but analyse interactions during a visit and activate only with consent. Preferences are saved in browser localStorage, not in a cookie.",
+			"We do not use advertising cookies. The basic Umami statistics tracker sets no analytics cookies and remains active even without consent to replays. Umami Session Replay activates only with optional consent. Preferences are saved in browser localStorage, not in a cookie.",
 		tableH2: "Cookies and Local Storage",
 		tableHeaders: { name: "Name", provider: "Provider", purpose: "Purpose", type: "Type", duration: "Duration" },
 		rows: [
@@ -752,7 +760,7 @@ const en: SiteContent = {
 		badgeFunctional: "Functional",
 		consentH2: "Consent Management",
 		consentBody:
-			"You can accept or reject Umami Analytics and Session Replay in the banner. The tracker remains blocked until consent; refusal does not prevent using the site or sending requests. Reopen preferences from the footer or the button below to withdraw consent. On withdrawal the page reloads to stop the tracker: any unsaved form data will be lost. Withdrawal does not automatically delete data already collected.",
+			"You can accept or reject Umami Session Replay in the banner. Replays remain blocked until consent; basic Umami statistics remain active even if you reject. Refusal does not prevent using the site or sending requests. Reopen preferences from the footer or the button below to withdraw replay consent. On withdrawal the page reloads to stop recording while keeping basic statistics active: any unsaved form data will be lost. Withdrawal does not automatically delete data already collected.",
 		contactH2: "Contact",
 		contactPrefix: "For any question: ",
 		privacyNotePrefix: "For more detail on how we process data, see our ",
@@ -760,8 +768,12 @@ const en: SiteContent = {
 	},
 	cookieBanner: {
 		description:
-			"With your consent, we use Umami for statistics and replays of a sample of visits (clicks and scrolling) to improve the site. Inputs are masked and the contact form is excluded. You can refuse and change your choice at any time.",
-		learnMore: "Learn more",
+			"Basic Umami statistics are active even without replay consent. With your optional consent, we also record replays of a sample of visits (clicks and scrolling) to improve the site. Inputs are masked and the contact form is excluded. Reject blocks only replays; you can change your choice at any time.",
+		learnMore: "Privacy preferences",
+		modalTitle: "Your privacy preferences",
+		modalDescription: "Basic Umami statistics remain active. Here you choose only whether to allow visit replays: they are optional and you can disable them at any time.",
+		replayDescription: "They help us understand how the site is used through clicks, scrolling and navigation. We record only a sample of visits, with masked inputs and the contact form excluded. Replays start only with your consent.",
+		savePreferences: "Save preferences",
 		acceptAll: "Accept",
 		privacyPolicyName: "privacy policy",
 	},
