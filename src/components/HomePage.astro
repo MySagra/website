@@ -24,6 +24,9 @@ const t = getContent(lang);
 const outcomes = t.outcomes;
 const ecosystem = t.ecosistema.items;
 const tiers = t.soluzioni.tiers;
+const priceFormatter = new Intl.NumberFormat(lang === "it" ? "it-IT" : "en-GB", {
+	style: "currency", currency: "EUR", maximumFractionDigits: 0,
+});
 const faqItems = t.faq.items;
 
 const SITE_URL = "https://mysagra.com";
@@ -263,17 +266,47 @@ const icons: Record<string, string> = {
 					<p class="section-lede">{t.soluzioni.lede}</p>
 				</div>
 
+				<fieldset class="pricing-period" aria-label={t.soluzioni.pricingLabels.period}>
+					<label class="pricing-period-option">
+						<input type="radio" name="pricing-period" value="weekly" checked />
+						<span>{t.soluzioni.pricingLabels.weekly}</span>
+					</label>
+					<label class="pricing-period-option">
+						<input type="radio" name="pricing-period" value="monthly" />
+						<span>{t.soluzioni.pricingLabels.monthly}</span>
+					</label>
+				</fieldset>
+
 				<div class:list={["tiers", { "tiers--two": tiers.length === 2 }]}>
 					{
 						tiers.map((tier) => (
 							<div class:list={["tier", { "tier--featured": tier.featured }]} data-reveal>
 								{tier.tag && <span class="tier-tag">{tier.tag}</span>}
-								<span
-									class="icon-badge"
-									aria-hidden="true"
-									set:html={`<svg width="20" height="20" viewBox="0 0 20 20" fill="none">${icons[tier.icon]}</svg>`}
-								/>
-								<h3>{tier.name}</h3>
+								<div class="tier-heading">
+									<span
+										class="icon-badge"
+										aria-hidden="true"
+										set:html={`<svg width="20" height="20" viewBox="0 0 20 20" fill="none">${icons[tier.icon]}</svg>`}
+									/>
+									<h3>{tier.name}</h3>
+								</div>
+								{tier.pricing ? (
+									<div class="tier-pricing">
+										<p class="tier-price-from">
+											{t.soluzioni.pricingLabels.from}
+											<s class="tier-original-price" aria-label={`${t.soluzioni.pricingLabels.fourWeeks}: ${priceFormatter.format(tier.pricing.weekly * 4)}`} title={t.soluzioni.pricingLabels.fourWeeks}>{priceFormatter.format(tier.pricing.weekly * 4)}</s>
+										</p>
+										<p class="tier-price tier-price--weekly">
+											<strong>{priceFormatter.format(tier.pricing.weekly)}</strong>
+											<span>{t.soluzioni.pricingLabels.perWeek}</span>
+										</p>
+										<p class="tier-price tier-price--monthly">
+											<strong>{priceFormatter.format(tier.pricing.monthly)}</strong>
+											<span>{t.soluzioni.pricingLabels.perMonth}</span>
+										</p>
+										<p class="tier-price-saving">{t.soluzioni.pricingLabels.saving}</p>
+									</div>
+								) : <p class="tier-custom-price">{tier.customPrice}</p>}
 								<p class="tier-desc">{tier.desc}</p>
 								<ul class="tier-points">
 									{tier.points.map((point) => (
@@ -309,6 +342,7 @@ const icons: Record<string, string> = {
 					}
 				</div>
 
+				<p class="solutions-pricing-note"><small>{t.soluzioni.pricingNote}</small></p>
 				<p class="solutions-demo-note">
 					{t.soluzioni.demoNotePrefix}{" "}
 					<button
@@ -999,9 +1033,138 @@ const icons: Record<string, string> = {
 				padding: 0.3rem 0.7rem;
 				border-radius: var(--radius-pill);
 			}
+			.tier-heading {
+				display: flex;
+				align-items: center;
+				gap: 0.75rem;
+				margin-bottom: 0.75rem;
+			}
+			.tier-heading .icon-badge {
+				flex-shrink: 0;
+				margin: 0;
+			}
 			.tier h3 {
+				min-width: 0;
 				font-size: 1.25rem;
-				margin-bottom: 0.6rem;
+				margin: 0;
+			}
+			.pricing-period {
+				display: flex;
+				width: fit-content;
+				max-width: 100%;
+				margin: -0.5rem auto 2.75rem;
+				padding: 0.3rem;
+				gap: 0.25rem;
+				border: 1px solid var(--color-neutral-200);
+				border-radius: var(--radius-pill);
+				background: var(--color-surface);
+			}
+			.pricing-period-option {
+				position: relative;
+				cursor: pointer;
+			}
+			.pricing-period-option input {
+				position: absolute;
+				width: 1px;
+				height: 1px;
+				opacity: 0;
+			}
+			.pricing-period-option span {
+				display: grid;
+				place-items: center;
+				min-height: 44px;
+				padding: 0.6rem 1.5rem;
+				border-radius: var(--radius-pill);
+				font-size: 0.92rem;
+				font-weight: 600;
+				transition: background-color 160ms ease, color 160ms ease;
+			}
+			.pricing-period-option:hover span {
+				background: var(--color-neutral-200);
+			}
+			.pricing-period-option input:checked + span {
+				background: var(--color-ink);
+				color: var(--color-surface);
+			}
+			.pricing-period-option input:focus-visible + span {
+				outline: 2px solid var(--color-ink);
+				outline-offset: 3px;
+			}
+			.tier-pricing,
+			.tier-custom-price {
+				min-height: 9rem;
+				margin: 0.5rem 0 1.5rem;
+				padding-bottom: 1.25rem;
+				border-bottom: 1px solid var(--color-neutral-200);
+			}
+			.tier-price-from {
+				display: flex;
+				align-items: baseline;
+				gap: 0.65rem;
+				min-height: 1.75rem;
+				font-size: 0.85rem;
+			}
+			.tier-original-price {
+				display: none;
+				font-size: 1.15rem;
+				color: var(--color-neutral-500);
+				text-decoration-thickness: 1.5px;
+			}
+			#solutions:has(input[value="monthly"]:checked) .tier-original-price {
+				display: inline;
+			}
+			.tier-price {
+				display: flex;
+				align-items: baseline;
+				flex-wrap: wrap;
+				column-gap: 0.5rem;
+				margin-top: 0.25rem;
+			}
+			.tier-price strong {
+				font-family: var(--font-display);
+				font-size: clamp(2.5rem, 4vw, 3.25rem);
+				line-height: 1.15;
+				letter-spacing: -0.03em;
+				font-weight: 700;
+				font-variant-numeric: tabular-nums;
+			}
+			.tier-price span {
+				font-size: 0.85rem;
+			}
+			.tier-price-saving {
+				visibility: hidden;
+				margin-top: 0.5rem;
+				font-size: 0.85rem;
+			}
+			.tier-price--monthly {
+				display: none;
+			}
+			#solutions:has(input[value="monthly"]:checked) .tier-price--weekly {
+				display: none;
+			}
+			#solutions:has(input[value="monthly"]:checked) .tier-price--monthly {
+				display: flex;
+			}
+			#solutions:has(input[value="monthly"]:checked) .tier-price-saving {
+				visibility: visible;
+			}
+			.tier-custom-price {
+				display: flex;
+				align-items: center;
+				font-family: var(--font-display);
+				font-size: 1.6rem;
+				font-weight: 700;
+				line-height: 1.25;
+				letter-spacing: -0.02em;
+			}
+			.solutions-pricing-note {
+				max-width: 75ch;
+				margin: 1.5rem auto 0;
+				text-align: center;
+				color: #4b5563;
+			}
+			.solutions-pricing-note small {
+				font-size: 0.85rem;
 			}
 			.tier-desc {
 				color: var(--color-neutral-500);
