@@ -1,6 +1,7 @@
 import type { APIRoute } from "astro";
 import { Resend } from "resend";
-import { isLang, defaultLang } from "../../i18n/ui";
+import { defaultLang } from "../../i18n/ui";
+import { parseContact, contactLabels, type ContactIntent } from "../../lib/contact";
 
 export const prerender = false;
 
@@ -9,22 +10,7 @@ const RECIPIENTS = {
 	supporto: "support@mysagra.com",
 } as const;
 
-type Topic = keyof typeof RECIPIENTS;
-
-const REQUEST_TYPES = ["informazioni", "cloud", "onsite", "custom", "demo"] as const;
-type RequestType = (typeof REQUEST_TYPES)[number];
-
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
 const SENDERS = ["Gabriele Bianco", "Nicolò Spampatti"] as const;
-
-function isTopic(value: unknown): value is Topic {
-	return value === "informazioni" || value === "supporto";
-}
-
-function isRequestType(value: unknown): value is RequestType {
-	return (REQUEST_TYPES as readonly unknown[]).includes(value);
-}
 
 function escapeHtml(value: string): string {
 	return value
@@ -52,7 +38,8 @@ const FONT_BODY = "Work Sans,system-ui,-apple-system,sans-serif";
 const MESSAGES = {
 	it: {
 		invalidRequest: "Richiesta non valida.",
-		missingFields: "Nome, email, oggetto e messaggio sono obbligatori.",
+		missingFields: "Nome, email e messaggio sono obbligatori.",
+		tooLong: "Uno dei campi è troppo lungo. Accorcia il testo e riprova.",
 		invalidEmail: "Indirizzo email non valido.",
 		serviceUnavailable: "Servizio email non configurato. Riprova più tardi.",
 		sendFailed: "Invio non riuscito. Riprova più tardi.",
@@ -67,7 +54,8 @@ const MESSAGES = {
 			message: "MESSAGGIO",
 		},
 		requestTypeLabel: {
-			informazioni: "Informazioni",
+			preventivo: "Preventivo",
+			informazioni: "Domanda",
 			cloud: "Soluzione cloud",
 			onsite: "Installazione in loco",
 			custom: "Build su misura",
@@ -88,7 +76,8 @@ const MESSAGES = {
 	},
 	en: {
 		invalidRequest: "Invalid request.",
-		missingFields: "Name, email, subject and message are required.",
+		missingFields: "Name, email and message are required.",
+		tooLong: "One of the fields is too long. Shorten the text and try again.",
 		invalidEmail: "Invalid email address.",
 		serviceUnavailable: "Email service not configured. Try again later.",
 		sendFailed: "Sending failed. Try again later.",
@@ -103,7 +92,8 @@ const MESSAGES = {
 			message: "MESSAGE",
 		},
 		requestTypeLabel: {
-			informazioni: "Information",
+			preventivo: "Quote",
+			informazioni: "Question",
 			cloud: "Managed cloud",
 			onsite: "On-site installation",
 			custom: "Custom build",
@@ -164,7 +154,7 @@ function renderInternalField(label: string, valueHtml: string, accent: boolean):
 
 function buildInternalEmailHtml(
 	lang: "it" | "en",
-	fields: { name: string; email: string; phone: string; requestType: RequestType; subject: string; message: string },
+	fields: { name: string; email: string; phone: string; requestType: ContactIntent; subject: string; message: string; context: string },
 	pill: string,
 ): string {
 	const t = MESSAGES[lang];
@@ -175,6 +165,7 @@ function buildInternalEmailHtml(
 	if (fields.phone) rows.push(renderInternalField(t.fieldLabels.phone, escapeHtml(fields.phone), false));
 	rows.push(renderInternalField(t.fieldLabels.requestType, escapeHtml(t.requestTypeLabel[fields.requestType]), false));
 	rows.push(renderInternalField(t.fieldLabels.subject, escapeHtml(fields.subject), false));
+	rows.push(renderInternalField(lang === 'it' ? 'CONTESTO' : 'CONTEXT', escapeHtml(fields.context), false));
 	rows.push(renderInternalField(t.fieldLabels.message, escapeHtml(fields.message).replace(/\n/g, "<br>"), true));
 
 	return `<!doctype html>
@@ -236,31 +227,19 @@ function buildConfirmationEmailHtml(
 }
 
 export const POST: APIRoute = async ({ request }) => {
-	let body: Record<string, unknown>;
+	let body: unknown;
 	try {
 		body = await request.json();
 	} catch {
 		return Response.json({ ok: false, error: MESSAGES[defaultLang].invalidRequest }, { status: 400 });
 	}
 
-	const langValue = String(body.lang ?? "");
-	const lang = isLang(langValue) ? langValue : defaultLang;
+	const parsed = parseContact(body);
+	if (!parsed.ok) return Response.json({ ok: false, error: MESSAGES[parsed.lang][parsed.error] }, { status: 400 });
+	const { lang, name, email, phone, message, topic, requestType, subject, plan, period, source } = parsed.data;
 	const t = MESSAGES[lang];
-
-	const name = String(body.name ?? "").trim();
-	const email = String(body.email ?? "").trim();
-	const phone = String(body.phone ?? "").trim();
-	const subject = String(body.subject ?? "").trim();
-	const message = String(body.message ?? "").trim();
-	const topic: Topic = isTopic(body.topic) ? body.topic : "informazioni";
-	const requestType: RequestType = isRequestType(body.requestType) ? body.requestType : "informazioni";
-
-	if (!name || !email || !subject || !message) {
-		return Response.json({ ok: false, error: t.missingFields }, { status: 400 });
-	}
-	if (!EMAIL_RE.test(email)) {
-		return Response.json({ ok: false, error: t.invalidEmail }, { status: 400 });
-	}
+	const labels = contactLabels[lang];
+	const context = [labels.sources[source], plan ? labels.plans[plan] : '', period ? labels.periods[period] : ''].filter(Boolean).join(' · ');
 
 	const apiKey = import.meta.env.RESEND_API_KEY;
 	if (!apiKey) {
@@ -278,8 +257,8 @@ export const POST: APIRoute = async ({ request }) => {
 			from: "MySagra <no-reply@mysagra.com>",
 			to,
 			replyTo: email,
-			subject: `[${t.pillLabel[topic]}] ${subject}`,
-			html: buildInternalEmailHtml(lang, { name, email, phone, requestType, subject, message }, t.pillLabel[topic]),
+			subject: topic === 'supporto' ? `[${t.pillLabel[topic]}] ${subject}` : subject,
+			html: buildInternalEmailHtml(lang, { name, email, phone, requestType, subject, message, context }, t.pillLabel[topic]),
 			text: [
 				`Nuova richiesta (${t.pillLabel[topic]}) dal sito.`,
 				"",
@@ -288,6 +267,7 @@ export const POST: APIRoute = async ({ request }) => {
 				phone ? `Telefono: ${phone}` : null,
 				`${t.fieldLabels.requestType}: ${t.requestTypeLabel[requestType]}`,
 				`Oggetto: ${subject}`,
+				`Contesto: ${context}`,
 				"",
 				message,
 			]

@@ -23,6 +23,7 @@ const sectionHref = (id: string) => `${Astro.url.pathname === home ? '' : home}#
       </div>
       <div class="footer-col">
         <p class="footer-col-title">{t.footer.prodotto.title}</p>
+        <a href={`${home}festival-management-excel/`} data-umami-event="excel-page-click" data-umami-event-location="footer">{lang === 'en' ? 'Excel reports and festival management' : 'Gestione sagra e report Excel'}</a>
         <a href={`${home}myclienti/`}>MyClienti — {lang === 'en' ? 'online menu' : 'menu online'}</a>
         <a href={sectionHref('benefits')} data-umami-event="nav-click" data-umami-event-section="benefits" data-umami-event-location="footer">{t.footer.prodotto.vantaggi}</a>
         <a href={sectionHref('solutions')} data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="footer">{t.footer.prodotto.soluzioni}</a>
@@ -30,6 +31,7 @@ const sectionHref = (id: string) => `${Astro.url.pathname === home ? '' : home}#
       </div>
       <div class="footer-col">
         <p class="footer-col-title">{t.footer.risorse.title}</p>
+        <a href={`${home}contact/`} data-umami-event="contact-page-click" data-umami-event-location="footer">{lang === 'en' ? 'Contact us' : 'Contatti'}</a>
         <a href={`${home}self-hosting/`} data-umami-event="selfhosting-page-click" data-umami-event-location="footer">{lang === 'en' ? 'Free self-hosting and source code' : 'Self-hosting gratuito e codice sorgente'}</a>
         <a href="https://docs.mysagra.com" target="_blank" rel="noopener" data-umami-event="docs-click" data-umami-event-location="footer">{t.footer.risorse.docs}</a>
         <a href={`mailto:${t.footer.risorse.support}`} data-umami-event="support-email-click" data-umami-event-location="footer">{t.footer.risorse.support}</a>

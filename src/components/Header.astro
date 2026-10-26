@@ -239,7 +239,7 @@ const sectionHref = (id: string) => `${onHome ? "" : home}#${id}`;
 		// fragment navigation — and scrollIntoView() relying on the target's
 		// scroll-margin-top — both landed short of the sticky header's real
 		// height in testing, so the offset is measured and applied by hand.
-		document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((link) => {
+		document.querySelectorAll<HTMLAnchorElement>('a[href^="#"]:not([data-sheet-tab])').forEach((link) => {
 			link.addEventListener("click", (event) => {
 				const href = link.getAttribute("href");
 				if (!href || href === "#") return;

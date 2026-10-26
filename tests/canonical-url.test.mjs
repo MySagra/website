@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { getCanonicalRedirect } from "../src/lib/canonical-url.ts";
 
-const pages = ["/en", "/myclienti", "/en/myclienti", "/self-hosting", "/en/self-hosting", "/privacy-policy", "/en/privacy-policy", "/cookie-policy", "/en/cookie-policy"];
+const pages = ["/festival-management-excel", "/en/festival-management-excel", "/en", "/myclienti", "/en/myclienti", "/self-hosting", "/en/self-hosting", "/privacy-policy", "/en/privacy-policy", "/cookie-policy", "/en/cookie-policy"];
 
 for (const path of pages) {
 	test(`normalizes ${path} and preserves query parameters`, () => {
@@ -13,6 +13,14 @@ for (const path of pages) {
 
 test("normalizes the public host and page path in one redirect", () => {
 	assert.equal(getCanonicalRedirect(new URL("http://www.mysagra.com/en/myclienti?utm_source=test")), "https://mysagra.com/en/myclienti/?utm_source=test");
+});
+
+test("redirects legacy Excel slugs directly to the canonical English slug", () => {
+	for (const prefix of ["", "/en"]) {
+		for (const suffix of ["", "/", "//"]) {
+			assert.equal(getCanonicalRedirect(new URL(`https://mysagra.com${prefix}/gestione-sagra-excel${suffix}?utm_source=test`)), `https://mysagra.com${prefix}/festival-management-excel/?utm_source=test`);
+		}
+	}
 });
 
 test("keeps the canonical homepage unchanged", () => {

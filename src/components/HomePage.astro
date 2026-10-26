@@ -253,6 +253,7 @@ const icons: Record<string, string> = {
 								<span class="icon-badge" aria-hidden="true" set:html={`<svg width="20" height="20" viewBox="0 0 20 20" fill="none">${icons[item.icon]}</svg>`} />
 								<h3>{item.title}</h3>
 								<p>{item.desc}</p>
+								{item.icon === "chart" && <a class="excel-report-link" href={lang === "en" ? "/en/festival-management-excel/" : "/festival-management-excel/"} data-umami-event="excel-page-click" data-umami-event-location="homepage-benefits">{lang === "en" ? "Explore Excel reports" : "Scopri i report Excel"}</a>}
 							</div>
 						))
 					}
@@ -331,7 +332,8 @@ const icons: Record<string, string> = {
 									type="button"
 									class="tier-cta"
 									data-open-contact="informazioni"
-									data-request-type={tier.icon}
+									data-request-type="preventivo"
+									data-contact-plan={tier.icon}
 									data-umami-event="tier-cta-click"
 									data-umami-event-tier={tier.name}
 								>
@@ -969,6 +971,7 @@ const icons: Record<string, string> = {
 				grid-template-columns: repeat(3, 1fr);
 				gap: 2rem;
 			}
+			.excel-report-link { display: inline-block; margin-top: .6rem; padding-block: .5rem; font-size: .94rem; font-weight: 600; text-underline-offset: .22em; }
 			.feature-card h3 {
 				font-size: 1.05rem;
 				margin-bottom: 0.5rem;
