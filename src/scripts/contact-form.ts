@@ -1,4 +1,4 @@
-import { contactIntents, contactPlans, contactPeriods, type ContactIntent, type ContactPlan, type ContactPeriod } from '../lib/contact';
+import { contactIntents, contactPlans, contactPeriods, type ContactIntent, type ContactPeriod } from '../lib/contact';
 import type { getContactContent } from '../i18n/contact';
 import type { contactLabels } from '../lib/contact';
 
@@ -16,7 +16,9 @@ function initContactForm() {
   const status = form.querySelector<HTMLElement>('#contact-status')!;
   const submit = form.querySelector<HTMLButtonElement>('[type="submit"]')!;
   const another = form.querySelector<HTMLButtonElement>('.another')!;
-  const periodFieldset = form.querySelector<HTMLFieldSetElement>('.period-fieldset')!;
+  const planField = form.querySelector<HTMLElement>('.plan-field')!;
+  const messageLabel = form.querySelector<HTMLElement>('[data-message-label]')!;
+  const messageHint = form.querySelector<HTMLElement>('#message-hint')!;
   const context = form.querySelector<HTMLElement>('.context')!;
   const contextLabel = form.querySelector<HTMLElement>('[data-context-label]')!;
   const clear = form.querySelector<HTMLButtonElement>('[data-clear-context]')!;
@@ -25,23 +27,28 @@ function initContactForm() {
   let completed = false;
   let started = false;
   const intent = () => (form.querySelector<HTMLInputElement>('[name="requestType"]:checked')?.value || 'informazioni') as ContactIntent;
-  const period = () => field('contextPeriod').value || (periodFieldset.hidden ? '' : form.querySelector<HTMLInputElement>('[name="period"]:checked')?.value || '');
+  const period = () => field('contextPeriod').value;
   const track = (event: string) => window.umami?.track(event, { source: t.source, intent: intent(), plan: field('plan').value, period: period() });
   const update = () => {
-    const plan = field('plan').value as ContactPlan | '';
+    if (field('plan').value === 'custom') field('contextPeriod').value = '';
     const selectedPeriod = field('contextPeriod').value as ContactPeriod | '';
-    periodFieldset.hidden = intent() !== 'preventivo' || !!selectedPeriod || plan === 'custom';
+    planField.hidden = intent() !== 'preventivo';
+    const copy = t.messages[intent()];
+    messageLabel.textContent = copy.label;
+    messageHint.textContent = copy.hint;
+    field('message').placeholder = copy.placeholder;
     const source = ['excel', 'myclienti', 'selfhosting'].includes(t.source) ? t.labels.sources[t.source as 'excel' | 'myclienti' | 'selfhosting'] : '';
-    const parts = [plan ? t.labels.plans[plan] : '', selectedPeriod ? t.labels.periods[selectedPeriod] : '', source].filter(Boolean);
+    const parts = [selectedPeriod ? t.labels.periods[selectedPeriod] : '', source].filter(Boolean);
     context.hidden = parts.length === 0;
     contextLabel.textContent = parts.join(' · ');
-    clear.hidden = !plan && !selectedPeriod;
+    clear.hidden = !selectedPeriod;
   };
   const resetStatus = () => {
     completed = false;
     status.textContent = '';
     status.removeAttribute('data-state');
-    submit.hidden = false;
+    submit.removeAttribute('data-state');
+    submit.textContent = t.submit;
     submit.disabled = false;
     another.hidden = true;
     form.querySelectorAll('[aria-invalid]').forEach(el => el.removeAttribute('aria-invalid'));
@@ -61,7 +68,7 @@ function initContactForm() {
     if (event.target instanceof HTMLElement) event.target.removeAttribute('aria-invalid');
   });
   form.addEventListener('change', update);
-  clear.addEventListener('click', () => { field('plan').value = ''; field('contextPeriod').value = ''; update(); });
+  clear.addEventListener('click', () => { field('contextPeriod').value = ''; update(); });
   another.addEventListener('click', () => { reset(); field('name').focus(); });
   document.querySelectorAll<HTMLElement>('[data-open-contact]').forEach(trigger => {
     trigger.addEventListener('click', () => {
@@ -73,7 +80,6 @@ function initContactForm() {
       field('plan').value = plan;
       const selected = trigger.dataset.contactPeriod || (plan && plan !== 'custom' ? document.querySelector<HTMLInputElement>('[name="pricing-period"]:checked')?.value : '');
       field('contextPeriod').value = plan === 'custom' ? '' : contactPeriods.find(period => period === selected) || '';
-      form.querySelector<HTMLInputElement>('[name="period"][value=""]')!.checked = true;
       chooseIntent(legacyPlan ? 'preventivo' : contactIntents.find(value => value === raw) || 'informazioni');
       update();
       if (dialog) { if (!dialog.open) dialog.showModal(); }
@@ -99,7 +105,7 @@ function initContactForm() {
     const data = new FormData(form);
     const payload = {
       lang: data.get('lang'), name: data.get('name'), email: data.get('email'), phone: data.get('phone'),
-      message: data.get('message'), requestType: intent(), plan: field('plan').value,
+      message: data.get('message'), requestType: intent(), plan: intent() === 'preventivo' ? field('plan').value : '',
       period: period(), sourcePath: data.get('sourcePath'),
     };
     busy = true; submit.disabled = true; submit.textContent = t.submitting;
@@ -112,7 +118,10 @@ function initContactForm() {
       if (!response.ok || !result.ok) throw new Error(typeof result.error === 'string' ? result.error : t.error);
       completed = true;
       status.dataset.state = 'success'; status.textContent = t.success;
-      submit.hidden = true; another.hidden = false;
+      submit.dataset.state = 'sent';
+      submit.innerHTML = '<svg width="18" height="18" viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="M3 8.5 6.5 12 13 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+      submit.append(t.sent);
+      another.hidden = false;
       track('contact-submit-success');
       status.focus({ preventScroll: true });
     } catch (error) {
@@ -121,7 +130,8 @@ function initContactForm() {
       track('contact-submit-error');
       status.focus({ preventScroll: true });
     } finally {
-      clearTimeout(timeout); busy = false; submit.disabled = false; submit.textContent = t.submit;
+      clearTimeout(timeout); busy = false;
+      if (!completed) { submit.disabled = false; submit.textContent = t.submit; }
       form.removeAttribute('aria-busy');
     }
   });

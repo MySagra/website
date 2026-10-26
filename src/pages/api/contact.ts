@@ -58,7 +58,7 @@ const MESSAGES = {
 			informazioni: "Domanda",
 			cloud: "Soluzione cloud",
 			onsite: "Installazione in loco",
-			custom: "Build su misura",
+			custom: "Enterprise",
 			demo: "Richiesta demo",
 		},
 		pillLabel: { informazioni: "INFORMAZIONI", supporto: "SUPPORTO" },

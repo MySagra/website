@@ -1,23 +1,29 @@
 ---
 import { getContactContent } from '../i18n/contact';
-import { contactLabels, contactSource } from '../lib/contact';
+import { contactLabels, contactPlans, contactSource } from '../lib/contact';
+import { getContent } from '../i18n/content';
 import type { Lang } from '../i18n/ui';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const t = getContactContent(lang);
 const home = lang === 'en' ? '/en/' : '/';
+const offeredPlans = contactPlans.filter(plan => getContent(lang).soluzioni.tiers.some(tier => tier.icon === plan));
 ---
 <form id="contact-form" class="contact-form rr-block" novalidate data-config={JSON.stringify({ ...t, labels: contactLabels[lang], source: contactSource(Astro.url.pathname) })}>
   <input type="hidden" name="lang" value={lang} />
   <input type="hidden" name="sourcePath" value={Astro.url.pathname} />
-  <input type="hidden" name="plan" value="" />
   <input type="hidden" name="contextPeriod" value="" />
   <p class="required-note">{t.required}</p>
   <div class="context" hidden><p><span>{t.context}</span> <strong data-context-label></strong></p><button type="button" data-clear-context>{t.change}</button></div>
   <fieldset class="intent-fieldset">
     <legend>{t.intent}</legend>
     <div class="choices">
-      {(['demo', 'preventivo', 'informazioni'] as const).map((value, i) => <label><input type="radio" name="requestType" value={value} checked={value === 'informazioni'} /><span>{[t.demo, t.quote, t.question][i]}</span></label>)}
+      {(['demo', 'preventivo', 'informazioni'] as const).map((value, i) => (
+        <label>
+          <input type="radio" name="requestType" value={value} checked={value === 'informazioni'} />
+          <span class="choice">{[t.demo, t.quote, t.question][i]}</span>
+        </label>
+      ))}
     </div>
   </fieldset>
   <div class="identity">
@@ -25,16 +31,20 @@ const home = lang === 'en' ? '/en/' : '/';
     <label class="field"><span>{t.email}</span><input type="email" name="email" autocomplete="email" required maxlength="254" inputmode="email" /></label>
   </div>
   <label class="field"><span>{t.phone}</span><input type="tel" name="phone" autocomplete="tel" maxlength="60" /></label>
-  <fieldset class="period-fieldset" hidden>
-    <legend>{t.period}</legend>
-    <div class="period-choices">{(['', 'weekly', 'monthly'] as const).map((value, i) => <label><input type="radio" name="period" value={value} checked={value === ''} /><span>{[t.undecided, t.weekly, t.monthly][i]}</span></label>)}</div>
-    <p class="hint">{t.periodNote}</p>
-  </fieldset>
-  <label class="field"><span>{t.message}</span><span class="hint" id="message-hint">{t.messageHint}</span><textarea name="message" rows="3" required maxlength="6000" placeholder={t.messagePlaceholder} aria-describedby="message-hint"></textarea></label>
+  <div class="message-area">
+    <label class="field plan-field" hidden>
+      <span>{t.plan}</span>
+      <select name="plan">
+        <option value="">{t.planUndecided}</option>
+        {offeredPlans.map(plan => <option value={plan}>{contactLabels[lang].plans[plan]}</option>)}
+      </select>
+    </label>
+    <label class="field message-field"><span data-message-label>{t.messages.informazioni.label}</span><span class="hint" id="message-hint">{t.messages.informazioni.hint}</span><textarea name="message" rows="3" required maxlength="6000" placeholder={t.messages.informazioni.placeholder} aria-describedby="message-hint"></textarea></label>
+  </div>
   <p class="privacy">{t.privacy} <a href={`${home}privacy-policy/`}>{t.privacyLink}</a>.</p>
   <p id="contact-status" class="form-status" role="status" aria-live="polite" tabindex="-1"></p>
   <button type="submit" class="submit" id="contact-submit" disabled>{t.submit}</button>
-  <button type="button" class="submit another" hidden>{t.another}</button>
+  <button type="button" class="another" hidden>{t.another}</button>
   <noscript><p class="fallback">{t.nojs} <a href="mailto:info@mysagra.com">info@mysagra.com</a>.</p></noscript>
 </form>
 
@@ -44,24 +54,28 @@ const home = lang === 'en' ? '/en/' : '/';
   .required-note { margin-bottom: 1.2rem; }
   fieldset { border: 0; margin: 0 0 1.2rem; padding: 0; min-width: 0; }
   legend, .field > span:first-child { font-size: .9rem; font-weight: 600; margin-bottom: .45rem; padding: 0; }
-  .choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: .5rem; }
+  .choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: .25rem; padding: .3rem; border: 1px solid var(--color-neutral-200); border-radius: var(--radius-pill); background: var(--color-surface); }
   .choices label { position: relative; display: flex; }
   .choices input { position: absolute; width: 1px; height: 1px; opacity: 0; }
-  .choices span { display: grid; place-items: center; width: 100%; padding: .7rem .45rem; min-height: 48px; border: 1px solid var(--color-neutral-200); border-radius: var(--radius); font-size: .85rem; font-weight: 500; text-align: center; cursor: pointer; }
-  .choices input:checked + span { background: #fff7d6; border-color: var(--color-ink); box-shadow: inset 0 0 0 1px var(--color-ink); }
-  .choices input:focus-visible + span { outline: 3px solid var(--color-ink); outline-offset: 3px; }
-  .choices span:hover { border-color: var(--color-ink); }
+  .choice { display: grid; place-items: center; width: 100%; min-height: 44px; padding: .5rem .75rem; border-radius: var(--radius-pill); font-family: var(--font-display); font-size: .9rem; font-weight: 600; text-align: center; cursor: pointer; transition: background-color .16s ease, color .16s ease; }
+  .choice:hover { background: var(--color-neutral-200); }
+  .choices input:checked + .choice { background: var(--color-ink); color: var(--color-surface); }
+  .choices input:focus-visible + .choice { outline: 2px solid var(--color-ink); outline-offset: 3px; }
   .identity { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
   .field { display: block; margin-bottom: 1rem; }
   .field > span { display: block; }
   .field .hint { font-weight: 400; margin-bottom: .5rem; }
   .field input, .field textarea { width: 100%; min-height: 48px; padding: .7rem .85rem; border: 1px solid var(--color-neutral-200); border-radius: var(--radius); font: inherit; font-size: 1rem; color: var(--color-ink); background: var(--color-surface); caret-color: var(--color-ink); }
-  .field textarea { min-height: 100px; resize: vertical; max-height: 240px; }
+  /* Fixed-height area: the message box fills whatever the plan select and hint leave free, so switching request type never resizes the form. */
+  .message-area { display: flex; flex-direction: column; height: 19rem; margin-bottom: 1rem; }
+  .message-field { display: flex; flex: 1; flex-direction: column; min-height: 0; margin-bottom: 0; }
+  .message-field .hint { min-height: calc(.82rem * 1.55 * 2); }
+  .field textarea { flex: 1; min-height: 100px; resize: none; }
+  .field select { width: 100%; min-height: 48px; padding: .7rem 2.5rem .7rem .85rem; border: 1px solid var(--color-neutral-200); border-radius: var(--radius); font: inherit; font-size: 1rem; color: var(--color-ink); cursor: pointer; appearance: none; background: var(--color-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='m4 6 4 4 4-4' stroke='%23111' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") right .85rem center / 16px no-repeat; }
+  .field select:hover { border-color: var(--color-ink); }
+  .plan-field[hidden] { display: none; }
   .field textarea::placeholder { color: #646871; opacity: 1; }
   .field input[aria-invalid='true'], .field textarea[aria-invalid='true'] { border-color: var(--color-danger); }
-  .period-choices { display: flex; flex-wrap: wrap; gap: .5rem 1rem; margin-bottom: .5rem; }
-  .period-choices label { display: flex; gap: .4rem; align-items: center; min-height: 44px; font-size: .9rem; cursor: pointer; }
-  .period-choices input { accent-color: var(--color-ink); width: 18px; height: 18px; }
   .context { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .9rem; margin-bottom: 1rem; background: var(--color-surface-warm); border-radius: var(--radius); font-size: .85rem; }
   .context strong { display: block; }
   .context button { background: none; border: 0; min-height: 44px; padding: .4rem; text-decoration: underline; cursor: pointer; }
@@ -74,6 +88,12 @@ const home = lang === 'en' ? '/en/' : '/';
   .submit { width: 100%; min-height: 48px; padding: .8rem; border: 0; border-radius: var(--radius-pill); background: var(--color-yellow); color: var(--color-ink); font: inherit; font-weight: 600; cursor: pointer; transition: box-shadow .2s; }
   .submit:hover { box-shadow: var(--shadow-soft); }
   .submit:disabled { opacity: .65; cursor: wait; }
+  .submit[data-state='sent'] { display: inline-flex; align-items: center; justify-content: center; gap: .5rem; background: #15803d; color: #fff; opacity: 1; cursor: default; box-shadow: none; }
+  .submit[data-state='sent'] svg { flex-shrink: 0; }
+  /* The green button carries the confirmation visually; the status line stays for screen readers. */
+  .form-status[data-state='success'] { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+  .another { display: block; margin: .75rem auto 0; min-height: 44px; padding: .4rem .8rem; border: 0; background: none; color: var(--color-ink); font: inherit; font-size: .9rem; font-weight: 600; text-decoration: underline; text-underline-offset: .2em; cursor: pointer; }
+  .another[hidden] { display: none; }
   .fallback { margin-top: 1rem; }
   [hidden] { display: none !important; }
   @media (max-width: 460px) { .identity { grid-template-columns: 1fr; gap: 0; } .choices span { font-size: .8rem; } }

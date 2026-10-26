@@ -23,7 +23,8 @@ export interface SiteContent {
 		h2: string;
 		lede: string;
 		pricingNote: string;
-		pricingLabels: { period: string; weekly: string; monthly: string; from: string; perWeek: string; perMonth: string; saving: string; fourWeeks: string };
+		bookingNote: { title: string; text: string; cta: string };
+		pricingLabels: { period: string; weekly: string; monthly: string; from: string; perWeek: string; perMonth: string; saving: string; fourWeeks: string; price: string; ecosystem: string };
 		demoNotePrefix: string;
 		demoNoteCta: string;
 		tiers: {
@@ -31,6 +32,8 @@ export interface SiteContent {
 			name: string;
 			tag?: string;
 			featured?: boolean;
+			enterprise?: boolean;
+			badge?: string;
 			desc: string;
 			pricing?: { weekly: number; monthly: number };
 			customPrice?: string;
@@ -223,39 +226,42 @@ const it: SiteContent = {
 	],
 	soluzioni: {
 		h2: "Tre soluzioni per portare MySagra alla vostra sagra",
-		lede: "Prezzi di partenza per organizzare la vostra sagra. Definiamo insieme il preventivo in base alle vostre esigenze.",
-		pricingNote: "Eventuali sconti possono essere applicati per periodi più lunghi. Richieste particolari di dispositivi possono aumentare il prezzo, soprattutto per l’installazione in loco.",
-		pricingLabels: { period: "Periodo del servizio", weekly: "Settimana", monthly: "Mese", from: "A partire da", perWeek: "/ settimana", perMonth: "/ mese", saving: "Un mese al prezzo di 3 settimane", fourWeeks: "Prezzo di 4 settimane" },
+		lede: "Prezzi di partenza per una sagra standard. Definiamo insieme il preventivo in base alle vostre esigenze.",
+		pricingNote: "Prezzi indicativi. Il costo finale viene definito nel preventivo: può aumentare in base alle esigenze dell’evento (postazioni aggiuntive, distanza, durata) e prevede condizioni agevolate per utilizzi prolungati o su più edizioni.",
+		bookingNote: { title: "Prenotazioni aperte per la stagione 2027", text: "Servizio attivo da febbraio. Preventivo gratuito e senza impegno.", cta: "Blocca la tua data" },
+		pricingLabels: { period: "Periodo del servizio", weekly: "Settimana", monthly: "Mese", from: "A partire da", perWeek: "/ settimana", perMonth: "/ mese", saving: "Agevolazioni per periodi più lunghi", fourWeeks: "Prezzo di 4 settimane", price: "Prezzo", ecosystem: "Include tutti i software dell'ecosistema MySagra" },
 		demoNotePrefix: "Vuoi capire meglio come funziona?",
 		demoNoteCta: "Contattaci per richiedere una demo →",
 		tiers: [
 			{
 				icon: "cloud",
 				name: "Cloud gestito",
-				pricing: { weekly: 60, monthly: 180 },
+				pricing: { weekly: 69, monthly: 207 },
 				tag: "Consigliato",
 				featured: true,
-				desc: "Un'istanza MySagra pronta all'uso: hosting, sicurezza, aggiornamenti e backup a nostro carico. Supporto anche durante le serate.",
-				points: ["Nessun server da gestire", "Assistenza durante l'evento", "Scala dai piccoli ai grandi numeri"],
-				warning:
-					"Richiede una connessione Internet stabile. Non forniamo i dispositivi: terminali, stampanti e tablet restano a vostro carico.",
+				desc: "MySagra pronto all'uso. Al resto pensiamo noi.",
+				points: ["Hosting, sicurezza e backup inclusi", "Aggiornamenti sempre attivi", "Assistenza durante le serate", "Per sagre piccole e grandi"],
+				warning: "Serve una connessione internet stabile. Terminali e stampanti sono vostri.",
 				cta: "Richiedi un preventivo",
 			},
 			{
 				icon: "onsite",
 				name: "Installazione in loco",
-				pricing: { weekly: 150, monthly: 450 },
-				desc: "Tutto lo stack sull'hardware del vostro evento: rete locale, stampanti, terminali e display configurati da noi. Siamo di Bergamo: se la vostra sagra è in zona, siamo ancora più vicini.",
-				points: ["Rete LAN-first, resiste se internet cade", "Formazione dei volontari", "Presenza all'apertura, su richiesta", "Assistenza prioritaria"],
+				pricing: { weekly: 179, monthly: 537 },
+				desc: "Veniamo al vostro evento e installiamo tutto noi.",
+				points: ["Installazione di rete, stampanti e dispositivi", "Funziona anche se internet cade", "Formazione dei volontari", "Presenza all'apertura, su richiesta", "Assistenza prioritaria"],
 				cta: "Richiedi un preventivo",
 			},
 			{
 				icon: "custom",
-				name: "Build su misura",
-				customPrice: "Preventivo personalizzato",
-				desc: "Esigenze particolari? Adattiamo MySagra alla vostra sagra: funzionalità dedicate, integrazioni, flussi fuori standard.",
-				points: ["Sviluppo su misura", "Integrazioni dedicate", "Pensato con voi, non solo per voi"],
-				cta: "Raccontaci le tue esigenze",
+				name: "Enterprise",
+				tag: "Grandi eventi",
+				enterprise: true,
+				badge: "enterprise",
+				customPrice: "Su preventivo",
+				desc: "Per feste, fiere ed eventi da migliaia di coperti.",
+				points: ["Infrastruttura dedicata, solo per voi", "Dimensionata sui vostri volumi", "Integrazioni su misura", "Referente diretto e assistenza prioritaria"],
+				cta: "Parliamo del vostro evento",
 			},
 		],
 	},
@@ -290,18 +296,16 @@ const it: SiteContent = {
 				photo: "/images/mystampa-receipt.webp",
 				desc: "Comande e scontrini termici divisi in automatico per stazione: cucina, griglia, bar, pizzeria. Stampa anche i resoconti di fine serata, con statistiche e quantità vendute.",
 			},
-			/* temporarily disabled
 			{
 				name: "MyNumeri",
 				role: "display",
 				icon: "numeri",
 				desc: "Il tabellone numeri per sagre: chiama l'ordine pronto sullo schermo, niente più ressa al banco.",
 			},
-			*/
 		],
 		screenshotOf: "Screenshot di",
 		customNotePrefix: "Esigenze particolari?",
-		customNoteLink: "Guardate la soluzione Build su misura →",
+		customNoteLink: "Guardate la soluzione Enterprise →",
 		personalize: {
 			alt: "Anteprima dell'app MyClienti, personalizzabile con i vostri colori, eventi, sponsor e menu",
 			badges: [
@@ -348,7 +352,7 @@ const it: SiteContent = {
 			},
 			{
 				q: "Quanto costa MySagra?",
-				a: "Il cloud gestito parte da 60 € a settimana o 180 € al mese. L’installazione in loco parte da 150 € a settimana o 450 € al mese: in entrambi i casi il mese costa come 3 settimane. La build su misura ha un preventivo personalizzato. Sono possibili sconti per periodi più lunghi; richieste particolari di dispositivi possono aumentare il prezzo, soprattutto in loco. Contattateci per un preventivo.",
+				a: "Il cloud gestito parte da 69 € a settimana o 207 € al mese. L’installazione in loco parte da 179 € a settimana o 537 € al mese: in entrambi i casi il mese costa come 3 settimane. Per grandi feste ed eventi la soluzione Enterprise, con hosting dedicato e sviluppo su misura, ha un preventivo personalizzato. I prezzi sono indicativi: possono aumentare in base alle esigenze dell’evento e prevedono condizioni agevolate per utilizzi prolungati. Le prenotazioni per la stagione 2027 sono aperte, con servizio attivo da febbraio: contattateci per un preventivo.",
 			},
 			{
 				q: "Serve un tecnico per usare MySagra durante l'evento?",
@@ -488,7 +492,7 @@ const it: SiteContent = {
 			informazioni: "Informazioni",
 			cloud: "Soluzione cloud",
 			onsite: "Installazione in loco",
-			custom: "Build su misura",
+			custom: "Enterprise",
 			demo: "Richiesta demo",
 		},
 		phonePrefixAria: "Prefisso",
@@ -566,30 +570,34 @@ const en: SiteContent = {
 	soluzioni: {
 		h2: "Managed cloud, with help getting started",
 		lede: "We run the servers and guide you through setting up local printing. Starting prices help you plan; your final quote depends on your requirements.",
-		pricingNote: "Discounts may be available for longer periods. Special device requirements may increase the price, particularly for on-site installation.",
-		pricingLabels: { period: "Service period", weekly: "Weekly", monthly: "Monthly", from: "From", perWeek: "/ week", perMonth: "/ month", saving: "A month for the price of 3 weeks", fourWeeks: "Price for 4 weeks" },
+		pricingNote: "Indicative prices. Your final cost is set in your quote: it may increase with your event’s requirements (extra stations, duration) and includes better terms for longer use or recurring editions.",
+		bookingNote: { title: "Bookings are open for the 2027 season", text: "Service starts in February. Free, no-obligation quote.", cta: "Hold your dates" },
+		pricingLabels: { period: "Service period", weekly: "Weekly", monthly: "Monthly", from: "From", perWeek: "/ week", perMonth: "/ month", saving: "Better terms for longer periods", fourWeeks: "Price for 4 weeks", price: "Price", ecosystem: "Includes every app in the MySagra ecosystem" },
 		demoNotePrefix: "Want to see the checkout and kitchen workflow?",
 		demoNoteCta: "Contact us to request a demo →",
 		tiers: [
 			{
 				icon: "cloud",
 				name: "Managed cloud",
-				pricing: { weekly: 60, monthly: 180 },
+				pricing: { weekly: 69, monthly: 207 },
 				tag: "Recommended",
 				featured: true,
 				desc: "Your MySagra instance hosted and maintained by us, with security, updates and backups managed for you. We guide you through installing and configuring the local printing service that communicates with our servers.",
 				points: ["Hosting, updates and backups managed for you", "Guided local printing setup included", "Customer self-ordering included", "Support during your event"],
 				warning:
-					"Requires a stable internet connection. You provide checkout devices, compatible printers and the device running the local printing service.",
+					"Needs a stable internet connection. You provide checkout devices, printers and the computer running local printing.",
 				cta: "Request a quote",
 			},
 			{
 				icon: "custom",
-				name: "Custom development",
-				customPrice: "Personalized quote",
-				desc: "Need a different workflow for your festival? Tell us about your requirements and we can scope dedicated features or integrations for your MySagra setup.",
-				points: ["Event-specific workflows", "Dedicated features and integrations", "Scope and quote agreed with you"],
-				cta: "Tell us what you need",
+				name: "Enterprise",
+				tag: "Large events",
+				enterprise: true,
+				badge: "enterprise",
+				customPrice: "Custom quote",
+				desc: "For large festivals, fairs and events serving thousands of guests: dedicated infrastructure, custom development and a direct point of contact.",
+				points: ["Dedicated hosting, separate from other festivals", "Sized for your order volumes", "Custom features and integrations", "Dedicated contact and priority support"],
+				cta: "Talk to us about your event",
 			},
 		],
 	},
@@ -624,14 +632,12 @@ const en: SiteContent = {
 				photo: "/images/mystampa-receipt.webp",
 				desc: "Print kitchen order tickets and thermal receipts locally, automatically split by station: kitchen, grill, bar or pizzeria. We guide you through setting up the local printing service that connects your printers to our cloud servers. MyStampa also prints end-of-event sales reports.",
 			},
-			/* temporarily disabled
 			{
 				name: "MyNumeri",
 				role: "display",
 				icon: "numeri",
 				desc: "The queue-number display for festivals: calls each ready order on screen, no more crowding at the counter.",
 			},
-			*/
 		],
 		screenshotOf: "Screenshot of",
 		customNotePrefix: "Special needs?",
@@ -694,7 +700,7 @@ const en: SiteContent = {
 			},
 			{
 				q: "How much does MySagra cost?",
-				a: "Managed cloud starts at €60 per week or €180 per month: a month for the price of 3 weeks. Discounts may be available for longer periods, and special device requirements may increase the price. Your final quote depends on your requirements. It includes managed hosting, updates, backups, customer self-ordering and guidance for local printing setup. You provide the hardware. If you need dedicated features or integrations, we agree on the scope and quote for custom development separately.",
+				a: "Managed cloud starts at €69 per week or €207 per month: a month for the price of 3 weeks. Prices are indicative: they may increase with your event’s requirements, with better terms for longer use. It includes managed hosting, updates, backups, customer self-ordering and guidance for local printing setup. You provide the hardware. For large festivals and events, Enterprise adds dedicated hosting and custom development with a personalized quote. Bookings for the 2027 season are open, with service starting in February.",
 			},
 			{
 				q: "How do we get started before our festival?",
@@ -815,7 +821,7 @@ const en: SiteContent = {
 		requestTypeOptions: {
 			informazioni: "Information",
 			cloud: "Managed cloud",
-			custom: "Custom development",
+			custom: "Enterprise",
 			demo: "Demo request",
 		},
 		phonePrefixAria: "Prefix",

@@ -10,13 +10,13 @@ export type ContactPeriod = typeof contactPeriods[number];
 export const contactLabels = {
   it: {
     intents: { demo: 'Demo', preventivo: 'Preventivo', informazioni: 'Domanda' },
-    plans: { cloud: 'Cloud gestito', onsite: 'Installazione in loco', custom: 'Build su misura' },
+    plans: { cloud: 'Cloud gestito', onsite: 'Installazione in loco', custom: 'Enterprise' },
     periods: { weekly: 'Settimanale', monthly: 'Mensile' },
     sources: { home: 'Homepage', excel: 'Report Excel', myclienti: 'MyClienti', selfhosting: 'Self-hosting', contact: 'Pagina contatti', other: 'Sito MySagra' },
   },
   en: {
     intents: { demo: 'Demo', preventivo: 'Quote', informazioni: 'Question' },
-    plans: { cloud: 'Managed cloud', onsite: 'On-site installation', custom: 'Custom development' },
+    plans: { cloud: 'Managed cloud', onsite: 'On-site installation', custom: 'Enterprise' },
     periods: { weekly: 'Weekly', monthly: 'Monthly' },
     sources: { home: 'Homepage', excel: 'Excel reports', myclienti: 'MyClienti', selfhosting: 'Self-hosting', contact: 'Contact page', other: 'MySagra website' },
   },
