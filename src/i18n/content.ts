@@ -1,4 +1,5 @@
 import type { Lang } from "./ui";
+import { formatPrice, prices } from "../lib/pricing";
 
 export interface SiteContent {
 	meta: { title: string; description: string; keywords: string };
@@ -236,7 +237,7 @@ const it: SiteContent = {
 			{
 				icon: "cloud",
 				name: "Cloud gestito",
-				pricing: { weekly: 69, monthly: 207 },
+				pricing: prices.cloud,
 				tag: "Consigliato",
 				featured: true,
 				desc: "MySagra pronto all'uso. Al resto pensiamo noi.",
@@ -247,7 +248,7 @@ const it: SiteContent = {
 			{
 				icon: "onsite",
 				name: "Installazione in loco",
-				pricing: { weekly: 179, monthly: 537 },
+				pricing: prices.onsite,
 				desc: "Veniamo al vostro evento e installiamo tutto noi.",
 				points: ["Installazione di rete, stampanti e dispositivi", "Funziona anche se internet cade", "Formazione dei volontari", "Presenza all'apertura, su richiesta", "Assistenza prioritaria"],
 				cta: "Richiedi un preventivo",
@@ -352,7 +353,7 @@ const it: SiteContent = {
 			},
 			{
 				q: "Quanto costa MySagra?",
-				a: "Il cloud gestito parte da 69 € a settimana o 207 € al mese. L’installazione in loco parte da 179 € a settimana o 537 € al mese: in entrambi i casi il mese costa come 3 settimane. Per grandi feste ed eventi la soluzione Enterprise, con hosting dedicato e sviluppo su misura, ha un preventivo personalizzato. I prezzi sono indicativi: possono aumentare in base alle esigenze dell’evento e prevedono condizioni agevolate per utilizzi prolungati. Le prenotazioni per la stagione 2027 sono aperte, con servizio attivo da febbraio: contattateci per un preventivo.",
+				a: `Il cloud gestito parte da ${formatPrice(prices.cloud.weekly, "it")} a settimana o ${formatPrice(prices.cloud.monthly, "it")} al mese. L’installazione in loco parte da ${formatPrice(prices.onsite.weekly, "it")} a settimana o ${formatPrice(prices.onsite.monthly, "it")} al mese. Ogni soluzione include tutti i software dell’ecosistema MySagra: MyCassa, MyStampa, MyNumeri e MyClienti. Per grandi feste ed eventi la soluzione Enterprise, con hosting dedicato e sviluppo su misura, ha un preventivo personalizzato. I prezzi sono indicativi: possono aumentare in base alle esigenze dell’evento e prevedono condizioni agevolate per utilizzi prolungati. Le prenotazioni per la stagione 2027 sono aperte, con servizio attivo da febbraio: contattateci per un preventivo.`,
 			},
 			{
 				q: "Serve un tecnico per usare MySagra durante l'evento?",
@@ -579,7 +580,7 @@ const en: SiteContent = {
 			{
 				icon: "cloud",
 				name: "Managed cloud",
-				pricing: { weekly: 69, monthly: 207 },
+				pricing: prices.cloud,
 				tag: "Recommended",
 				featured: true,
 				desc: "Your MySagra instance hosted and maintained by us, with security, updates and backups managed for you. We guide you through installing and configuring the local printing service that communicates with our servers.",
@@ -700,7 +701,7 @@ const en: SiteContent = {
 			},
 			{
 				q: "How much does MySagra cost?",
-				a: "Managed cloud starts at €69 per week or €207 per month: a month for the price of 3 weeks. Prices are indicative: they may increase with your event’s requirements, with better terms for longer use. It includes managed hosting, updates, backups, customer self-ordering and guidance for local printing setup. You provide the hardware. For large festivals and events, Enterprise adds dedicated hosting and custom development with a personalized quote. Bookings for the 2027 season are open, with service starting in February.",
+				a: `Managed cloud starts at ${formatPrice(prices.cloud.weekly, "en")} per week or ${formatPrice(prices.cloud.monthly, "en")} per month. Prices are indicative: they may increase with your event’s requirements, with better terms for longer use. It includes every app in the MySagra ecosystem (MyCassa, MyStampa, MyNumeri and MyClienti), managed hosting, updates, backups and guidance for local printing setup. You provide the hardware. For large festivals and events, Enterprise adds dedicated hosting and custom development with a personalized quote. Bookings for the 2027 season are open, with service starting in February.`,
 			},
 			{
 				q: "How do we get started before our festival?",

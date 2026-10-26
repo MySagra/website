@@ -1,4 +1,5 @@
 import type { Lang } from './ui';
+import { formatPrice, prices } from '../lib/pricing';
 
 const it = {
   title: 'Gestione sagra con Excel: report e alternativa | MySagra',
@@ -53,6 +54,7 @@ const it = {
     ['MySagra sostituisce Excel?', 'Non devi abbandonare Excel. MySagra gestisce gli ordini e l’operatività della sagra; puoi esportare i dati in un file .xlsx e continuare ad analizzarli nel tuo foglio di calcolo.'],
     ['Quali statistiche posso esportare in Excel?', 'Il report mostrato contiene tre fogli: Statistiche Ordini, con ricavi totali, contanti e carta, ordini totali e tempo medio di completamento; Statistiche Pietanze, con nome e quantità; Statistiche Casse, con ricavi totali, contanti e carta per cassa.'],
     ['Il report è collegato a Excel in tempo reale?', 'L’export è un file .xlsx con i dati esportati, non un foglio Excel sincronizzato in tempo reale. Per seguire l’andamento della sagra durante il servizio usi la dashboard di MySagra.'],
+    ['Quanto costa passare da Excel a MySagra?', `Il cloud gestito parte da ${formatPrice(prices.cloud.weekly, 'it')} a settimana e l’installazione in loco da ${formatPrice(prices.onsite.weekly, 'it')} a settimana. Ogni soluzione include tutti i software dell’ecosistema MySagra, compreso l’export dei report in Excel. I prezzi sono indicativi: il costo finale viene definito nel preventivo.`],
     ['Posso recuperare un ordine se il cliente ha perso il codice?', 'Per gli ordini inviati da MyClienti, in MyCassa puoi cercare il nome del cliente e recuperare l’ordine anche senza codice. Il pagamento avviene in cassa, non nell’app clienti.'],
   ],
   closingTitle: 'Il foglio può aspettare. La fila no.',
@@ -114,6 +116,7 @@ const en: typeof it = {
     ['Does MySagra replace Excel?', 'You do not need to give up Excel. MySagra manages orders and festival operations; export data to an .xlsx file and continue analysing it in your spreadsheet.'],
     ['Which statistics can I export to Excel?', 'The report shown has three sheets: Statistiche Ordini, with total, cash and card revenue, total orders and average completion time; Statistiche Pietanze, with dish names and quantities; and Statistiche Casse, with total, cash and card revenue for each till.'],
     ['Is the report connected to Excel in real time?', 'The export is an .xlsx file containing the exported data, not an Excel spreadsheet synchronised in real time. Use the MySagra dashboard to follow your festival during service.'],
+    ['How much does it cost to move from Excel to MySagra?', `Managed cloud starts at ${formatPrice(prices.cloud.weekly, 'en')} per week. Every plan includes all the apps in the MySagra ecosystem, including report export to Excel. Prices are indicative: your final cost is set in your quote.`],
     ['Can I retrieve an order if a customer loses their code?', 'For orders submitted through MyClienti, search by customer name in MyCassa to retrieve the order without its code. Payment takes place at the till, not in the customer app.'],
   ],
   closingTitle: 'The spreadsheet can wait. The queue can’t.',

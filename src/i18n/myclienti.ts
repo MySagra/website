@@ -1,4 +1,5 @@
 import type { Lang } from './ui';
+import { formatPrice, prices } from '../lib/pricing';
 
 const it = {
   title: 'Menu digitale e ordini online per sagre | MyClienti',
@@ -67,7 +68,7 @@ const it = {
     ['Come personalizzo il menu e l’app?', 'Dal pannello di gestione MySagra puoi modificare cibi, descrizioni, categorie, immagini, banner e istruzioni per i clienti. Per provare il pannello, richiedici le credenziali tramite il modulo contatti.'],
     ['Il menu è sincronizzato con MySagra?', 'Sì. MyClienti usa i dati dell’ecosistema MySagra: le modifiche effettuate nel pannello si riflettono nel menu dell’app clienti. Non devi mantenere un menu online separato.'],
     ['La demo pubblica permette di modificare il menu?', 'No. La demo pubblica serve a esplorare l’esperienza cliente. Per personalizzare i contenuti serve un accesso separato al pannello di gestione, che puoi richiederci.'],
-    ['MyClienti è incluso nei piani MySagra?', 'Sì. MyClienti è incluso in ogni piano MySagra. Per scegliere la soluzione più adatta alla tua sagra, consulta le soluzioni o contattaci.'],
+    ['MyClienti è incluso nei piani MySagra?', `Sì. MyClienti è incluso in ogni piano MySagra, insieme a MyCassa, MyStampa e MyNumeri: il cloud gestito parte da ${formatPrice(prices.cloud.weekly, 'it')} a settimana. Per scegliere la soluzione più adatta alla tua sagra, consulta le soluzioni o contattaci.`],
     ['Gli ordini online arrivano alla cassa in tempo reale?', 'Sì. MyClienti e MyCassa fanno parte dell’ecosistema MySagra: gli ordini inviati dal telefono sono disponibili in tempo reale alla cassa, senza ricopiarli. Il pagamento avviene in cassa.'],
     ['Come recupero un ordine se il cliente non ha il codice?', 'In MyCassa puoi cercare l’ordine per nome del cliente. Non serve avere il codice per recuperare l’ordine e procedere con il pagamento in cassa.'],
     ['I clienti pagano dall’app?', 'No. Il menu è consultabile online e MyClienti supporta l’ordine dal telefono, ma il pagamento avviene sempre in cassa.'],
@@ -146,7 +147,7 @@ const en: typeof it = {
     ['How do I customize the menu and app?', 'Use the MySagra admin panel to edit dishes, descriptions, categories, images, banners and customer instructions. To try the panel, request credentials through our contact form.'],
     ['Is the menu synced with MySagra?', 'Yes. MyClienti uses data from the MySagra ecosystem: changes in the admin panel are reflected in the customer app menu. You do not need to maintain a separate online menu.'],
     ['Can I edit the menu in the public demo?', 'No. The public demo lets you explore the customer experience. To customize content, request separate access to the management panel.'],
-    ['Is MyClienti included in MySagra plans?', 'Yes. MyClienti is included in every MySagra plan. Explore the available solutions or contact us to find the right fit for your festival.'],
+    ['Is MyClienti included in MySagra plans?', `Yes. MyClienti is included in every MySagra plan, together with MyCassa, MyStampa and MyNumeri: managed cloud starts at ${formatPrice(prices.cloud.weekly, 'en')} per week. Explore the available solutions or contact us to find the right fit for your festival.`],
     ['Do online orders reach the counter in real time?', 'Yes. MyClienti and MyCassa belong to the MySagra ecosystem: orders submitted from a phone are available at the counter in real time, without re-entering them. Payment happens at the counter.'],
     ['How do I retrieve an order if the customer has lost the code?', 'In MyCassa, you can search for an order by customer name. You do not need the code to retrieve the order and complete payment at the counter.'],
     ['Do customers pay in the app?', 'No. Customers can browse the menu online and MyClienti supports phone ordering, but payment always happens at the counter.'],

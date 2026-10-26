@@ -13,6 +13,7 @@ import ContactModal from "./ContactModal.astro";
 import Logo from "./Logo.astro";
 import Analytics from "./Analytics.astro";
 import { getContent } from "../i18n/content";
+import { formatPrice } from "../lib/pricing";
 import type { Lang } from "../i18n/ui";
 
 interface Props {
@@ -24,9 +25,6 @@ const t = getContent(lang);
 const outcomes = t.outcomes;
 const ecosystem = t.ecosistema.items;
 const tiers = t.soluzioni.tiers;
-const priceFormatter = new Intl.NumberFormat(lang === "it" ? "it-IT" : "en-GB", {
-	style: "currency", currency: "EUR", maximumFractionDigits: 0,
-});
 const faqItems = t.faq.items;
 
 const SITE_URL = "https://mysagra.com";
@@ -59,6 +57,23 @@ const softwareSchema = {
 	description: t.meta.description,
 	inLanguage: lang,
 	keywords: t.meta.keywords,
+	// Published starting prices, derived from the same tier data the pricing cards render.
+	offers: tiers
+		.filter((tier) => tier.pricing)
+		.map((tier) => ({
+			"@type": "Offer",
+			name: tier.name,
+			url: `${canonicalUrl}#solutions`,
+			price: tier.pricing!.weekly,
+			priceCurrency: "EUR",
+			priceSpecification: {
+				"@type": "UnitPriceSpecification",
+				price: tier.pricing!.weekly,
+				priceCurrency: "EUR",
+				unitCode: "WEE",
+				referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "WEE" },
+			},
+		})),
 };
 
 const webPageSchema = {
@@ -323,14 +338,14 @@ const icons: Record<string, string> = {
 									<div class="tier-pricing">
 										<p class="tier-price-from">
 											{t.soluzioni.pricingLabels.from}
-											<s class="tier-original-price" aria-label={`${t.soluzioni.pricingLabels.fourWeeks}: ${priceFormatter.format(tier.pricing.weekly * 4)}`} title={t.soluzioni.pricingLabels.fourWeeks}>{priceFormatter.format(tier.pricing.weekly * 4)}</s>
+											<s class="tier-original-price" aria-label={`${t.soluzioni.pricingLabels.fourWeeks}: ${formatPrice(tier.pricing.weekly * 4, lang)}`} title={t.soluzioni.pricingLabels.fourWeeks}>{formatPrice(tier.pricing.weekly * 4, lang)}</s>
 										</p>
 										<p class="tier-price tier-price--weekly">
-											<strong>{priceFormatter.format(tier.pricing.weekly)}</strong>
+											<strong>{formatPrice(tier.pricing.weekly, lang)}</strong>
 											<span>{t.soluzioni.pricingLabels.perWeek}</span>
 										</p>
 										<p class="tier-price tier-price--monthly">
-											<strong>{priceFormatter.format(tier.pricing.monthly)}</strong>
+											<strong>{formatPrice(tier.pricing.monthly, lang)}</strong>
 											<span>{t.soluzioni.pricingLabels.perMonth}</span>
 										</p>
 										<p class="tier-price-saving tier-price-saving--monthly">{t.soluzioni.pricingLabels.saving}</p>
