@@ -1352,7 +1352,7 @@ const icons: Record<string, string> = {
 			}
 			.tier-price-saving {
 				display: inline-flex;
-				align-items: center;
+				align-items: flex-start;
 				gap: 0.5rem;
 				width: fit-content;
 				margin-top: 0.7rem;
@@ -1365,6 +1365,7 @@ const icons: Record<string, string> = {
 				flex-shrink: 0;
 				width: 1rem;
 				height: 1rem;
+				margin-top: 0.05rem;
 				background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 18 18'%3E%3Cpath d='M9 1c.6 4.4 3.6 7.4 8 8-4.4.6-7.4 3.6-8 8-.6-4.4-3.6-7.4-8-8 4.4-.6 7.4-3.6 8-8Z' fill='%23111'/%3E%3C/svg%3E") center / contain no-repeat;
 			}
 			.tier-price-saving {
@@ -1475,6 +1476,9 @@ const icons: Record<string, string> = {
 				.tiers {
 					grid-template-columns: 1fr;
 					max-width: 32rem;
+				}
+				.tier-price strong {
+					font-size: clamp(3.25rem, 14vw, 3.75rem);
 				}
 			}
 

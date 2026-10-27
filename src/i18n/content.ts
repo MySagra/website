@@ -230,7 +230,7 @@ const it: SiteContent = {
 		lede: "Prezzi di partenza per una sagra standard. Definiamo insieme il preventivo in base alle vostre esigenze.",
 		pricingNote: "Prezzi indicativi. Il costo finale viene definito nel preventivo: può aumentare in base alle esigenze dell’evento (postazioni aggiuntive, distanza, durata) e prevede condizioni agevolate per utilizzi prolungati o su più edizioni.",
 		bookingNote: { title: "Prenotazioni aperte per la stagione 2027", text: "Servizio attivo da febbraio. Preventivo gratuito e senza impegno.", cta: "Blocca la tua data" },
-		pricingLabels: { period: "Periodo del servizio", weekly: "Settimana", monthly: "Mese", from: "A partire da", perWeek: "/ settimana", perMonth: "/ mese", saving: "Agevolazioni per periodi più lunghi", fourWeeks: "Prezzo di 4 settimane", price: "Prezzo", ecosystem: "Include tutti i software dell'ecosistema MySagra" },
+		pricingLabels: { period: "Periodo del servizio", weekly: "Settimana", monthly: "Mese", from: "A partire da", perWeek: "/ settimana", perMonth: "/ mese", saving: "Ulteriori sconti per periodi più lunghi di un mese", fourWeeks: "Prezzo di 4 settimane", price: "Prezzo", ecosystem: "Include tutti i software dell'ecosistema MySagra" },
 		demoNotePrefix: "Vuoi capire meglio come funziona?",
 		demoNoteCta: "Contattaci per richiedere una demo →",
 		tiers: [
@@ -573,7 +573,7 @@ const en: SiteContent = {
 		lede: "We run the servers and guide you through setting up local printing. Starting prices help you plan; your final quote depends on your requirements.",
 		pricingNote: "Indicative prices. Your final cost is set in your quote: it may increase with your event’s requirements (extra stations, duration) and includes better terms for longer use or recurring editions.",
 		bookingNote: { title: "Bookings are open for the 2027 season", text: "Service starts in February. Free, no-obligation quote.", cta: "Hold your dates" },
-		pricingLabels: { period: "Service period", weekly: "Weekly", monthly: "Monthly", from: "From", perWeek: "/ week", perMonth: "/ month", saving: "Better terms for longer periods", fourWeeks: "Price for 4 weeks", price: "Price", ecosystem: "Includes every app in the MySagra ecosystem" },
+		pricingLabels: { period: "Service period", weekly: "Weekly", monthly: "Monthly", from: "From", perWeek: "/ week", perMonth: "/ month", saving: "Further discounts for periods longer than a month", fourWeeks: "Price for 4 weeks", price: "Price", ecosystem: "Includes every app in the MySagra ecosystem" },
 		demoNotePrefix: "Want to see the checkout and kitchen workflow?",
 		demoNoteCta: "Contact us to request a demo →",
 		tiers: [
