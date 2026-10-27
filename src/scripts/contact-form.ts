@@ -1,4 +1,4 @@
-import { contactIntents, contactPlans, contactPeriods, type ContactIntent, type ContactPeriod } from '../lib/contact';
+import { contactIntents, contactPlans, contactPeriods, type ContactIntent } from '../lib/contact';
 import type { getContactContent } from '../i18n/contact';
 import type { contactLabels } from '../lib/contact';
 
@@ -18,10 +18,8 @@ function initContactForm() {
   const another = form.querySelector<HTMLButtonElement>('.another')!;
   const planField = form.querySelector<HTMLElement>('.plan-field')!;
   const messageLabel = form.querySelector<HTMLElement>('[data-message-label]')!;
-  const messageHint = form.querySelector<HTMLElement>('#message-hint')!;
   const context = form.querySelector<HTMLElement>('.context')!;
   const contextLabel = form.querySelector<HTMLElement>('[data-context-label]')!;
-  const clear = form.querySelector<HTMLButtonElement>('[data-clear-context]')!;
   const field = (name: string) => form.elements.namedItem(name) as HTMLInputElement;
   let busy = false;
   let completed = false;
@@ -31,17 +29,14 @@ function initContactForm() {
   const track = (event: string) => window.umami?.track(event, { source: t.source, intent: intent(), plan: field('plan').value, period: period() });
   const update = () => {
     if (field('plan').value === 'custom') field('contextPeriod').value = '';
-    const selectedPeriod = field('contextPeriod').value as ContactPeriod | '';
     planField.hidden = intent() !== 'preventivo';
     const copy = t.messages[intent()];
     messageLabel.textContent = copy.label;
-    messageHint.textContent = copy.hint;
     field('message').placeholder = copy.placeholder;
     const source = ['excel', 'myclienti', 'selfhosting'].includes(t.source) ? t.labels.sources[t.source as 'excel' | 'myclienti' | 'selfhosting'] : '';
-    const parts = [selectedPeriod ? t.labels.periods[selectedPeriod] : '', source].filter(Boolean);
-    context.hidden = parts.length === 0;
-    contextLabel.textContent = parts.join(' · ');
-    clear.hidden = !selectedPeriod;
+    // The pricing period travels as metadata (contextPeriod) only; the visible context names the source page.
+    context.hidden = !source;
+    contextLabel.textContent = source;
   };
   const resetStatus = () => {
     completed = false;
@@ -68,7 +63,6 @@ function initContactForm() {
     if (event.target instanceof HTMLElement) event.target.removeAttribute('aria-invalid');
   });
   form.addEventListener('change', update);
-  clear.addEventListener('click', () => { field('contextPeriod').value = ''; update(); });
   another.addEventListener('click', () => { reset(); field('name').focus(); });
   document.querySelectorAll<HTMLElement>('[data-open-contact]').forEach(trigger => {
     trigger.addEventListener('click', () => {

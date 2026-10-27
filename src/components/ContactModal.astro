@@ -20,5 +20,5 @@ const t = getContactContent(lang);
   .close { position: absolute; top: 1rem; right: 1rem; width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--color-neutral-200); border-radius: var(--radius); background: var(--color-surface); cursor: pointer; }
   .close:hover { border-color: var(--color-ink); }
   h2 { padding-right: 2.8rem; margin-bottom: .8rem; font-size: 1.6rem; line-height: 1.15; }
-  @media (max-width: 460px) { .sheet { padding: 1.3rem; } h2 { font-size: 1.45rem; } }
+  @media (max-width: 460px) { .sheet { padding: 1.1rem; } h2 { font-size: clamp(1.15rem, 5.4vw, 1.3rem); margin-bottom: .9rem; } .close { top: .75rem; right: .75rem; } }
 </style>

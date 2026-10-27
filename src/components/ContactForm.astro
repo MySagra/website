@@ -13,8 +13,7 @@ const offeredPlans = contactPlans.filter(plan => getContent(lang).soluzioni.tier
   <input type="hidden" name="lang" value={lang} />
   <input type="hidden" name="sourcePath" value={Astro.url.pathname} />
   <input type="hidden" name="contextPeriod" value="" />
-  <p class="required-note">{t.required}</p>
-  <div class="context" hidden><p><span>{t.context}</span> <strong data-context-label></strong></p><button type="button" data-clear-context>{t.change}</button></div>
+  <div class="context" hidden><p><span>{t.context}</span> <strong data-context-label></strong></p></div>
   <fieldset class="intent-fieldset">
     <legend>{t.intent}</legend>
     <div class="choices">
@@ -27,8 +26,8 @@ const offeredPlans = contactPlans.filter(plan => getContent(lang).soluzioni.tier
     </div>
   </fieldset>
   <div class="identity">
-    <label class="field"><span>{t.name}</span><input type="text" name="name" autocomplete="name" required maxlength="120" /></label>
-    <label class="field"><span>{t.email}</span><input type="email" name="email" autocomplete="email" required maxlength="254" inputmode="email" /></label>
+    <label class="field"><span>{t.name} <span class="req" aria-hidden="true">*</span></span><input type="text" name="name" autocomplete="name" required maxlength="120" /></label>
+    <label class="field"><span>{t.email} <span class="req" aria-hidden="true">*</span></span><input type="email" name="email" autocomplete="email" required maxlength="254" inputmode="email" /></label>
   </div>
   <label class="field"><span>{t.phone}</span><input type="tel" name="phone" autocomplete="tel" maxlength="60" /></label>
   <div class="message-area">
@@ -39,7 +38,7 @@ const offeredPlans = contactPlans.filter(plan => getContent(lang).soluzioni.tier
         {offeredPlans.map(plan => <option value={plan}>{contactLabels[lang].plans[plan]}</option>)}
       </select>
     </label>
-    <label class="field message-field"><span data-message-label>{t.messages.informazioni.label}</span><span class="hint" id="message-hint">{t.messages.informazioni.hint}</span><textarea name="message" rows="3" required maxlength="6000" placeholder={t.messages.informazioni.placeholder} aria-describedby="message-hint"></textarea></label>
+    <label class="field message-field"><span><span data-message-label>{t.messages.informazioni.label}</span> <span class="req" aria-hidden="true">*</span></span><textarea name="message" rows="3" required maxlength="6000" placeholder={t.messages.informazioni.placeholder}></textarea></label>
   </div>
   <p class="privacy">{t.privacy} <a href={`${home}privacy-policy/`}>{t.privacyLink}</a>.</p>
   <p id="contact-status" class="form-status" role="status" aria-live="polite" tabindex="-1"></p>
@@ -50,8 +49,8 @@ const offeredPlans = contactPlans.filter(plan => getContent(lang).soluzioni.tier
 
 <style>
   .contact-form { color: var(--color-ink); }
-  .required-note, .privacy, .hint { font-size: .82rem; color: #52565e; }
-  .required-note { margin-bottom: 1.2rem; }
+  .privacy { font-size: .82rem; color: #52565e; }
+  .req { color: #a51c1c; }
   fieldset { border: 0; margin: 0 0 1.2rem; padding: 0; min-width: 0; }
   legend, .field > span:first-child { font-size: .9rem; font-weight: 600; margin-bottom: .45rem; padding: 0; }
   .choices { display: grid; grid-template-columns: repeat(3, 1fr); gap: .25rem; padding: .3rem; border: 1px solid var(--color-neutral-200); border-radius: var(--radius-pill); background: var(--color-surface); }
@@ -64,13 +63,11 @@ const offeredPlans = contactPlans.filter(plan => getContent(lang).soluzioni.tier
   .identity { display: grid; grid-template-columns: 1fr 1fr; gap: .8rem; }
   .field { display: block; margin-bottom: 1rem; }
   .field > span { display: block; }
-  .field .hint { font-weight: 400; margin-bottom: .5rem; }
   .field input, .field textarea { width: 100%; min-height: 48px; padding: .7rem .85rem; border: 1px solid var(--color-neutral-200); border-radius: var(--radius); font: inherit; font-size: 1rem; color: var(--color-ink); background: var(--color-surface); caret-color: var(--color-ink); }
-  /* Fixed-height area: the message box fills whatever the plan select and hint leave free, so switching request type never resizes the form. */
-  .message-area { display: flex; flex-direction: column; height: 19rem; margin-bottom: 1rem; }
+  /* Fixed-height area: the message box fills whatever the plan select leaves free, so switching request type never resizes the form. */
+  .message-area { display: flex; flex-direction: column; height: 16.5rem; margin-bottom: 1rem; }
   .message-field { display: flex; flex: 1; flex-direction: column; min-height: 0; margin-bottom: 0; }
-  .message-field .hint { min-height: calc(.82rem * 1.55 * 2); }
-  .field textarea { flex: 1; min-height: 100px; resize: none; }
+  .field textarea { flex: 1; min-height: 100px; resize: none; font-size: .92rem; line-height: 1.5; }
   .field select { width: 100%; min-height: 48px; padding: .7rem 2.5rem .7rem .85rem; border: 1px solid var(--color-neutral-200); border-radius: var(--radius); font: inherit; font-size: 1rem; color: var(--color-ink); cursor: pointer; appearance: none; background: var(--color-surface) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='m4 6 4 4 4-4' stroke='%23111' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") right .85rem center / 16px no-repeat; }
   .field select:hover { border-color: var(--color-ink); }
   .plan-field[hidden] { display: none; }
@@ -78,7 +75,6 @@ const offeredPlans = contactPlans.filter(plan => getContent(lang).soluzioni.tier
   .field input[aria-invalid='true'], .field textarea[aria-invalid='true'] { border-color: var(--color-danger); }
   .context { display: flex; align-items: center; justify-content: space-between; gap: .75rem; padding: .9rem; margin-bottom: 1rem; background: var(--color-surface-warm); border-radius: var(--radius); font-size: .85rem; }
   .context strong { display: block; }
-  .context button { background: none; border: 0; min-height: 44px; padding: .4rem; text-decoration: underline; cursor: pointer; }
   .privacy { margin-block: .2rem 1rem; }
   a { text-underline-offset: .2em; }
   .form-status { font-size: .92rem; }
@@ -96,6 +92,17 @@ const offeredPlans = contactPlans.filter(plan => getContent(lang).soluzioni.tier
   .another[hidden] { display: none; }
   .fallback { margin-top: 1rem; }
   [hidden] { display: none !important; }
-  @media (max-width: 460px) { .identity { grid-template-columns: 1fr; gap: 0; } .choices span { font-size: .8rem; } }
+  /* Phones: tighter rhythm so the whole form fits one screen without scrolling. */
+  @media (max-width: 460px) {
+    fieldset { margin-bottom: .9rem; }
+    legend, .field > span:first-child { font-size: .85rem; margin-bottom: .3rem; }
+    .identity { grid-template-columns: 1fr; gap: 0; }
+    .field { margin-bottom: .75rem; }
+    .field input, .field select { min-height: 44px; padding-block: .55rem; }
+    .choice { min-height: 40px; font-size: .85rem; }
+    .message-area { height: 14rem; margin-bottom: .75rem; }
+    .field textarea { min-height: 4.5rem; font-size: .9rem; }
+    .privacy { margin-bottom: .75rem; }
+  }
 </style>
 <script src="../scripts/contact-form.ts"></script>
