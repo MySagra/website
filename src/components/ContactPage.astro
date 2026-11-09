@@ -1,10 +1,11 @@
 ---
-import '@fontsource/inter/600.css';
-import '@fontsource/inter/700.css';
-import '@fontsource/work-sans/400.css';
-import '@fontsource/work-sans/500.css';
-import '@fontsource/work-sans/600.css';
+import '@fontsource/inter/latin-600.css';
+import '@fontsource/inter/latin-700.css';
+import '@fontsource/work-sans/latin-400.css';
+import '@fontsource/work-sans/latin-500.css';
+import '@fontsource/work-sans/latin-600.css';
 import '../styles/global.css';
+import { organization, partOfWebsite, website } from '../lib/schema';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 import ContactForm from './ContactForm.astro';
@@ -17,7 +18,15 @@ const t = getContactContent(lang);
 const home = lang === 'en' ? '/en/' : '/';
 const site = 'https://mysagra.com';
 const canonical = `${site}${home}contact/`;
-const schema = { '@context': 'https://schema.org', '@type': 'ContactPage', name: t.pageTitle, description: t.description, url: canonical, inLanguage: lang, mainEntity: { '@type': 'Organization', name: 'MySagra', url: site, email: 'info@mysagra.com' } };
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    organization,
+    website,
+    { '@type': 'ContactPage', '@id': `${canonical}#webpage`, url: canonical, name: t.pageTitle, description: t.description, inLanguage: lang, isPartOf: partOfWebsite, publisher: { '@id': organization['@id'] }, mainEntity: { '@id': organization['@id'] }, breadcrumb: { '@id': `${canonical}#breadcrumb` } },
+    { '@type': 'BreadcrumbList', '@id': `${canonical}#breadcrumb`, itemListElement: [{ '@type': 'ListItem', position: 1, name: 'MySagra', item: `${site}${home}` }, { '@type': 'ListItem', position: 2, name: lang === 'en' ? 'Contact' : 'Contatti', item: canonical }] },
+  ],
+};
 ---
 <!doctype html>
 <html lang={lang}>

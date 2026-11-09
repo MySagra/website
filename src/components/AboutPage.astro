@@ -1,0 +1,211 @@
+---
+import '@fontsource/inter/latin-600.css';
+import '@fontsource/inter/latin-700.css';
+import '@fontsource/work-sans/latin-400.css';
+import '@fontsource/work-sans/latin-500.css';
+import '@fontsource/work-sans/latin-600.css';
+import '../styles/global.css';
+import { founders, organization, partOfWebsite, website } from '../lib/schema';
+import { markdownUrl } from '../lib/markdown';
+import Header from './Header.astro';
+import Footer from './Footer.astro';
+import Analytics from './Analytics.astro';
+import { getAboutContent } from '../i18n/about';
+import type { Lang } from '../i18n/ui';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const t = getAboutContent(lang);
+const home = lang === 'en' ? '/en/' : '/';
+const site = 'https://mysagra.com';
+const canonical = `${site}${home}about/`;
+const image = `${site}/images/mysagra-team.webp`;
+const schema = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    organization,
+    website,
+    { '@type': 'AboutPage', '@id': `${canonical}#webpage`, url: canonical, name: t.title, description: t.description, inLanguage: lang, isPartOf: partOfWebsite, publisher: { '@id': organization['@id'] }, about: { '@id': organization['@id'] }, mainEntity: { '@id': organization['@id'] }, primaryImageOfPage: { '@id': `${canonical}#team-photo` }, breadcrumb: { '@id': `${canonical}#breadcrumb` } },
+    { '@type': 'ImageObject', '@id': `${canonical}#team-photo`, contentUrl: image, caption: t.photoAlt, width: 1280, height: 1280 },
+    { '@type': 'BreadcrumbList', '@id': `${canonical}#breadcrumb`, itemListElement: [{ '@type': 'ListItem', position: 1, name: 'MySagra', item: `${site}${home}` }, { '@type': 'ListItem', position: 2, name: t.breadcrumb, item: canonical }] },
+  ],
+};
+const people = founders.map((person) => ({ name: person.name, linkedin: person.sameAs[0], id: person['@id'].split('#')[1] }));
+---
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{t.title}</title>
+    <meta name="description" content={t.description} />
+    <meta name="theme-color" content="#FECC01" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <link rel="alternate" type="text/markdown" href={markdownUrl('about', lang)} />
+    <link rel="alternate" hreflang="it" href={`${site}/about/`} />
+    <link rel="alternate" hreflang="en" href={`${site}/en/about/`} />
+    <link rel="alternate" hreflang="x-default" href={`${site}/about/`} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="MySagra" />
+    <meta property="og:title" content={t.title} />
+    <meta property="og:description" content={t.description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:locale" content={lang === 'it' ? 'it_IT' : 'en_US'} />
+    <meta property="og:image" content={image} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={t.title} />
+    <meta name="twitter:description" content={t.description} />
+    <meta name="twitter:image" content={image} />
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(schema).replace(/</g, '\\u003c')} />
+    <Analytics lang={lang} />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">{lang === 'it' ? 'Vai al contenuto' : 'Skip to content'}</a>
+    <Header lang={lang} />
+    <main id="main">
+      <div class="container">
+        <nav class="breadcrumb" aria-label="Breadcrumb"><a href={home}>MySagra</a><span aria-hidden="true">/</span><span aria-current="page">{t.breadcrumb}</span></nav>
+        <section class="intro-layout">
+          <div class="intro-copy">
+            <h1>{t.h1}</h1>
+            <p class="intro">{t.intro}</p>
+            <span class="rule" aria-hidden="true"></span>
+          </div>
+          <img
+            class="team-photo"
+            src="/images/mysagra-team-900.webp"
+            srcset="/images/mysagra-team-600.webp 600w, /images/mysagra-team-900.webp 900w, /images/mysagra-team.webp 1280w"
+            sizes="(max-width: 50rem) min(100vw, 24rem), 28rem"
+            alt={t.photoAlt}
+            width="1280"
+            height="1280"
+            fetchpriority="high"
+          />
+        </section>
+
+        <section class="founders" aria-labelledby="founders-title">
+          <h2 id="founders-title">{t.foundersTitle}</h2>
+          <div class="founder-grid">
+            {people.map((person) => (
+              <article class="founder" id={person.id}>
+                <div class="founder-heading">
+                  <h3>{person.name}</h3>
+                  <span class="role">{t.role}</span>
+                </div>
+                <p>{t.founderNote}</p>
+                <a class="linkedin" href={person.linkedin} target="_blank" rel="noopener" data-umami-event="about-linkedin-click" data-umami-event-person={person.id}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M4.98 3.5a2.5 2.5 0 1 1 0 5 2.5 2.5 0 0 1 0-5ZM3 9.75h4v11H3v-11Zm6.5 0h3.83v1.5h.05c.53-1 1.84-2.06 3.79-2.06 4.05 0 4.8 2.67 4.8 6.13v5.43h-4v-4.82c0-1.15-.02-2.63-1.6-2.63-1.6 0-1.85 1.25-1.85 2.55v4.9h-4v-11Z" /></svg>
+                  {t.linkedin}
+                </a>
+              </article>
+            ))}
+          </div>
+        </section>
+      </div>
+
+      <section class="why" aria-labelledby="why-title">
+        <div class="container">
+          <h2 id="why-title">{t.whyTitle}</h2>
+          <p class="why-copy">{t.whyCopy}</p>
+          <ul class="principles">
+            {t.principles.map(([title, copy]) => (
+              <li><h3>{title}</h3><p>{copy}</p></li>
+            ))}
+          </ul>
+        </div>
+      </section>
+
+      <section class="container facts" aria-labelledby="facts-title">
+        <h2 id="facts-title">{t.factsTitle}</h2>
+        <dl>
+          {t.facts.map(([label, value]) => (
+            <div><dt>{label}</dt><dd>{value.includes('@') ? <a href={`mailto:${value}`}>{value}</a> : value}</dd></div>
+          ))}
+        </dl>
+        <p class="fact-links">
+          <a href={`${home}self-hosting/`} data-umami-event="selfhosting-page-click" data-umami-event-location="about">{t.licenseLink}</a>
+          <a href="https://github.com/MySagra" target="_blank" rel="noopener" data-umami-event="github-click" data-umami-event-location="about">{t.sourceLink}</a>
+        </p>
+      </section>
+
+      <section class="closing">
+        <div class="container">
+          <h2>{t.ctaTitle}</h2>
+          <p>{t.ctaCopy}</p>
+          <div class="buttons">
+            <a class="btn primary" href={`${home}contact/`} data-umami-event="contact-page-click" data-umami-event-location="about">{t.ctaPrimary}</a>
+            <a class="btn dark-secondary" href={`${home}#solutions`} data-umami-event="nav-click" data-umami-event-section="solutions" data-umami-event-location="about">{t.ctaSecondary}</a>
+          </div>
+        </div>
+      </section>
+    </main>
+    <Footer lang={lang} />
+  </body>
+</html>
+<style>
+  :global(body) { background: var(--color-surface); }
+  .container { max-width: 68rem; margin-inline: auto; padding-inline: 1.5rem; }
+  .skip-link { position: fixed; top: -6rem; left: 1rem; z-index: 100; padding: .75rem; background: var(--color-yellow); }
+  .skip-link:focus { top: 1rem; }
+  .breadcrumb { display: flex; gap: .75rem; font-size: .85rem; padding-top: 1.8rem; color: #52565e; }
+  .breadcrumb a { display: inline-flex; align-items: center; min-height: 44px; margin-block: -.75rem; }
+  h1 { font-size: clamp(2.3rem, 5vw, 3.75rem); line-height: 1.08; max-width: 14ch; }
+  h2 { font-size: clamp(1.8rem, 3.4vw, 2.5rem); line-height: 1.15; }
+  h3 { font-size: 1.15rem; line-height: 1.25; }
+  a { text-underline-offset: .22em; }
+
+  .intro-layout { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); gap: clamp(2.5rem, 6vw, 5rem); align-items: center; padding-block: 3rem 4rem; }
+  .intro { margin-top: 1.5rem; font-size: 1.15rem; line-height: 1.6; color: #454950; max-width: 60ch; }
+  .rule { display: block; width: 3.5rem; height: 4px; margin-top: 2rem; border-radius: var(--radius-pill); background: var(--color-yellow); }
+  .team-photo { display: block; width: 100%; max-width: 28rem; height: auto; justify-self: end; }
+
+  .founders { padding-bottom: 4.5rem; }
+  .founder-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.5rem; margin-top: 2rem; }
+  .founder { display: flex; flex-direction: column; gap: .9rem; padding: 1.75rem; border: 1px solid var(--color-neutral-200); border-radius: var(--radius-lg); box-shadow: var(--shadow-soft); background: var(--color-surface); }
+  .founder-heading { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem .75rem; }
+  .role { padding: .3rem .7rem; border-radius: var(--radius-pill); background: rgba(254, 204, 1, .16); font-size: .78rem; font-weight: 600; }
+  .founder p { color: #454950; font-size: .98rem; }
+  .linkedin { display: inline-flex; align-items: center; gap: .5rem; align-self: flex-start; min-height: 44px; margin-top: auto; font-weight: 600; color: var(--color-ink); }
+
+  .why { background: var(--color-surface-warm); border-block: 1px solid var(--color-neutral-200); padding-block: 4.5rem; }
+  .why-copy { margin-top: 1.2rem; max-width: 65ch; font-size: 1.08rem; color: #454950; }
+  .principles { list-style: none; margin: 2.25rem 0 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.5rem; }
+  .principles li { padding: 1.5rem; border-radius: var(--radius-lg); background: var(--color-surface); border: 1px solid var(--color-neutral-200); }
+  .principles li::before { content: ""; display: block; width: 2.5rem; height: 2.5rem; margin-bottom: 1rem; border-radius: var(--radius-sm); background: rgba(254, 204, 1, .16) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M3 8.5 6.5 12 13 4.5' stroke='%23111' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center / 1.1rem no-repeat; }
+  .principles p { margin-top: .5rem; color: #454950; font-size: .95rem; }
+
+  .facts { padding-block: 4.5rem; }
+  .facts dl { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; margin: 2rem 0 0; }
+  .facts dl div { padding: 1.25rem 1.35rem; border-top: 2px solid var(--color-ink); }
+  .facts dt { font-size: .8rem; font-weight: 600; text-transform: uppercase; letter-spacing: .06em; color: #52565e; }
+  .facts dd { margin: .5rem 0 0; font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; overflow-wrap: anywhere; }
+  .facts dd a { color: inherit; }
+  .fact-links { display: flex; flex-wrap: wrap; gap: .5rem 2rem; margin-top: 1.75rem; }
+  .fact-links a { display: inline-flex; align-items: center; min-height: 44px; font-weight: 600; color: var(--color-ink); text-decoration-color: var(--color-yellow); text-decoration-thickness: 2px; }
+
+  .closing { background: var(--color-ink); color: var(--color-surface); text-align: center; padding-block: 4.5rem; }
+  .closing h2 { color: var(--color-surface); }
+  .closing p { max-width: 55ch; margin: 1rem auto 0; color: #ddd; }
+  .closing :focus-visible { outline-color: var(--color-yellow); }
+  .buttons { display: flex; flex-wrap: wrap; justify-content: center; gap: .8rem; margin-top: 1.8rem; }
+  .btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: .9rem 1.6rem; border: 1px solid transparent; border-radius: var(--radius-pill); font-size: .95rem; font-weight: 600; text-decoration: none; transition: transform .2s, box-shadow .2s, border-color .2s; }
+  .btn:hover { transform: translateY(-1px); box-shadow: var(--shadow-soft); }
+  .primary { background: var(--color-yellow); color: var(--color-ink); }
+  .dark-secondary { border-color: #686868; color: var(--color-surface); background: transparent; }
+  .dark-secondary:hover { border-color: var(--color-surface); }
+
+  @media (max-width: 61rem) {
+    .principles { grid-template-columns: 1fr; }
+    .facts dl { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 50rem) {
+    .intro-layout { grid-template-columns: 1fr; padding-block: 2rem 3rem; }
+    .team-photo { order: -1; justify-self: center; max-width: 24rem; }
+    .founder-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 460px) {
+    .container { padding-inline: 1.25rem; }
+    .facts dl { grid-template-columns: 1fr; }
+    .buttons { flex-direction: column; align-items: stretch; }
+  }
+</style>

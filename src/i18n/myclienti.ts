@@ -2,13 +2,13 @@ import type { Lang } from './ui';
 import { formatPrice, prices } from '../lib/pricing';
 
 const it = {
-  title: 'Menu digitale e ordini online per sagre | MyClienti',
-  description: 'Menu digitale e ordini online per sagre e feste, senza registrazione. Con MyClienti gestisci tutto da MySagra. Pagamento in cassa. Scopri i piani e la demo.',
+  title: 'App ordini per sagre: menu digitale con QR code | MyClienti',
+  description: 'App per ordinare alla sagra dal telefono: menu digitale con QR code, senza app da scaricare né registrazione. Ordini subito in cassa, pagamento al banco.',
   home: 'Home', nav: ['Personalizza', 'Sincronizza', 'Condividi'],
-  headline: 'Menu digitale e ordini online', headlineEnd: 'per sagre e feste.',
-  intro: 'MyClienti è l’app web di MySagra per il menu digitale e gli ordini online di sagre e feste. I clienti consultano il menu e ordinano dal browser, senza registrarsi. Tu personalizzi piatti, foto e contenuti dal pannello MySagra e condividi il menu con un link o un QR code. Il pagamento avviene in cassa, non nell’app.',
+  headline: 'App ordini e menu digitale', headlineEnd: 'per sagre e feste.',
+  intro: 'MyClienti è l’app web di MySagra per il menu digitale e gli ordini online di sagre e feste. I clienti inquadrano il QR code, consultano il menu e ordinano dal browser: nessuna app da scaricare e nessuna registrazione. Tu personalizzi piatti, foto e contenuti dal pannello MySagra e condividi il menu con un link o un QR code. Il pagamento avviene in cassa, non nell’app.',
   demo: 'Prova la demo', access: 'Richiedi accesso al pannello',
-  note: 'Menu e ordini senza registrazione. MyClienti è incluso in ogni piano MySagra.',
+  note: 'Nessuna app da scaricare, nessuna registrazione. MyClienti è incluso in ogni piano MySagra.',
   caption: 'MyClienti · schermata con contenuti dimostrativi',
   alt: 'Menu MyClienti su smartphone, con banner evento e categorie illustrate di piatti',
   sponsorAlt: 'Menu MyClienti con banner sponsor e categorie bar, street food e panini',
@@ -29,7 +29,7 @@ const it = {
   bannerAlt: 'Dettaglio del banner evento MyClienti con immagine, descrizione e conto alla rovescia',
   categoriesAlt: 'Dettaglio delle categorie illustrate del menu MyClienti, con bar e street food',
   adminAlt: 'Pannello MySagra con categorie del menu, immagini, disponibilità e comandi di modifica',
-  orderTitle: 'Dal menu all’ordine, senza registrazione.',
+  orderTitle: 'Come ordinano i clienti dal telefono alla sagra?',
   orderIntro: 'Il cliente sceglie i piatti, controlla il carrello e conferma l’ordine dal telefono. Riceve un codice da comunicare in cassa per pagare.',
   orderNote: 'Schermate della demo: piatti, prezzi e istruzioni sono esempi. Gli spazi vuoti sono stati ridotti per rendere più leggibili menu e carrello.',
   orderSteps: [
@@ -38,7 +38,7 @@ const it = {
     ['Conferma e paga in cassa', 'Comunica il codice ordine in cassa e completa il pagamento.', 'Conferma MyClienti con codice ordine e istruzioni per il pagamento in cassa'],
   ],
   previewNote: 'Schermate dimostrative del menu clienti e del pannello MySagra. Le categorie si gestiscono dal pannello, non dalla demo pubblica.',
-  syncTitle: 'Dal telefono alla cassa. Un solo ecosistema MySagra.',
+  syncTitle: 'Come arrivano in cassa gli ordini fatti dal telefono?',
   syncIntro: 'Tutti gli ordini sono condivisi con tutte le app dell’ecosistema MySagra, per velocizzare e semplificare il lavoro.',
   syncRoles: ['Menu e ordini condivisi', 'Il cliente consulta e ordina', 'La cassa riceve e gestisce l’ordine'],
   syncLive: 'Ordini sincronizzati in tempo reale.',
@@ -53,7 +53,7 @@ const it = {
     ['Durante la serata', 'Lascia che ognuno esplori il menu direttamente dal proprio telefono.'],
     ['Anche per ordinare', 'I clienti ordinano dal telefono senza registrarsi. Il pagamento avviene in cassa, non nell’app.'],
   ],
-  demoTitle: 'Prima guardala. Poi falla tua.',
+  demoTitle: 'Come provare l’app ordini prima della sagra?',
   demoIntro: 'La demo pubblica mostra l’esperienza del cliente. Vuoi provare anche a configurare piatti, immagini e banner? Richiedici le credenziali per il pannello di gestione.',
   publicTitle: 'Esplora il menu', publicCopy: 'Apri la demo pubblica MyClienti e scopri come si presenta l’app a chi viene alla tua sagra.',
   adminTitle: 'Prova la personalizzazione', adminCopy: 'Scrivici per ottenere le credenziali dei software di gestione. La personalizzazione avviene nel pannello MySagra, non nella demo pubblica.',
@@ -81,13 +81,13 @@ const it = {
 };
 
 const en: typeof it = {
-  title: 'Digital menus and online festival orders | MyClienti',
-  description: 'Digital menus and online orders for festivals and community events, with no sign-up. Manage MyClienti in MySagra. Pay at the counter. Explore plans and demo.',
+  title: 'Festival Food Ordering App with QR Code Menu | MyClienti',
+  description: 'Food ordering app for festivals: guests scan a QR code and order from their phone, with no app to download and no sign-up. Orders reach the till instantly.',
   home: 'Home', nav: ['Customize', 'Sync', 'Share'],
-  headline: 'Digital menus and online orders', headlineEnd: 'for festivals and events.',
-  intro: 'MyClienti is MySagra’s web app for digital menus and online orders at festivals and community events. Customers browse the menu and order in their browser without registering. You customize dishes, photos and content in the MySagra admin panel and share the menu by link or QR code. Payment happens at the counter, not in the app.',
+  headline: 'Food ordering app and digital menu', headlineEnd: 'for festivals and events.',
+  intro: 'MyClienti is MySagra’s web app for digital menus and online orders at festivals and community events. Customers scan a QR code, browse the menu and order in their browser: no app to download and no registration. You customize dishes, photos and content in the MySagra admin panel and share the menu by link or QR code. Payment happens at the counter, not in the app.',
   demo: 'Try the demo', access: 'Request admin access',
-  note: 'Browse and order without registration. MyClienti is included in every MySagra plan.',
+  note: 'No app to download, no registration. MyClienti is included in every MySagra plan.',
   caption: 'MyClienti · screen with demo content',
   alt: 'MyClienti smartphone menu with an event banner and illustrated food categories',
   sponsorAlt: 'MyClienti menu with a sponsor banner and bar, street food and sandwich categories',
@@ -108,7 +108,7 @@ const en: typeof it = {
   bannerAlt: 'MyClienti event banner detail with image, description and countdown',
   categoriesAlt: 'MyClienti illustrated menu category detail with bar and street food',
   adminAlt: 'MySagra admin panel showing menu categories, images, availability and editing controls',
-  orderTitle: 'From menu to order, with no sign-up.',
+  orderTitle: 'How do guests order from their phone at a festival?',
   orderIntro: 'Customers choose dishes, review their cart and confirm their order on their phones. They receive a code to give at the counter when paying.',
   orderNote: 'Demo screenshots: dishes, prices and instructions are examples. Empty space has been reduced to make the menu and cart easier to read.',
   orderSteps: [
@@ -117,7 +117,7 @@ const en: typeof it = {
     ['Confirm and pay at the counter', 'Give your order code at the counter and complete payment.', 'MyClienti confirmation with an order code and counter payment instructions'],
   ],
   previewNote: 'Demo screenshots of the customer menu and MySagra admin panel. Categories are managed in the panel, not in the public demo.',
-  syncTitle: 'From phone to counter. One MySagra ecosystem.',
+  syncTitle: 'How do phone orders reach the till?',
   syncIntro: 'All orders are shared across every app in the MySagra ecosystem, making work faster and simpler.',
   syncRoles: ['Shared menus and orders', 'Customers browse and order', 'Cashiers receive and manage orders'],
   syncLive: 'Orders synced in real time.',
@@ -132,7 +132,7 @@ const en: typeof it = {
     ['During the event', 'Let everyone explore the menu on their own phone.'],
     ['For ordering, too', 'Customers order from their phones without registering. Payment happens at the counter, not in the app.'],
   ],
-  demoTitle: 'First explore it. Then make it yours.',
+  demoTitle: 'How can you try the ordering app before your festival?',
   demoIntro: 'The public demo shows the customer experience. Want to try configuring dishes, images and banners too? Request credentials for the management panel.',
   publicTitle: 'Explore the menu', publicCopy: 'Open the public MyClienti demo and see the app your festival visitors will use.',
   adminTitle: 'Try customization', adminCopy: 'Contact us for management software credentials. Customization happens in the MySagra admin panel, not in the public demo.',
@@ -156,7 +156,7 @@ const en: typeof it = {
   closingCopy: 'Try MyClienti as a customer. When you are ready to build your own menu, we can help you access the panel.',
   plans: 'Choose your plan',
   plansTitle: 'Your online menu starts with MySagra.',
-  plansCopy: 'MyClienti is included in every MySagra plan. Compare cloud, on-site installation and self-hosting to choose how to run your festival.', privacy: 'Privacy', cookies: 'Cookies', source: 'MyClienti source code',
+  plansCopy: 'MyClienti is included in every MySagra plan. Compare managed cloud, Enterprise and free self-hosting to choose how to run your festival.', privacy: 'Privacy', cookies: 'Cookies', source: 'MyClienti source code',
 };
 
 export function getMyClientiContent(lang: Lang) { return lang === 'en' ? en : it; }

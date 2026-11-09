@@ -1,11 +1,11 @@
 ---
-import "@fontsource/inter/600.css";
-import "@fontsource/inter/700.css";
-import "@fontsource/inter/800.css";
-import "@fontsource/work-sans/400.css";
-import "@fontsource/work-sans/500.css";
-import "@fontsource/work-sans/600.css";
-import "@fontsource/work-sans/700.css";
+import "@fontsource/inter/latin-600.css";
+import "@fontsource/inter/latin-700.css";
+import "@fontsource/inter/latin-800.css";
+import "@fontsource/work-sans/latin-400.css";
+import "@fontsource/work-sans/latin-500.css";
+import "@fontsource/work-sans/latin-600.css";
+import "@fontsource/work-sans/latin-700.css";
 import "../styles/global.css";
 import Header from "./Header.astro";
 import Footer from "./Footer.astro";
@@ -14,6 +14,8 @@ import Logo from "./Logo.astro";
 import Analytics from "./Analytics.astro";
 import { getContent } from "../i18n/content";
 import { formatPrice } from "../lib/pricing";
+import { organization, partOfWebsite, website } from "../lib/schema";
+import { markdownUrl } from "../lib/markdown";
 import type { Lang } from "../i18n/ui";
 
 interface Props {
@@ -25,6 +27,8 @@ const t = getContent(lang);
 const outcomes = t.outcomes;
 const ecosystem = t.ecosistema.items;
 const tiers = t.soluzioni.tiers;
+const selfHosting = t.soluzioni.selfHosting;
+const tierCount = tiers.length + (selfHosting.display === "tier" ? 1 : 0);
 const faqItems = t.faq.items;
 
 const SITE_URL = "https://mysagra.com";
@@ -36,14 +40,11 @@ const ogLocaleAlternate = lang === "en" ? "it_IT" : "en_US";
 
 const organizationSchema = {
 	"@context": "https://schema.org",
-	"@type": "Organization",
-	"@id": `${SITE_URL}/#organization`,
-	name: "MySagra",
-	url: SITE_URL,
-	logo: `${SITE_URL}/favicon.svg`,
+	...organization,
 	description: t.meta.description,
-	sameAs: ["https://github.com/mysagra"],
 };
+
+const websiteSchema = { "@context": "https://schema.org", ...website };
 
 const softwareSchema = {
 	"@context": "https://schema.org",
@@ -73,7 +74,16 @@ const softwareSchema = {
 				unitCode: "WEE",
 				referenceQuantity: { "@type": "QuantitativeValue", value: 1, unitCode: "WEE" },
 			},
-		})),
+		}))
+		.concat([
+			{
+				"@type": "Offer",
+				name: selfHosting.offerName,
+				url: `${SITE_URL}${selfHosting.href}`,
+				price: 0,
+				priceCurrency: "EUR",
+			} as any,
+		]),
 };
 
 const webPageSchema = {
@@ -84,6 +94,7 @@ const webPageSchema = {
 	name: t.meta.title,
 	description: t.meta.description,
 	inLanguage: lang,
+	isPartOf: partOfWebsite,
 	publisher: { "@id": organizationSchema["@id"] },
 	mainEntity: { "@id": softwareSchema["@id"] },
 };
@@ -131,6 +142,8 @@ const icons: Record<string, string> = {
 		'<path d="M13.2 3.8a2.4 2.4 0 0 1 3.4 3.4l-8 8-4 1 1-4 7.6-8.4Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>',
 	enterprise:
 		'<path d="M3.5 16.5h13M5 16.5V4.5h6v12M11 8.5h4v8" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M7.2 7.5h1.6M7.2 10.5h1.6M7.2 13.5h1.6M13 11.5h0.1M13 14h0.1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
+	server:
+		'<rect x="3.5" y="3.5" width="13" height="5.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><rect x="3.5" y="11" width="13" height="5.5" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M6.5 6.25h0.1M6.5 13.75h0.1" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>',
 	cpu: '<rect x="6" y="6" width="8" height="8" rx="1" stroke="currentColor" stroke-width="1.5"/><path d="M8 6V3M12 6V3M8 17v-3M12 17v-3M6 8H3M6 12H3M17 8h-3M17 12h-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>',
 	palette:
 		'<path d="M10 2.5a7.5 7.5 0 1 0 0 15c.9 0 1.6-.72 1.6-1.6 0-.42-.16-.8-.43-1.08-.27-.28-.42-.63-.42-1.02 0-.88.71-1.6 1.6-1.6h1.85A3.6 3.6 0 0 0 18 8.6C18 5.06 14.42 2.5 10 2.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><circle cx="6.4" cy="9.2" r="1" fill="currentColor"/><circle cx="8.6" cy="6.1" r="1" fill="currentColor"/><circle cx="12.2" cy="6.2" r="1" fill="currentColor"/><circle cx="14.2" cy="9.4" r="1" fill="currentColor"/>',
@@ -149,7 +162,7 @@ const icons: Record<string, string> = {
 		<meta charset="utf-8" />
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<meta name="generator" content={Astro.generator} />
 		<meta name="theme-color" content="#FECC01" />
 		<title>{t.meta.title}</title>
@@ -157,6 +170,7 @@ const icons: Record<string, string> = {
 		<meta name="keywords" content={t.meta.keywords} />
 
 		<link rel="canonical" href={canonicalUrl} />
+		<link rel="alternate" type="text/markdown" href={markdownUrl("home", lang)} />
 		<link rel="alternate" hreflang="it" href={`${SITE_URL}/`} />
 		<link rel="alternate" hreflang="en" href={`${SITE_URL}/en/`} />
 		<link rel="alternate" hreflang="x-default" href={`${SITE_URL}/`} />
@@ -178,6 +192,7 @@ const icons: Record<string, string> = {
 		<meta name="twitter:image" content={ogImageUrl} />
 
 		<script type="application/ld+json" is:inline set:html={JSON.stringify(organizationSchema)} />
+		<script type="application/ld+json" is:inline set:html={JSON.stringify(websiteSchema)} />
 		<script type="application/ld+json" is:inline set:html={JSON.stringify(softwareSchema)} />
 		<script type="application/ld+json" is:inline set:html={JSON.stringify(webPageSchema)} />
 		<script type="application/ld+json" is:inline set:html={JSON.stringify(faqSchema)} />
@@ -235,9 +250,12 @@ const icons: Record<string, string> = {
 				<div class="hero-showcase">
 					<figure class="hero-image">
 						<img
-							src="/images/mycassa-terminal.webp"
+							src="/images/mycassa-terminal-1280.webp"
+							srcset="/images/mycassa-terminal-800.webp 800w, /images/mycassa-terminal-1280.webp 1280w, /images/mycassa-terminal.webp 2400w"
+							sizes="(max-width: 62rem) 100vw, 62rem"
 							alt={t.hero.heroImgAlt}
 							loading="eager"
+							fetchpriority="high"
 							width="1082"
 							height="630"
 						/>
@@ -320,7 +338,7 @@ const icons: Record<string, string> = {
 					</label>
 				</fieldset>
 
-				<div class:list={["tiers", { "tiers--two": tiers.length === 2 }]}>
+				<div class:list={["tiers", { "tiers--two": tierCount === 2 }]}>
 					{
 						tiers.map((tier) => (
 							<div class:list={["tier", { "tier--featured": tier.featured, "tier--enterprise": tier.enterprise }]} data-reveal>
@@ -389,7 +407,80 @@ const icons: Record<string, string> = {
 							</div>
 						))
 					}
+					{selfHosting.display === "tier" && (
+						<div class="tier tier--free" data-reveal>
+							<div class="tier-top">
+								<div class="tier-heading">
+									<span
+										class="icon-badge"
+										aria-hidden="true"
+										set:html={`<svg width="20" height="20" viewBox="0 0 20 20" fill="none">${icons.server}</svg>`}
+									/>
+									<h3>{selfHosting.name}</h3>
+									{selfHosting.tag && <span class="tier-tag">{selfHosting.tag}</span>}
+								</div>
+								<div class="tier-pricing">
+									<p class="tier-price-from">{t.soluzioni.pricingLabels.price}</p>
+									<p class="tier-custom-price">{selfHosting.price}</p>
+								</div>
+							</div>
+							<div class="tier-body">
+								<p class="tier-desc">{selfHosting.desc}</p>
+								{selfHosting.points && (
+									<ul class="tier-points">
+										{selfHosting.points.map((point) => (
+											<li>{point}</li>
+										))}
+									</ul>
+								)}
+								{selfHosting.warning && (
+									<p class="tier-warning">
+										<svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+											<circle cx="8" cy="8" r="6.5" stroke="currentColor" stroke-width="1.3" />
+											<path d="M8 7.2v4M8 4.8v.1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+										</svg>
+										{selfHosting.warning}
+									</p>
+								)}
+								<a
+									class="tier-cta tier-cta--link"
+									href={selfHosting.href}
+									title={selfHosting.offerName}
+									data-umami-event="selfhosting-page-click"
+									data-umami-event-location="pricing-tier"
+								>
+									{selfHosting.cta}
+								</a>
+							</div>
+						</div>
+					)}
 				</div>
+
+				{selfHosting.display === "strip" && (
+					<div class="solutions-booking solutions-selfhost">
+						<span
+							class="icon-badge solutions-booking-icon"
+							aria-hidden="true"
+							set:html={`<svg width="18" height="18" viewBox="0 0 20 20" fill="none">${icons.server}</svg>`}
+						/>
+						<div class="solutions-booking-text">
+							<p class="solutions-booking-title">{selfHosting.name}</p>
+							<p>{selfHosting.desc}</p>
+						</div>
+						<a
+							class="solutions-booking-cta"
+							href={selfHosting.href}
+							title={selfHosting.offerName}
+							data-umami-event="selfhosting-page-click"
+							data-umami-event-location="pricing-strip"
+						>
+							{selfHosting.cta}
+							<svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+								<path d="M3 8h10M9 4l4 4-4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+							</svg>
+						</a>
+					</div>
+				)}
 
 				<p class="solutions-pricing-note"><small>{t.soluzioni.pricingNote}</small></p>
 				<p class="solutions-demo-note">
@@ -511,21 +602,21 @@ const icons: Record<string, string> = {
 													<div class="phone-screen">
 														<img
 															class="phone-screen-img phone-screen-img--a"
-															src={item.photos[0]}
+															src={item.photos[0].replace(".webp", "-540.webp")}
 															alt=""
 															aria-hidden="true"
 															loading="lazy"
-															width="1170"
-															height="2532"
+															width="540"
+															height="1169"
 														/>
 														<img
 															class="phone-screen-img phone-screen-img--b"
-															src={item.photos[1]}
+															src={item.photos[1].replace(".webp", "-540.webp")}
 															alt=""
 															aria-hidden="true"
 															loading="lazy"
-															width="1170"
-															height="2532"
+															width="540"
+															height="1169"
 														/>
 													</div>
 												</div>
@@ -544,7 +635,15 @@ const icons: Record<string, string> = {
 											}
 										</>
 									) : item.photo ? (
-										<img src={item.photo} alt="" loading="lazy" width="600" height="600" />
+										<img
+											src={item.photo.replace(".webp", "-800.webp")}
+											srcset={`${item.photo.replace(".webp", "-800.webp")} 800w, ${item.photo} 1600w`}
+											sizes="(max-width: 40rem) 100vw, 34rem"
+											alt={`${lang === "en" ? "Photo of" : "Foto di"} ${item.name}`}
+											loading="lazy"
+											width="600"
+											height="600"
+										/>
 									) : item.role === "display" ? (
 										<div class="numeri-mock" aria-hidden="true">
 											<div class="numeri-window">
@@ -623,7 +722,7 @@ const icons: Record<string, string> = {
 					<button type="button" class="btn-primary" data-open-contact="informazioni" data-umami-event="contact-open" data-umami-event-location="closing">{t.closing.cta}</button>
 					<p class="closing-note">
 						{t.closing.noteSourceAvailable}{" "}
-						<a href="https://github.com/mysagra" target="_blank" rel="noopener" title={lang === "en" ? "Open MySagra repository on GitHub" : "Apri il repository MySagra su GitHub"} data-umami-event="github-click" data-umami-event-location="closing">{t.closing.noteGithub}</a>.{" "}
+						<a href="https://github.com/MySagra" target="_blank" rel="noopener" title={lang === "en" ? "Open MySagra repository on GitHub" : "Apri il repository MySagra su GitHub"} data-umami-event="github-click" data-umami-event-location="closing">{t.closing.noteGithub}</a>.{" "}
 						<a href={lang === "en" ? "/en/self-hosting/" : "/self-hosting/"} data-umami-event="selfhosting-page-click" data-umami-event-location="closing">{lang === "en" ? "Explore free self-hosting" : "Scopri il self-hosting gratuito"}</a>.{" "}
 						{t.closing.noteAnd}{" "}
 						<a href="https://docs.mysagra.com" target="_blank" rel="noopener" title={lang === "en" ? "Open MySagra documentation" : "Apri la documentazione MySagra"} data-umami-event="docs-click" data-umami-event-location="closing">{t.closing.noteDocs}</a>.
@@ -635,7 +734,9 @@ const icons: Record<string, string> = {
 				<div class="story-inner">
 					<img
 						class="story-photo"
-						src="/images/mysagra-team.webp"
+						src="/images/mysagra-team-900.webp"
+						srcset="/images/mysagra-team-600.webp 600w, /images/mysagra-team-900.webp 900w, /images/mysagra-team.webp 1280w"
+						sizes="(max-width: 40rem) min(100vw, 24rem), 28rem"
 						alt={t.story.photoLabel}
 						width="1280"
 						height="1280"
@@ -645,6 +746,7 @@ const icons: Record<string, string> = {
 					<div class="story-text">
 						<h2 id="story-title">{t.story.h2}</h2>
 						<p>{t.story.p}</p>
+						<a class="story-link" href={lang === "en" ? "/en/about/" : "/about/"} data-umami-event="about-page-click" data-umami-event-location="story">{lang === "en" ? "Meet the team" : "Scopri chi siamo"}</a>
 					</div>
 				</div>
 			</section>
@@ -1098,12 +1200,48 @@ const icons: Record<string, string> = {
 				overflow: hidden;
 				box-shadow: var(--shadow-soft);
 			}
+			/* Row-aligned cards: heading, price, description, points, note and CTA share
+			   rows across every tier, so each part starts at the same height side by side. */
 			@supports (grid-template-rows: subgrid) {
-				.tier {
+				.tiers .tier {
+					display: grid;
+					grid-row: span 6;
+					grid-template-rows: subgrid;
+					row-gap: 0;
+				}
+				.tiers .tier-top {
 					display: grid;
 					grid-row: span 2;
 					grid-template-rows: subgrid;
 					row-gap: 0;
+				}
+				.tiers .tier-body {
+					display: grid;
+					grid-row: span 4;
+					grid-template-rows: subgrid;
+					row-gap: 0;
+				}
+				.tiers .tier-heading {
+					grid-row: 1;
+					align-self: center;
+				}
+				.tiers .tier-pricing {
+					grid-row: 2;
+				}
+				.tiers .tier-desc {
+					grid-row: 1;
+				}
+				.tiers .tier-points {
+					grid-row: 2;
+					align-self: start;
+				}
+				.tiers .tier-warning {
+					grid-row: 3;
+					align-self: start;
+				}
+				.tiers .tier-cta {
+					grid-row: 4;
+					align-self: end;
 				}
 			}
 			.tier-top {
@@ -1466,6 +1604,39 @@ const icons: Record<string, string> = {
 			}
 			.tier-cta:hover {
 				opacity: 0.85;
+			}
+			.tier-cta--link {
+				display: block;
+				box-sizing: border-box;
+				text-align: center;
+				text-decoration: none;
+			}
+			.tier-cta--link:focus-visible {
+				outline: 2px solid var(--color-ink);
+				outline-offset: 2px;
+			}
+			.tier--free .tier-cta {
+				background: var(--color-surface);
+				color: var(--color-ink);
+				box-shadow: inset 0 0 0 1.5px var(--color-neutral-200);
+			}
+			.tier--free .tier-cta:hover {
+				opacity: 1;
+				box-shadow: inset 0 0 0 1.5px var(--color-ink);
+			}
+			.solutions-selfhost {
+				margin: 2rem auto 0;
+			}
+			.solutions-selfhost .solutions-booking-cta {
+				min-height: 44px;
+			}
+			@media (max-width: 40rem) {
+				.solutions-selfhost .solutions-booking-title::after {
+					content: " ";
+				}
+				.solutions-selfhost .solutions-booking-cta {
+					width: fit-content;
+				}
 			}
 			.tier--featured .tier-cta {
 				background: var(--color-yellow);
@@ -2244,6 +2415,21 @@ const icons: Record<string, string> = {
 				color: #454950;
 				font-size: 1.0625rem;
 				line-height: 1.75;
+			}
+			.story-link {
+				display: inline-flex;
+				align-items: center;
+				min-height: 44px;
+				margin-top: 0.75rem;
+				font-weight: 600;
+				color: var(--color-ink);
+				text-decoration: underline;
+				text-decoration-color: var(--color-yellow);
+				text-decoration-thickness: 2px;
+				text-underline-offset: 4px;
+			}
+			.story-link:hover {
+				text-decoration-color: var(--color-ink);
 			}
 
 			@media (max-width: 47rem) {

@@ -3,27 +3,105 @@
   "redirects": [
     {
       "source": "/:page(myclienti|privacy-policy|cookie-policy)",
-      "has": [{ "type": "host", "value": "www.mysagra.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "www.mysagra.com"
+        }
+      ],
       "destination": "https://mysagra.com/:page/",
       "permanent": true
     },
     {
       "source": "/en/:page(myclienti|privacy-policy|cookie-policy)",
-      "has": [{ "type": "host", "value": "www.mysagra.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "www.mysagra.com"
+        }
+      ],
       "destination": "https://mysagra.com/en/:page/",
       "permanent": true
     },
     {
       "source": "/en",
-      "has": [{ "type": "host", "value": "www.mysagra.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "www.mysagra.com"
+        }
+      ],
       "destination": "https://mysagra.com/en/",
       "permanent": true
     },
     {
       "source": "/:path*",
-      "has": [{ "type": "host", "value": "www.mysagra.com" }],
+      "has": [
+        {
+          "type": "host",
+          "value": "www.mysagra.com"
+        }
+      ],
       "destination": "https://mysagra.com/:path*",
       "permanent": true
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=(), payment=(), usb=()"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' https://umami.mysagra.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https://umami.mysagra.com; worker-src 'self' blob:; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; object-src 'none'; upgrade-insecure-requests"
+        }
+      ]
+    },
+    {
+      "source": "/images/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
+      "source": "/_astro/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/downloads/(.*)\\.xlsx",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        },
+        {
+          "key": "Content-Disposition",
+          "value": "attachment"
+        }
+      ]
     }
   ]
 }

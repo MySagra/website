@@ -16,7 +16,7 @@ const sectionHref = (id: string) => `${Astro.url.pathname === home ? '' : home}#
           <Logo width={28} height={28} decorative /><span>MySagra</span>
         </a>
         <p class="footer-tagline">{t.footer.tagline}</p>
-        <a class="gh-star" href="https://github.com/mysagra" target="_blank" rel="noopener" title={lang === 'en' ? 'Star MySagra on GitHub' : 'Metti una stella a MySagra su GitHub'} data-umami-event="github-click" data-umami-event-location="footer">
+        <a class="gh-star" href="https://github.com/MySagra" target="_blank" rel="noopener" title={lang === 'en' ? 'Star MySagra on GitHub' : 'Metti una stella a MySagra su GitHub'} data-umami-event="github-click" data-umami-event-location="footer">
           <svg width="14" height="14" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M8 .3 10 5l5.3.4-4 3.6 1.2 5.2L8 11.5l-4.5 2.7L4.7 9l-4-3.6L6 5 8 .3Z" /></svg>
           {t.footer.ghStar}
         </a>
@@ -32,6 +32,7 @@ const sectionHref = (id: string) => `${Astro.url.pathname === home ? '' : home}#
       <div class="footer-col">
         <p class="footer-col-title">{t.footer.risorse.title}</p>
         <a href={`${home}contact/`} data-umami-event="contact-page-click" data-umami-event-location="footer">{lang === 'en' ? 'Contact us' : 'Contatti'}</a>
+        <a href={`${home}about/`} data-umami-event="about-page-click" data-umami-event-location="footer">{lang === 'en' ? 'About us' : 'Chi siamo'}</a>
         <a href={`${home}self-hosting/`} data-umami-event="selfhosting-page-click" data-umami-event-location="footer">{lang === 'en' ? 'Free self-hosting and source code' : 'Self-hosting gratuito e codice sorgente'}</a>
         <a href="https://docs.mysagra.com" target="_blank" rel="noopener" data-umami-event="docs-click" data-umami-event-location="footer">{t.footer.risorse.docs}</a>
         <a href={`mailto:${t.footer.risorse.support}`} data-umami-event="support-email-click" data-umami-event-location="footer">{t.footer.risorse.support}</a>
