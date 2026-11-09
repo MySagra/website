@@ -1,9 +1,10 @@
 import type { Lang } from './ui';
+import { formatPrice, prices } from '../lib/pricing';
 
 const content = {
   it: {
     title: 'Gestionale sagra gratis e self-hosted | MySagra',
-    description: 'Gestionale sagra gratis in self-hosting: casse, menu e comande. Scopri il wizard Docker beta, la licenza PolyForm Shield e i servizi a pagamento con assistenza.',
+    description: 'Gestionale sagra gratis in self-hosting: casse, menu e comande. Scopri il wizard Docker beta, la licenza PolyForm Shield e l’assistenza a pagamento.',
     headline: 'Il gestionale sagra gratis da installare in autonomia.',
     intro: 'MySagra è un gestionale per sagre e feste di paese gratuito in self-hosting: gestisci menu, casse e comande sulla tua infrastruttura. Il codice è disponibile con licenza PolyForm Shield: source available, non open source.',
     socialImageAlt: 'Terminale MyCassa per casse e comande della sagra',
@@ -68,7 +69,7 @@ const content = {
       ['MyWizard è pronto per l’uso durante un evento?', 'MyWizard è già stato testato dal team, ma è ancora in beta. Prima di un evento verifica l’installazione e prova tutti i flussi operativi e i dispositivi che userai. Il wizard non garantisce da solo la prontezza del sistema.'],
       ['Il comando installa solo MyWizard?', 'Il comando Docker avvia MyWizard, un container temporaneo che genera la configurazione e può avviare lo stack MySagra. MyWizard si rimuove al termine, mentre servizi, configurazione e dati di MySagra rimangono sulla tua infrastruttura. Il mount del socket Docker permette al wizard di accedere al Docker host.'],
       ['Posso usare MySagra gratis per una sagra che vende cibo e bevande?', 'Sì. Il self-hosting MySagra è gratuito per gestire la propria sagra, anche quando vende cibo e bevande, nel rispetto della licenza PolyForm Shield. Questo non autorizza a fornire prodotti o servizi concorrenti basati sul software. Hardware, infrastruttura e assistenza professionale non diventano gratuiti.'],
-      ['Quanto costa il self-hosting MySagra rispetto al cloud gestito?', 'Il software MySagra self-hosted non ha un canone: infrastruttura, dispositivi e lavoro tecnico restano a vostro carico. Il cloud gestito MySagra è un servizio a pagamento, con preventivo per evento o stagione in base alle esigenze. Assistenza e servizi aggiuntivi seguono il perimetro concordato; non esiste qui un prezzo fisso pubblicato.'],
+      ['Quanto costa il self-hosting MySagra rispetto al cloud gestito?', `Il software MySagra self-hosted non ha un canone: infrastruttura, dispositivi e lavoro tecnico restano a vostro carico. Il cloud gestito MySagra è un servizio a pagamento con prezzi di partenza pubblicati: da ${formatPrice(prices.cloud.weekly, 'it')} a settimana o ${formatPrice(prices.cloud.monthly, 'it')} al mese. Il costo finale è fissato nel preventivo in base alle esigenze dell’evento; assistenza e servizi aggiuntivi seguono il perimetro concordato.`],
       ['Serve Internet per installare MySagra con MyWizard?', 'La prima installazione di MySagra richiede Internet per scaricare le immagini Docker. Durante l’evento, la connettività necessaria dipende dalla configurazione scelta, dalla rete e dai servizi utilizzati. Prima dell’apertura verifica rete, DNS, certificati HTTPS, cassa e stampa sui dispositivi reali: il wizard da solo non garantisce il funzionamento senza Internet.'],
       ['Posso chiedere un servizio professionale dopo aver provato il self-hosting?', 'Sì. Contatta MySagra per valutare cloud gestito, installazione in loco, assistenza o sviluppo su misura. Eventuali trasferimenti di configurazione e dati vanno valutati insieme: non sono automatici né inclusi nel self-hosting gratuito.'],
     ],
@@ -81,7 +82,7 @@ const content = {
   },
   en: {
     title: 'Free Self-Hosted Festival POS Software | MySagra',
-    description: 'Free self-hosted festival POS software for menus, checkout and kitchen orders. Try the beta Docker wizard, PolyForm Shield license and paid support services.',
+    description: 'Free self-hosted festival POS software for menus, checkout and kitchen orders. Try the beta Docker wizard, PolyForm Shield license and paid support.',
     headline: 'Free festival POS software. Self-hosted by your team.',
     intro: 'MySagra is free self-hosted festival POS software for community food events: manage menus, checkout and kitchen orders on your own infrastructure. The code is available under PolyForm Shield: source available, not open source.',
     socialImageAlt: 'MyCassa checkout terminal for festival food and drink orders',
@@ -146,7 +147,7 @@ const content = {
       ['Is MyWizard ready for use at an event?', 'MyWizard has been tested by the team, but is still in beta. Before an event, verify the installation and test all the operational workflows and devices you will use. The wizard alone does not guarantee the system is ready.'],
       ['Does the command only install MyWizard?', 'The Docker command runs MyWizard, a temporary container that generates configuration and can start the MySagra stack. MyWizard removes itself when finished, while MySagra services, configuration and data remain on your infrastructure. Mounting the Docker socket gives the wizard access to the Docker host.'],
       ['Can I use MySagra for free at a festival selling food and drinks?', 'Yes. MySagra is free to self-host to run your own festival, including one selling food and drinks, subject to PolyForm Shield. This does not authorize providing competing products or services based on the software. Hardware, infrastructure and professional support are not made free by the self-hosting license.'],
-      ['How much does MySagra self-hosting cost compared with managed cloud?', 'MySagra self-hosted software has no subscription fee: infrastructure, devices and technical work remain your responsibility. MySagra managed cloud is a paid service, quoted per event or season based on your requirements. Support and additional services follow the agreed scope; no fixed price is published on this page.'],
+      ['How much does MySagra self-hosting cost compared with managed cloud?', `MySagra self-hosted software has no subscription fee: infrastructure, devices and technical work remain your responsibility. MySagra managed cloud is a paid service with published starting prices: from ${formatPrice(prices.cloud.weekly, 'en')} per week or ${formatPrice(prices.cloud.monthly, 'en')} per month. The final cost is set in your quote based on your event’s requirements; support and additional services follow the agreed scope.`],
       ['Does installing MySagra with MyWizard require Internet access?', 'The initial MySagra installation needs Internet access to download Docker images. Connectivity requirements during the event depend on the chosen configuration, network and services. Before opening, test networking, DNS, HTTPS certificates, checkout and printing on the actual devices: the wizard alone does not guarantee operation without Internet access.'],
       ['Can I request professional services after trying self-hosting?', 'Yes. Contact MySagra to discuss managed cloud, support or custom development. Any transfer of configuration and data needs to be assessed together: it is not automatic or included in free self-hosting.'],
     ],

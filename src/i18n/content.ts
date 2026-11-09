@@ -28,6 +28,19 @@ export interface SiteContent {
 		pricingLabels: { period: string; weekly: string; monthly: string; from: string; perWeek: string; perMonth: string; saving: string; fourWeeks: string; price: string; ecosystem: string };
 		demoNotePrefix: string;
 		demoNoteCta: string;
+		/** Free self-hosting option: rendered as a pricing tier ("tier") or as a strip below the tiers ("strip"). */
+		selfHosting: {
+			display: "tier" | "strip";
+			offerName: string;
+			name: string;
+			tag?: string;
+			price?: string;
+			desc: string;
+			points?: string[];
+			warning?: string;
+			cta: string;
+			href: string;
+		};
 		tiers: {
 			icon: string;
 			name: string;
@@ -171,9 +184,8 @@ export interface SiteContent {
 
 const it: SiteContent = {
 	meta: {
-		title: "MySagra | Gestionale per Sagre e Feste di Paese",
-		description:
-			"MySagra è il gestionale per sagre e feste di paese: ordini, cassa e cucina collegati in un sistema pensato per i volontari. Richiedi una demo.",
+		title: "Gestionale per sagre: cassa, comande e ordini con QR | MySagra",
+		description: `Cassa, comande in cucina e ordini dal telefono con QR code, collegati in tempo reale. Cloud da ${formatPrice(prices.cloud.weekly, "it")}/settimana o self-hosting gratuito. Richiedi una demo.`,
 		keywords:
 			"gestionale sagre, software sagre, software feste di paese, gestionale pro loco, cassa sagra offline",
 	},
@@ -192,7 +204,7 @@ const it: SiteContent = {
 		heroImgAlt: "Volontari al banco usano MyCassa su schermo mentre i clienti ordinano durante una sagra",
 		logosLabel: "Usato da sagre e feste in Italia",
 	},
-	vantaggi: { h2: "Come cambia il tuo evento con MySagra" },
+	vantaggi: { h2: "Perché usare un gestionale per la sagra?" },
 	outcomes: [
 		{
 			title: "Niente più ordini persi",
@@ -226,13 +238,21 @@ const it: SiteContent = {
 		},
 	],
 	soluzioni: {
-		h2: "Tre soluzioni per portare MySagra alla vostra sagra",
+		h2: "Quanto costa il gestionale MySagra per la tua sagra?",
 		lede: "Prezzi di partenza per una sagra standard. Definiamo insieme il preventivo in base alle vostre esigenze.",
 		pricingNote: "Prezzi indicativi. Il costo finale viene definito nel preventivo: può aumentare in base alle esigenze dell’evento (postazioni aggiuntive, distanza, durata) e prevede condizioni agevolate per utilizzi prolungati o su più edizioni.",
 		bookingNote: { title: "Prenotazioni aperte per la stagione 2027", text: "Servizio attivo da febbraio. Preventivo gratuito e senza impegno.", cta: "Blocca la tua data" },
 		pricingLabels: { period: "Periodo del servizio", weekly: "Settimana", monthly: "Mese", from: "A partire da", perWeek: "/ settimana", perMonth: "/ mese", saving: "Ulteriori sconti per periodi più lunghi di un mese", fourWeeks: "Prezzo di 4 settimane", price: "Prezzo", ecosystem: "Include tutti i software dell'ecosistema MySagra" },
 		demoNotePrefix: "Vuoi capire meglio come funziona?",
 		demoNoteCta: "Contattaci per richiedere una demo →",
+		selfHosting: {
+			display: "strip",
+			offerName: "Self-hosting gratuito",
+			name: "Preferisci installarlo da te? Il self-hosting è gratis.",
+			desc: "Software gratuito per gestire la tua sagra con licenza PolyForm Shield. Hardware, installazione e manutenzione restano a carico tuo.",
+			cta: "Inizia gratis",
+			href: "/self-hosting/",
+		},
 		tiers: [
 			{
 				icon: "cloud",
@@ -267,7 +287,7 @@ const it: SiteContent = {
 		],
 	},
 	ecosistema: {
-		h2: "Un ecosistema componibile",
+		h2: "Quali app servono per gestire una sagra?",
 		lede: "Cinque strumenti indipendenti, collegati allo stesso cervello. Attivate solo quelli che vi servono, aggiungete gli altri quando volete.",
 		items: [
 			{
@@ -327,12 +347,12 @@ const it: SiteContent = {
 		noteDocs: "documentazione ↗",
 	},
 	story: {
-		h2: "Come nasce MySagra",
-		p: "Siamo Nicolò Spampatti e Gabriele Bianco due studenti di ingegneria informatica dell'Università di Bergamo e due ragazzi di \"Oratorio\" che hanno deciso di creare questo gestionale per aiutare i volontari. Il sistema nasce unendo la nostra passione per l'informatica e le attività di volontariato all'esigenza di creare un sistema moderno, veloce e facile da usare a basso costo.",
+		h2: "Chi ha creato MySagra?",
+		p: "Siamo Nicolò Spampatti e Gabriele Bianco, due studenti di ingegneria informatica dell'Università di Bergamo e due ragazzi di \"Oratorio\" che hanno deciso di creare questo gestionale per aiutare i volontari. Il sistema nasce unendo la nostra passione per l'informatica e le attività di volontariato all'esigenza di creare un sistema moderno, veloce e facile da usare a basso costo.",
 		photoLabel: "Foto del team",
 	},
 	faq: {
-		h2: "Domande frequenti",
+		h2: "Domande frequenti sul gestionale per sagre",
 		lede: "Le domande che ci fanno più spesso presidenti di pro loco e organizzatori.",
 		items: [
 			{
@@ -341,7 +361,7 @@ const it: SiteContent = {
 			},
 			{
 				q: "Qual è il miglior gestionale per sagre che funziona anche senza internet?",
-				a: "MySagra è pensato apposta per questo: l'architettura LAN-first tiene cassa, stampa comande e tabellone numeri attivi sulla rete locale dell'evento anche se la connessione Internet salta. È la differenza principale rispetto a un gestionale da negozio adattato a una sagra.",
+				a: "Con l'installazione in loco MySagra è pensato apposta per questo: l'architettura LAN-first tiene cassa, stampa comande e tabellone numeri attivi sulla rete locale dell'evento anche se la connessione Internet salta. È la differenza principale rispetto a un gestionale da negozio adattato a una sagra. Il cloud gestito, invece, richiede una connessione stabile.",
 			},
 			{
 				q: "MySagra funziona anche se il Wi-Fi cade?",
@@ -458,7 +478,7 @@ const it: SiteContent = {
 	},
 	cookieBanner: {
 		description:
-			"Le statistiche di base Umami sono attive anche senza consenso ai replay. Con il tuo consenso facoltativo registriamo anche replay di un campione delle visite (clic e scroll) per migliorare il sito. Gli input sono mascherati e il modulo contatti è escluso. Rifiuta blocca solo i replay; puoi cambiare scelta in qualsiasi momento.",
+			"Le statistiche di base sono sempre attive. Con il tuo consenso registriamo anche il replay di alcune visite, con input mascherati. Rifiuta blocca solo i replay.",
 		learnMore: "Preferenze privacy",
 		modalTitle: "Le tue preferenze privacy",
 		modalDescription: "Le statistiche di base Umami restano attive. Qui scegli solo se consentire i replay delle visite: sono facoltativi e puoi disattivarli in qualsiasi momento.",
@@ -514,9 +534,8 @@ const it: SiteContent = {
 
 const en: SiteContent = {
 	meta: {
-		title: "Festival POS & Food Ordering Software | MySagra",
-		description:
-			"Keep food orders moving from checkout to kitchen with MySagra. Cloud POS for volunteer-run community festivals, with guided setup. Request a demo.",
+		title: "Festival POS: checkout, kitchen tickets & QR ordering | MySagra",
+		description: `Checkout, kitchen tickets and QR code ordering from guests' phones, synced in real time. Managed cloud from ${formatPrice(prices.cloud.weekly, "en")}/week or free self-hosting.`,
 		keywords:
 			"festival POS, food ordering software for events, community festival software, cloud POS, kitchen order printing",
 	},
@@ -535,7 +554,7 @@ const en: SiteContent = {
 		heroImgAlt: "Volunteers at the counter using MyCassa on screen while customers order during a festival",
 		logosLabel: "Used by festivals and fairs across Italy",
 	},
-	vantaggi: { h2: "Keep checkout and kitchen orders in sync" },
+	vantaggi: { h2: "Why use festival POS software?" },
 	outcomes: [
 		{
 			title: "No more lost orders",
@@ -569,13 +588,25 @@ const en: SiteContent = {
 		},
 	],
 	soluzioni: {
-		h2: "Managed cloud, with help getting started",
+		h2: "How much does MySagra festival POS cost?",
 		lede: "We run the servers and guide you through setting up local printing. Starting prices help you plan; your final quote depends on your requirements.",
 		pricingNote: "Indicative prices. Your final cost is set in your quote: it may increase with your event’s requirements (extra stations, duration) and includes better terms for longer use or recurring editions.",
 		bookingNote: { title: "Bookings are open for the 2027 season", text: "Service starts in February. Free, no-obligation quote.", cta: "Hold your dates" },
 		pricingLabels: { period: "Service period", weekly: "Weekly", monthly: "Monthly", from: "From", perWeek: "/ week", perMonth: "/ month", saving: "Further discounts for periods longer than a month", fourWeeks: "Price for 4 weeks", price: "Price", ecosystem: "Includes every app in the MySagra ecosystem" },
 		demoNotePrefix: "Want to see the checkout and kitchen workflow?",
 		demoNoteCta: "Contact us to request a demo →",
+		selfHosting: {
+			display: "tier",
+			offerName: "Free self-hosting",
+			name: "Self-hosted",
+			tag: "Your server",
+			price: "Free",
+			desc: "Run MySagra on your own server with Docker and the beta MyWizard installer. Free for your own festival under the PolyForm Shield license.",
+			points: ["Runs on your own hardware and network", "Docker setup with MyWizard (beta)", "You handle backups, updates and maintenance", "Paid support available if you need it"],
+			warning: "Requires technical skills. Hardware, setup and support are not included.",
+			cta: "Start for free",
+			href: "/en/self-hosting/",
+		},
 		tiers: [
 			{
 				icon: "cloud",
@@ -603,7 +634,7 @@ const en: SiteContent = {
 		],
 	},
 	ecosistema: {
-		h2: "One connected system for festival food orders",
+		h2: "Which apps do you need to run festival food orders?",
 		lede: "Manage your event in the cloud, take orders at checkout or from customers' phones, and print kitchen tickets locally. Each tool connects to MySagra.",
 		items: [
 			{
@@ -663,12 +694,12 @@ const en: SiteContent = {
 		noteDocs: "documentation ↗",
 	},
 	story: {
-		h2: "How MySagra started",
-		p: "We are Nicolò Spampatti and Bianco Gabriele, two computer engineering students at the University of Bergamo and two young people involved in our parish youth centre who decided to create this management software to help volunteers. The system brings together our passion for computing and our volunteer work with the need for a modern, fast, easy-to-use and low-cost solution.",
+		h2: "Who built MySagra?",
+		p: "We are Nicolò Spampatti and Gabriele Bianco, two computer engineering students at the University of Bergamo and two young people involved in our parish youth centre who decided to create this management software to help volunteers. The system brings together our passion for computing and our volunteer work with the need for a modern, fast, easy-to-use and low-cost solution.",
 		photoLabel: "Team photo",
 	},
 	faq: {
-		h2: "Frequently asked questions",
+		h2: "Festival POS software: frequently asked questions",
 		lede: "What community festival organizers need to know about cloud checkout, kitchen printing and setup.",
 		items: [
 			{
@@ -788,7 +819,7 @@ const en: SiteContent = {
 	},
 	cookieBanner: {
 		description:
-			"Basic Umami statistics are active even without replay consent. With your optional consent, we also record replays of a sample of visits (clicks and scrolling) to improve the site. Inputs are masked and the contact form is excluded. Reject blocks only replays; you can change your choice at any time.",
+			"Basic statistics are always on. With your consent we also record replays of some visits, with inputs masked. Reject blocks only replays.",
 		learnMore: "Privacy preferences",
 		modalTitle: "Your privacy preferences",
 		modalDescription: "Basic Umami statistics remain active. Here you choose only whether to allow visit replays: they are optional and you can disable them at any time.",

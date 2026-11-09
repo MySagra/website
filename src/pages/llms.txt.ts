@@ -16,6 +16,13 @@ This index links to official pages and documentation. It is not a replacement fo
 
 MyWizard is a tested but still beta, temporary Docker deployment container. It generates Docker Compose configuration and can start the MySagra stack. Self-hosting requires technical skills, backups, networking and device testing before an event. Mounting the Docker socket grants access to the Docker host.
 
+## Markdown versions of the main pages
+
+- [Homepage in Italian as Markdown](https://mysagra.com/index.md) · [English](https://mysagra.com/en/index.md)
+- [MyClienti in Italian as Markdown](https://mysagra.com/myclienti.md) · [English](https://mysagra.com/en/myclienti.md)
+- [Excel page and free template in Italian as Markdown](https://mysagra.com/festival-management-excel.md) · [English](https://mysagra.com/en/festival-management-excel.md)
+- [About page in Italian as Markdown](https://mysagra.com/about.md) · [English](https://mysagra.com/en/about.md)
+
 ## Product and paid services
 
 - [MySagra in Italian](https://mysagra.com/): Festival management, managed cloud, on-site installation and custom services according to the agreed quote.
@@ -25,6 +32,11 @@ MyWizard is a tested but still beta, temporary Docker deployment container. It g
 - Every paid plan includes all MySagra ecosystem apps: MyCassa (checkout), MyStampa (station ticket printing), MyNumeri (public ready-order display) and MyClienti (customer menu and self-ordering, payment at the counter).
 - [Contact in Italian](https://mysagra.com/contact/): Demo, quote and question requests.
 - [Contact in English](https://mysagra.com/en/contact/): Demo, quote and question requests.
+
+## About
+
+- [About MySagra in Italian](https://mysagra.com/about/): Founded in 2026 by Nicolò Spampatti and Gabriele Bianco, co-founders and developers, computer engineering students at the University of Bergamo with a background in parish youth-centre volunteering.
+- [About MySagra in English](https://mysagra.com/en/about/): The team behind MySagra and why it was built.
 
 ## Free self-hosting
 
@@ -45,6 +57,8 @@ MyWizard is a tested but still beta, temporary Docker deployment container. It g
 
 - [Festival management with Excel, in Italian](https://mysagra.com/festival-management-excel/): When a spreadsheet is enough, what MySagra adds during service, and .xlsx report export.
 - [Festival management with Excel, in English](https://mysagra.com/en/festival-management-excel/): Order, dish and till statistics exported to Excel.
+- [Free Excel festival template, Italian](https://mysagra.com/downloads/mysagra-modello-excel-sagra.xlsx): Free .xlsx with menu, orders sheet and formula-based order, dish and till statistics. No sign-up; orders are entered by hand.
+- [Free Excel festival template, English](https://mysagra.com/downloads/mysagra-festival-excel-template.xlsx): Same template with English labels.
 
 ## Customer menus and ordering
 

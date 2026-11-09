@@ -1,10 +1,11 @@
 ---
-import '@fontsource/inter/600.css';
-import '@fontsource/inter/700.css';
-import '@fontsource/work-sans/400.css';
-import '@fontsource/work-sans/500.css';
-import '@fontsource/work-sans/600.css';
+import '@fontsource/inter/latin-600.css';
+import '@fontsource/inter/latin-700.css';
+import '@fontsource/work-sans/latin-400.css';
+import '@fontsource/work-sans/latin-500.css';
+import '@fontsource/work-sans/latin-600.css';
 import '../styles/global.css';
+import { organization, partOfWebsite, website } from '../lib/schema';
 import Header from './Header.astro';
 import Footer from './Footer.astro';
 import ContactModal from './ContactModal.astro';
@@ -29,8 +30,9 @@ Astro.response.headers.append('Link', `<${markdownUrl}>; rel="alternate"; type="
 const schema = {
   '@context': 'https://schema.org',
   '@graph': [
-    { '@type': 'Organization', '@id': `${site}/#organization`, name: 'MySagra', url: `${site}/`, logo: `${site}/favicon.svg`, sameAs: ['https://github.com/MySagra'] },
-    { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, name: t.title, headline: t.headline, description: t.description, inLanguage: lang, dateModified: SELF_HOSTING_UPDATED_AT, citation: t.sources.map(([, url]) => url), author: { '@id': `${site}/#organization` }, publisher: { '@id': `${site}/#organization` }, mainEntity: { '@id': `${site}/#source-code` }, primaryImageOfPage: { '@id': `${canonical}#primary-image` }, breadcrumb: { '@id': `${canonical}#breadcrumb` } },
+    organization,
+    website,
+    { '@type': 'WebPage', '@id': `${canonical}#webpage`, url: canonical, isPartOf: partOfWebsite, name: t.title, headline: t.headline, description: t.description, inLanguage: lang, dateModified: SELF_HOSTING_UPDATED_AT, citation: t.sources.map(([, url]) => url), author: { '@id': `${site}/#organization` }, publisher: { '@id': `${site}/#organization` }, mainEntity: { '@id': `${site}/#source-code` }, primaryImageOfPage: { '@id': `${canonical}#primary-image` }, breadcrumb: { '@id': `${canonical}#breadcrumb` } },
     { '@type': 'SoftwareSourceCode', '@id': `${site}/#source-code`, name: 'MySagra', description: t.sourceDescription, url: sourceRepository, codeRepository: sourceRepository, license: 'https://github.com/MySagra/mysagra/blob/main/LICENSE.md', publisher: { '@id': `${site}/#organization` } },
     { '@type': 'ImageObject', '@id': `${canonical}#primary-image`, contentUrl: image, caption: t.socialImageAlt, width: 2400, height: 1601 },
     { '@type': 'BreadcrumbList', '@id': `${canonical}#breadcrumb`, itemListElement: [{ '@type': 'ListItem', position: 1, name: 'MySagra', item: `${site}${home}` }, { '@type': 'ListItem', position: 2, name: t.breadcrumb, item: canonical }] },

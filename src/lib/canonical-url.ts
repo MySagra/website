@@ -5,6 +5,8 @@ const PAGE_PATHS = new Set([
 	"/en/myclienti",
 	"/contact",
 	"/en/contact",
+	"/about",
+	"/en/about",
 	"/festival-management-excel",
 	"/en/festival-management-excel",
 	"/self-hosting",
